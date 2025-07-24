@@ -1,0 +1,43 @@
+.emoji-tiptap-tooltip {
+  --emoji-tooltip-bg: black;
+  --emoji-tooltip-text: white;
+  --emoji-kbd: rgba(255, 255, 255, 0.7); 
+
+  .dark & {
+    --emoji-tooltip-bg: white;
+    --emoji-tooltip-text: black;
+    --emoji-kbd: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.emoji-tiptap-tooltip {
+  z-index: 9999;
+  overflow: hidden;
+  border-radius: var(--emoji-radius-md, 0.375rem);
+  background-color: var(--emoji-tooltip-bg);
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--emoji-tooltip-text);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  text-align: center;
+
+  kbd {
+    display: inline-block;
+    text-align: center;
+    vertical-align: baseline;
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      "Helvetica Neue",
+      Arial,
+      "Noto Sans",
+      sans-serif;
+    text-transform: capitalize;
+    color: var(--emoji-kbd);
+  }
+}

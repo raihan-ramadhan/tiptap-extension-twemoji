@@ -1,0 +1,111 @@
+import { EmojiMap, Emoji } from "@/data/emoji-sprite-map";
+import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
+import { Dispatch, Ref, RefObject, SetStateAction } from "react";
+import { SuggestionProps } from "@tiptap/suggestion";
+import { MentionNodeAttrs } from "@tiptap/extension-mention";
+import { Editor } from "@tiptap/react";
+import { FileWithPreview } from "@/components/emoji-grid/add-custom-emoji/DropZone";
+import { EmojiHeaderProps } from "@/components/emoji-grid/header/Header";
+
+export type ExtensionOptions = {
+  upload: UploadCustEmojiFunc;
+  onErrorUpload: (errorMessage: string) => void;
+  onSuccessUpload: (successMessage: string, callback?: () => void) => void;
+};
+
+export type UploadCustEmojiProps = {
+  emojiName: string;
+  files: FileWithPreview;
+  onSuccess: ExtensionOptions["onSuccessUpload"];
+  onError: ExtensionOptions["onErrorUpload"];
+  callback?: () => void;
+};
+
+export type UploadCustEmojiFunc = (
+  props: UploadCustEmojiProps
+) => Promise<void>;
+
+export type SelectedCellElementRef = RefObject<HTMLButtonElement | null>;
+
+export type FetchedCustomEmoji = { label: string; url: string; id: string };
+
+export type StoredEmoji = {
+  hexcode?: string;
+  label?: string;
+  url?: string;
+  id?: string;
+};
+
+export type Items = {
+  category?: string;
+  emojis?: EmojiMap;
+}[];
+
+export type EmojiListRef = {
+  onKeyDown: ({ event }: { event: KeyboardEvent }) => boolean;
+};
+
+export type SuggestionItems = {
+  recent: (Emoji | FetchedCustomEmoji)[] | null;
+  filteredEmojis: Emoji[];
+  filteredCustomEmojis?: FetchedCustomEmoji[];
+};
+
+export type Range = SuggestionProps<any, MentionNodeAttrs>["range"] | undefined;
+
+export type ComponentEmojiMentionProps = {
+  items: SuggestionItems[];
+  ref?: Ref<EmojiListRef>;
+  onCancel?: () => void;
+  onSelectEmoji: SelectEmojiFunc;
+  range?: Range;
+  query?: string;
+  setQuery?: Dispatch<SetStateAction<string>>;
+  headerInput?: EmojiHeaderProps["headerInput"];
+  removeButton?: EmojiHeaderProps["removeButton"];
+  randomButton?: EmojiHeaderProps["randomButton"];
+  editor: Editor;
+  callback?: (emoji: Emoji | null) => void;
+  focusImmediately?: boolean;
+};
+
+export type GroupTitleProps = { groupTitle: string };
+export type ActionBtnProps = {
+  buttonLabel: string;
+  align?: "start" | "center" | "end";
+};
+
+export type ARRAY2D_ITEM_PROPS = (
+  | Emoji
+  | FetchedCustomEmoji
+  | ActionBtnProps
+  | GroupTitleProps
+  | undefined
+)[];
+
+export type SelectEmojiFunc = (props: {
+  emoji:
+    | (Emoji & {
+        hexcode: string;
+      })
+    | FetchedCustomEmoji;
+  baseHexcode?: string;
+  range?: Range;
+}) => void;
+
+export type SelectedCell = {
+  row: number;
+  column: number;
+};
+
+export type ItemData = ExtensionOptions & {
+  arr2d: ARRAY2D_ITEM_PROPS[];
+  selectedCell: SelectedCell;
+  onSelectEmoji: SelectEmojiFunc;
+  selectedCellElementRef: SelectedCellElementRef;
+  skinTone: SKIN_TONE_CODES_PROPS;
+  range?: Range;
+  setKeyboardEnabled: Dispatch<SetStateAction<boolean>>;
+  cellRefs: React.RefObject<Map<string, HTMLDivElement | HTMLButtonElement>>;
+  handleHover: (row: number, col: number) => void;
+};

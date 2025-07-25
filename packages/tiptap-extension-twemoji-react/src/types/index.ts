@@ -8,16 +8,16 @@ import { FileWithPreview } from "@/components/emoji-grid/add-custom-emoji/DropZo
 import { EmojiHeaderProps } from "@/components/emoji-grid/header/Header";
 
 export type ExtensionOptions = {
-  upload: UploadCustEmojiFunc;
-  onErrorUpload: (errorMessage: string) => void;
-  onSuccessUpload: (successMessage: string, callback?: () => void) => void;
+  upload?: UploadCustEmojiFunc;
+  onError?: (errorMessage: string) => void;
+  onSuccess?: (successMessage: string, callback?: () => void) => void;
 };
 
 export type UploadCustEmojiProps = {
   emojiName: string;
   files: FileWithPreview;
-  onSuccess: ExtensionOptions["onSuccessUpload"];
-  onError: ExtensionOptions["onErrorUpload"];
+  onSuccess: ExtensionOptions["onSuccess"];
+  onError: ExtensionOptions["onError"];
   callback?: () => void;
 };
 
@@ -53,7 +53,7 @@ export type SuggestionItems = {
 
 export type Range = SuggestionProps<any, MentionNodeAttrs>["range"] | undefined;
 
-export type ComponentEmojiMentionProps = {
+export type ComponentEmojiMentionProps = ExtensionOptions & {
   items: SuggestionItems[];
   ref?: Ref<EmojiListRef>;
   onCancel?: () => void;

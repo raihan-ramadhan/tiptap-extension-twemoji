@@ -12,8 +12,8 @@ const Content = ({
   onMount,
   onUnmount,
   setIsOpen,
-  onErrorUpload,
-  onSuccessUpload,
+  onError,
+  onSuccess,
   upload,
 }: {
   onMount: () => void;
@@ -30,11 +30,7 @@ const Content = ({
   }, []);
 
   return (
-    <Dropzone
-      onErrorUpload={onErrorUpload}
-      onSuccessUpload={onSuccessUpload}
-      upload={upload}
-    >
+    <Dropzone onError={onError} onSuccess={onSuccess} upload={upload}>
       <div>
         <h3 className={"font-medium text-base"}>Add Custom Emoji</h3>
         <p className={"text-xs text-neutral-500"}>

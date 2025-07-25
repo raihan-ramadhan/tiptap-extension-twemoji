@@ -45,8 +45,8 @@ type DropzoneContextProps = Omit<
   emojiNameError: string | null;
   loading: boolean;
   onUpload: ({ callback }: { callback?: () => void }) => Promise<void>;
-  onError: ExtensionOptions["onErrorUpload"];
-  onSuccess: ExtensionOptions["onSuccessUpload"];
+  onError: ExtensionOptions["onError"];
+  onSuccess: ExtensionOptions["onSuccess"];
 };
 
 const DropzoneContext = createContext<DropzoneContextProps | undefined>(
@@ -65,8 +65,8 @@ const Dropzone = ({
   className,
   children,
   upload: uploadCallback,
-  onErrorUpload,
-  onSuccessUpload,
+  onError,
+  onSuccess,
   ...restProps
 }: PropsWithChildren<DropzoneProps>) => {
   const [files, setFiles] = useState<FileWithPreview | null>(null);
@@ -113,18 +113,19 @@ const Dropzone = ({
       }
 
       if (acceptedFiles.length > MAX_FILES) {
-        onErrorUpload("Too many files, max files: 1");
+        if (onError) onError("Too many files, max files: 1");
       }
 
       if (fileRejections.length > 0) {
         fileRejections.map(({ errors, file }) => {
           errors.map((error) => {
             if (error.message.startsWith("File is larger than")) {
-              onErrorUpload(
-                `File is larger than ${formatBytes(MAX_FILE_SIZE, 2)} (Size: ${formatBytes(file.size, 2)})`
-              );
+              if (onError)
+                onError(
+                  `File is larger than ${formatBytes(MAX_FILE_SIZE, 2)} (Size: ${formatBytes(file.size, 2)})`
+                );
             } else {
-              onErrorUpload(error.message);
+              if (onError) onError(error.message);
             }
           });
         });
@@ -138,13 +139,19 @@ const Dropzone = ({
       setLoading(true);
       if (emojiNameError || !files) return setLoading(false);
 
-      await uploadCallback({
-        emojiName,
-        files,
-        onError: onErrorUpload,
-        onSuccess: onSuccessUpload,
-        callback,
-      });
+      if (uploadCallback) {
+        await uploadCallback({
+          emojiName,
+          files,
+          onError: onError,
+          onSuccess,
+          callback,
+        });
+      } else {
+        console.error(
+          "Error: Please define a upload function in configure twemoji extension"
+        );
+      }
 
       setLoading(false);
     },
@@ -172,8 +179,8 @@ const Dropzone = ({
     emojiNameError,
     loading,
     onUpload,
-    onError: onErrorUpload,
-    onSuccess: onSuccessUpload,
+    onError,
+    onSuccess,
   };
 
   return (

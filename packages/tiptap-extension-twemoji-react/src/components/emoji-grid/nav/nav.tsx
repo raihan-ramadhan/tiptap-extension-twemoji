@@ -3,12 +3,7 @@ import { AddEmojiIcon, navIcons } from "./nav-icons";
 import { FixedSizeGrid as Grid } from "react-window";
 import { EMOJI_GROUPS_PROPS } from "@/lib/emoji-groups";
 import { useEffect, useRef, useState } from "react";
-import {
-  ARRAY2D_ITEM_PROPS,
-  ExtensionOptions,
-  ItemData,
-  UploadCustEmojiFunc,
-} from "@/types";
+import { ARRAY2D_ITEM_PROPS, ExtensionOptions, ItemData } from "@/types";
 import AddEmojiBtnWrapper from "@/components/emoji-grid/add-custom-emoji/AddEmojiBtnWrapper";
 import {
   Tooltip,
@@ -34,8 +29,8 @@ export const Nav = ({
   width,
   arr2d,
   setKeyboardEnabled,
-  onErrorUpload,
-  onSuccessUpload,
+  onError,
+  onSuccess,
   upload,
 }: NavProps & ExtensionOptions) => {
   const initialActiveNav = Object.keys(groupsIndexes).find(
@@ -129,8 +124,8 @@ export const Nav = ({
               align="end"
               onMount={() => setKeyboardEnabled(false)}
               onUnmount={() => setKeyboardEnabled(true)}
-              onErrorUpload={onErrorUpload}
-              onSuccessUpload={onSuccessUpload}
+              onErrorUpload={onError}
+              onSuccess={onSuccess}
               upload={upload}
             >
               <TooltipTrigger>

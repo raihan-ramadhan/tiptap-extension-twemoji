@@ -13,7 +13,9 @@ type Props = {
   asChild?: boolean;
   children?: React.ReactElement;
 } & React.HTMLAttributes<HTMLElement> &
-  ExtensionOptions;
+  Omit<ExtensionOptions, "onError"> & {
+    onErrorUpload?: ExtensionOptions["onError"];
+  };
 
 const AddEmojiBtnWrapper = ({
   onUnmount,
@@ -24,7 +26,7 @@ const AddEmojiBtnWrapper = ({
   asChild,
   children,
   upload,
-  onSuccessUpload,
+  onSuccess,
   onErrorUpload,
   ...props
 }: Props) => {
@@ -50,8 +52,8 @@ const AddEmojiBtnWrapper = ({
         onMount={onMount}
         onUnmount={onUnmount}
         setIsOpen={setIsOpen}
-        onErrorUpload={onErrorUpload}
-        onSuccessUpload={onSuccessUpload}
+        onError={onErrorUpload}
+        onSuccess={onSuccess}
         upload={upload}
       />
     </Popover>

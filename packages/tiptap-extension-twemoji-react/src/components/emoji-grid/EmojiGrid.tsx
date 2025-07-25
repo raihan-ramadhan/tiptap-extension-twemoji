@@ -21,7 +21,6 @@ import {
   type ItemData,
   ComponentEmojiMentionProps,
   SelectedCellElementRef,
-  UploadCustEmojiFunc,
 } from "@/types";
 
 import { LOCAL_STORAGE_SKIN_TONE_KEY } from "@/constants";
@@ -46,7 +45,6 @@ import {
 } from "@/lib/emoji-grid-utils";
 
 import { computePosition, autoUpdate, offset, flip } from "@floating-ui/dom";
-import { EmojiExtensionOptions, ExtensionName } from "@/.";
 
 // constants
 export const COLUMNS = 12;
@@ -66,20 +64,10 @@ export default function ({
   randomButton,
   removeButton,
   focusImmediately,
-  editor,
+  onError,
+  onSuccess,
+  upload,
 }: ComponentEmojiMentionProps) {
-  const uploadCustEmojiOptions = useMemo(() => {
-    const opts = editor.extensionManager.extensions.find(
-      (ext) => ext.name === ExtensionName
-    )!.options as EmojiExtensionOptions;
-
-    return {
-      upload: opts.upload!,
-      onError: opts.onError!,
-      onSuccess: opts.onSuccess!,
-    };
-  }, [editor, ExtensionName]);
-
   const { recent, filteredEmojis, filteredCustomEmojis } = items[0];
 
   const selectedCellElementRef: SelectedCellElementRef = useRef(null);
@@ -452,9 +440,9 @@ export default function ({
               setKeyboardEnabled,
               cellRefs,
               handleHover,
-              onErrorUpload: uploadCustEmojiOptions.onError,
-              onSuccessUpload: uploadCustEmojiOptions.onSuccess,
-              upload: uploadCustEmojiOptions.upload,
+              onError: onError,
+              onSuccess: onSuccess,
+              upload: upload,
             }}
           >
             {Cell}
@@ -462,9 +450,9 @@ export default function ({
           {filteredEmojis.length + (filteredCustomEmojis?.length ?? 0) >
           MINIMUM_CELL_SHOW_GROUPS ? (
             <Nav
-              onSuccessUpload={uploadCustEmojiOptions.onSuccess}
-              onErrorUpload={uploadCustEmojiOptions.onError}
-              upload={uploadCustEmojiOptions.upload}
+              onSuccess={onSuccess}
+              onError={onError}
+              upload={upload}
               setKeyboardEnabled={setKeyboardEnabled}
               arr2d={arr2d}
               width={widthGrid}
@@ -482,9 +470,9 @@ export default function ({
         >
           <span>No Result</span>
           <AddEmojiBtnWrapper
-            onSuccessUpload={uploadCustEmojiOptions.onSuccess}
-            onErrorUpload={uploadCustEmojiOptions.onError}
-            upload={uploadCustEmojiOptions.upload}
+            onSuccess={onSuccess}
+            onErrorUpload={onError}
+            upload={upload}
             onMount={() => setKeyboardEnabled(false)}
             onUnmount={() => setKeyboardEnabled(true)}
             className={cn(
@@ -513,8 +501,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = memo(
       setKeyboardEnabled,
       cellRefs,
       handleHover,
-      onErrorUpload,
-      onSuccessUpload,
+      onError,
+      onSuccess,
       upload,
     } = data;
     const emojiData = arr2d[rowIndex][columnIndex];
@@ -722,8 +710,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = memo(
                 "bg-neutral-800"
             )}
             upload={upload}
-            onErrorUpload={onErrorUpload}
-            onSuccessUpload={onSuccessUpload}
+            onErrorUpload={onError}
+            onSuccess={onSuccess}
           >
             <TooltipTrigger>{content}</TooltipTrigger>
           </AddEmojiBtnWrapper>

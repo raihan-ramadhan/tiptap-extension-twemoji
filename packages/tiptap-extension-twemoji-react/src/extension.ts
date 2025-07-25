@@ -86,17 +86,17 @@ export interface EmojiExtensionOptions extends MentionOptions {
 let component: ReactRenderer<EmojiListRef, ComponentEmojiMentionProps> | null =
   null;
 
-let lastProps: ComponentEmojiMentionProps | null = null;
+let lastItems: SuggestionItems[] = [];
 
 export function updateEmojiGridItems(newItem: FetchedCustomEmoji) {
-  if (component && lastProps) {
+  if (component && lastItems[0]) {
     const items: SuggestionItems[] = [
       {
-        ...lastProps.items[0],
+        ...lastItems[0],
         filteredCustomEmojis: [...latestCustomEmojis, newItem],
       },
     ];
-    component.updateProps({ ...lastProps, items });
+    component.updateProps({ items });
   }
 }
 
@@ -397,7 +397,7 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
             ref,
           };
 
-          lastProps = props;
+          lastItems = items;
 
           component = new ReactRenderer(EmojiGrid, { props, editor });
 
@@ -418,13 +418,11 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
           updatePosition(virtualElement, popoverComponent, onCancel, wrapper);
         },
         onUpdate(props) {
-          // @ts-ignore
-          lastProps = props as ComponentEmojiMentionProps;
+          lastItems = props.items;
 
           component?.updateProps(props);
 
-          // if (!props.clientRect || !component) return;
-          if (!component) return;
+          if (!props.clientRect || !component) return;
 
           const virtualElement: VirtualElement = getVirtualElement(
             props.editor

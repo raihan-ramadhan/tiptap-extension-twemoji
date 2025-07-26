@@ -92,9 +92,13 @@ export function updateEmojiGridItems(newItem: FetchedCustomEmoji) {
     const items: SuggestionItems[] = [
       {
         ...lastItems[0],
-        filteredCustomEmojis: [...latestCustomEmojis, newItem],
+        filteredCustomEmojis: [
+          ...(lastItems[0].filteredCustomEmojis ?? []),
+          newItem,
+        ],
       },
     ];
+
     component.updateProps({ items });
   }
 }

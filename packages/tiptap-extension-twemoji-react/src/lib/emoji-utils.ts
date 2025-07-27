@@ -9,7 +9,6 @@ export type EMOJI_SHORTCODES_EMOTICONS_VALUE = {
   hexcode: string;
   skinTones?: string;
 };
-import { emojiSpriteUrl } from "@/lib/utils";
 
 export type Hexcode = string;
 
@@ -56,6 +55,7 @@ import {
   SHORTCODES_REGEX,
   UNICODE_REGEX,
 } from "@/assets/emoji-regexes";
+import { EMOJI_CLASS_NAME } from "@/constants";
 
 export const SKIN_TONE_MAP = {
   default: {
@@ -184,6 +184,9 @@ export const getEmojiSprite = ({
   return item;
 };
 
+export const TRANSPARENT_GIF =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+
 export const getAttributes = ({
   data,
   styleOption,
@@ -221,23 +224,19 @@ export const getAttributes = ({
 
   // i get inspiration for this from notion emoji it self
   return {
-    src: "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    src: TRANSPARENT_GIF,
     alt: emoji,
     draggable: false, // Prevents the emoji from being dragged, because we want it be treated as an text that able to selected
+    className: EMOJI_CLASS_NAME,
     style:
       type === "object"
         ? ({
             width: size,
             height: size,
-            display: "inline-block",
-            backgroundRepeat: "no-repeat",
-            backgroundImage: `url(${emojiSpriteUrl})`,
             backgroundPosition: `-${positionX} -${positionY}`,
             backgroundSize: `${scaledBgSizeX} ${scaledBgSizeY}`,
-            verticalAlign: "-0.1em",
-            objectFit: "contain",
           } as React.CSSProperties)
-        : `width: 1em; height: 1em; display: inline-block; background-repeat: no-repeat; background-image: url(${emojiSpriteUrl}); background-position: -${positionX} -${positionY}; background-size: ${scaledBgSizeX} ${scaledBgSizeY}; cursor: text; vertical-align:-0.1em; object-fit: contain;`,
+        : `width: 1em; height: 1em; background-position: -${positionX} -${positionY}; background-size: ${scaledBgSizeX} ${scaledBgSizeY}; cursor: text;`,
     [type === "object" ? "contentEditable" : "contenteditable"]: false, // Prevents the emoji from being edited, it should be not able edited because it's editor not text, if it set true then after emoji created keyboard event will be broken
   };
 };

@@ -56,6 +56,8 @@ function Button({
   );
 }
 
+Button.displayName = "Button";
+
 const ButtonGroup = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
@@ -74,5 +76,7 @@ const ButtonGroup = React.forwardRef<
     </div>
   );
 });
+
+ButtonGroup.displayName = "ButtonGroup";
 
 export { Button, buttonVariants, ButtonGroup };

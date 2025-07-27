@@ -27,7 +27,7 @@ export type UploadCustEmojiFunc = (
 
 export type SelectedCellElementRef = RefObject<HTMLButtonElement | null>;
 
-export type FetchedCustomEmoji = { label: string; url: string; id: string };
+export type CustomEmoji = { label: string; url: string; id: string };
 
 export type StoredEmoji = {
   hexcode?: string;
@@ -46,9 +46,9 @@ export type EmojiListRef = {
 };
 
 export type SuggestionItems = {
-  recent: (Emoji | FetchedCustomEmoji)[] | null;
+  recent: (Emoji | CustomEmoji)[] | null;
   filteredEmojis: Emoji[];
-  filteredCustomEmojis?: FetchedCustomEmoji[];
+  filteredCustomEmojis?: CustomEmoji[];
 };
 
 export type Range = SuggestionProps<any, MentionNodeAttrs>["range"] | undefined;
@@ -64,7 +64,7 @@ export type ComponentEmojiMentionProps = ExtensionOptions & {
   headerInput?: EmojiHeaderProps["headerInput"];
   removeButton?: EmojiHeaderProps["removeButton"];
   randomButton?: EmojiHeaderProps["randomButton"];
-  editor: Editor;
+  editor?: Editor;
   callback?: (emoji: Emoji | null) => void;
   focusImmediately?: boolean;
 };
@@ -77,7 +77,7 @@ export type ActionBtnProps = {
 
 export type ARRAY2D_ITEM_PROPS = (
   | Emoji
-  | FetchedCustomEmoji
+  | CustomEmoji
   | ActionBtnProps
   | GroupTitleProps
   | undefined
@@ -88,7 +88,7 @@ export type SelectEmojiFunc = (props: {
     | (Emoji & {
         hexcode: string;
       })
-    | FetchedCustomEmoji;
+    | CustomEmoji;
   baseHexcode?: string;
   range?: Range;
 }) => void;

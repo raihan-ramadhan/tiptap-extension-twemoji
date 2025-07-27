@@ -643,6 +643,12 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = memo(
       return (
         <Tooltip>
           <TooltipTrigger
+            tabIndex={
+              selectedCell.column === columnIndex &&
+              selectedCell.row === rowIndex
+                ? undefined
+                : -1
+            }
             onClick={() => {
               // setSelectedCell({ row: -1, column: -1 });
               onSelectEmoji({

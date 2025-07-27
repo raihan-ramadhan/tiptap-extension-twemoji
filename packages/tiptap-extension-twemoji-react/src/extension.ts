@@ -1,34 +1,47 @@
-import { mergeAttributes, CommandProps, Range } from "@tiptap/core";
-import { getEmojiSprite, getAttributes } from "@/lib/emoji-utils";
-import { ReactRenderer } from "@tiptap/react";
-import Mention, {
-  MentionNodeAttrs,
-  MentionOptions,
-} from "@tiptap/extension-mention";
-import {
-  ComponentEmojiMentionProps,
-  FetchedCustomEmoji,
-  EmojiListRef,
-  SuggestionItems,
-  SelectEmojiFunc,
-  StoredEmoji,
-  UploadCustEmojiFunc,
-} from "@/types";
 import { createRef } from "react";
-import emojis, { Emoji } from "@/data/emoji-sprite-map";
-import { LOCAL_STORAGE_RECENT_EMOJIS_KEY } from "@/constants";
-import Suggestion, { SuggestionProps } from "@tiptap/suggestion";
+
+// UTILITIES
+import { getEmojiSprite, getAttributes } from "@/lib/emoji-utils";
 
 // ASSETS
 import emojisSubstringIndexes from "@/assets/emoji-substring-index.json";
+import emojiSprite from "./assets/emoji-sprite.webp";
+
+// DATA
+import emojis from "@/data/emoji-sprite-map";
 
 // PLUGINS
 import { InputPlugin } from "@/plugins/input-plugin";
 import { EmojiCopyPlugin } from "@/plugins/copy-plugin";
 import { EmojiPastePlugin } from "@/plugins/paste-plugin";
 import { EmojiFallbackCleanupPlugin } from "@/plugins/emoji-fallback-cleanup-plugin";
-import { hasEmoji } from "@/lib/emoji-grid-utils";
+import { isEmoji } from "@/lib/emoji-grid-utils";
 
+// TYPES ONLY
+import type { CommandProps, Range } from "@tiptap/core";
+import type { SuggestionProps } from "@tiptap/suggestion";
+import type { Emoji } from "@/data/emoji-sprite-map";
+import type {
+  MentionNodeAttrs,
+  MentionOptions,
+} from "@tiptap/extension-mention";
+import type {
+  ComponentEmojiMentionProps,
+  UploadCustEmojiFunc,
+  CustomEmoji,
+  SuggestionItems,
+  SelectEmojiFunc,
+  EmojiListRef,
+  StoredEmoji,
+} from "@/types";
+
+// TIPTAP
+import Mention from "@tiptap/extension-mention";
+import Suggestion from "@tiptap/suggestion";
+import { ReactRenderer } from "@tiptap/react";
+import { mergeAttributes } from "@tiptap/core";
+
+// COMPONENTS & CONFIG
 import {
   destroyVirtualElement,
   getVirtualElement,
@@ -37,15 +50,19 @@ import {
   eventsHooks,
 } from "@/components/popover/config";
 import EmojiGrid from "@/components/emoji-grid/EmojiGrid";
-export const ExtensionName = "emojiExtension";
 
+// STORE
 import { latestCustomEmojis } from "@/store/custom-emojis-store";
+
+// CONSTANTS
+import { EMOJI_CLASS_NAME, LOCAL_STORAGE_RECENT_EMOJIS_KEY } from "@/constants";
+export const ExtensionName = "emojiExtension";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     [ExtensionName]: {
       insertEmoji: (
-        emoji: Emoji | FetchedCustomEmoji,
+        emoji: Emoji | CustomEmoji,
         range: Range
       ) => (props: CommandProps) => boolean;
     };
@@ -80,6 +97,10 @@ export interface EmojiExtensionOptions extends MentionOptions {
    * Callback for successful uploads.
    */
   onSuccess?: (successMessage: string, callback?: () => void) => void;
+  /**
+   * Url for fetch image remotely.
+   */
+  spriteUrl?: string;
 }
 
 let component: ReactRenderer<EmojiListRef, ComponentEmojiMentionProps> | null =
@@ -87,7 +108,7 @@ let component: ReactRenderer<EmojiListRef, ComponentEmojiMentionProps> | null =
 
 let lastItems: SuggestionItems[] = [];
 
-export function updateEmojiGridItems(newItem: FetchedCustomEmoji) {
+export function updateEmojiGridItems(newItem: CustomEmoji) {
   if (component && lastItems[0]) {
     const items: SuggestionItems[] = [
       {
@@ -105,6 +126,28 @@ export function updateEmojiGridItems(newItem: FetchedCustomEmoji) {
 
 const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
   name: ExtensionName,
+  onCreate() {
+    if (typeof document === "undefined") return; // for ssr
+
+    if (document.getElementById("emoji-sprite-style")) return; // to avoid repeating style definitions
+
+    const finalUrl = this.options.spriteUrl ?? emojiSprite;
+
+    const style = `
+    .${EMOJI_CLASS_NAME} {
+      background-image: url(${finalUrl}) !important;
+      background-repeat: no-repeat !important;
+      display: inline-block !important;
+      vertical-align: -0.1em !important;
+      object-fit: contain !important;
+    }
+  `;
+
+    const sheet = document.createElement("style");
+    sheet.id = "emoji-sprite-style";
+    sheet.innerHTML = style;
+    document.head.appendChild(sheet);
+  },
   addOptions() {
     return {
       ...(this.parent?.() ?? ({} as EmojiExtensionOptions)),
@@ -113,6 +156,7 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
       upload: undefined,
       onError: undefined,
       onSuccess: undefined,
+      spriteUrl: undefined,
       maxSize: 1000 * 1000 * 10, // 10MB
       suggestion: {},
     };
@@ -127,20 +171,24 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
       style: { default: null },
       draggable: { default: false },
       contenteditable: { default: false },
+      class: { default: EMOJI_CLASS_NAME },
     };
   },
   parseHTML() {
     return [
       {
         tag: "img[data-type='emoji']",
-        getAttrs: (dom) => ({
-          "data-type": dom.getAttribute("data-type"),
-          src: dom.getAttribute("src"),
-          alt: dom.getAttribute("alt"),
-          style: dom.getAttribute("style"),
-          draggable: dom.getAttribute("draggable"),
-          contenteditable: dom.getAttribute("contenteditable"),
-        }),
+        getAttrs: (dom) => {
+          return {
+            "data-type": dom.getAttribute("data-type"),
+            src: dom.getAttribute("src"),
+            alt: dom.getAttribute("alt"),
+            style: dom.getAttribute("style"),
+            draggable: dom.getAttribute("draggable"),
+            contenteditable: dom.getAttribute("contenteditable"),
+            class: dom.getAttribute("class"),
+          };
+        },
       },
     ];
   },
@@ -157,7 +205,7 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
 
           let attrs;
 
-          if (hasEmoji(data)) {
+          if (isEmoji(data)) {
             attrs = getAttributes({
               data,
               styleOption: { type: "string" },
@@ -272,13 +320,13 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
 
               items[0].recent = parsedStoredEmojis.map(
                 ({ hexcode, ...rest }) => {
-                  let emoji: Emoji | FetchedCustomEmoji;
+                  let emoji: Emoji | CustomEmoji;
                   if (hexcode) {
                     emoji = getEmojiSprite({ hexcode }) as Emoji & {
                       hexcode: string;
                     };
                   } else {
-                    emoji = rest as FetchedCustomEmoji;
+                    emoji = rest as CustomEmoji;
                   }
                   return emoji;
                 }
@@ -326,14 +374,14 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
 
                   // check if the emoji is already in the array, if yes then made it first in the array
                   const index = parsedStoredEmojis.findIndex((e) =>
-                    hasEmoji(emoji)
+                    isEmoji(emoji)
                       ? e.hexcode === baseHexcode
                       : e.id === emoji.id
                   );
 
                   if (index !== -1) parsedStoredEmojis.splice(index, 1);
 
-                  if (hasEmoji(emoji)) {
+                  if (isEmoji(emoji)) {
                     parsedStoredEmojis.unshift({
                       hexcode: baseHexcode,
                     });

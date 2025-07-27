@@ -5,85 +5,100 @@ import dts from "rollup-plugin-dts";
 import terser from "@rollup/plugin-terser";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import json from "@rollup/plugin-json";
-import postcss from "rollup-plugin-postcss";
 import alias from "@rollup/plugin-alias";
-import path from "path";
 import url from "@rollup/plugin-url";
+import path from "path";
+
+// styling
+import postcss from "rollup-plugin-postcss";
 import sass from "sass";
 
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const packageJson = require("./package.json");
-
 const isDev = process.env.BUILD === "dev";
+const isProd = !isDev;
 
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const external = ["react", "react-dom"];
+
+const plugins = [
+  peerDepsExternal(),
+  resolve(),
+  commonjs(),
+  typescript({ tsconfig: "./tsconfig.json" }),
+  isProd && terser(),
+  postcss({
+    inject: true,
+    minimize: isProd,
+    extensions: [".scss", ".css"],
+    use: [["sass", { implementation: sass }]],
+    config: { path: "./postcss.config.js" },
+    url: true,
+  }),
+  json(),
+  alias({
+    entries: [{ find: "@", replacement: path.resolve("src") }],
+  }),
+  url({
+    include: ["**/*.webp"],
+    limit: 0, 
+    emitFiles: true,
+    fileName: "assets/[name][hash][extname]",
+  }),
+].filter(Boolean);
 
 /** @type {import('rollup').RollupOptions[]} */
-const configs = [];
-
-// Main JS/TS build
-configs.push(
+const configs = [
+  // Main entry build
   {
     input: "src/index.ts",
     output: [
       {
-        file: packageJson.main,
+        file: "dist/index.cjs",
         format: "cjs",
-        sourcemap: true,
+        sourcemap: isDev ? "inline" : true,
       },
       {
-        file: packageJson.module,
+        file: "dist/index.js",
         format: "esm",
-        sourcemap: true,
+        sourcemap: isDev ? "inline" : true,
       },
     ],
-    plugins: [
-      peerDepsExternal(),
-      resolve(),
-      commonjs(),
-      typescript({ tsconfig: "./tsconfig.json" }),
-      !isDev && terser(),
-      postcss({
-        inject: true,
-        minimize: !isDev,
-        extensions: [".scss", ".css"],
-        use: [
-          [
-            "sass",
-            {
-              implementation: sass,
-            },
-          ],
-        ],
-      }),
-      json(),
-      alias({
-        entries: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
-      }),
-      url({
-        include: ["**/*.png", "**/*.jpg", "**/*.svg"],
-        limit: 0,
-        fileName: "[name].[hash][extname]",
-        destDir: "dist/assets",
-      }),
-    ].filter(Boolean),
-    external: ["react", "react-dom"],
-    watch: isDev
-      ? {
-          include: "src/**",
-          clearScreen: false,
-        }
-      : undefined,
+    external,
+    plugins,
   },
+
+  // Popover entry build
+  {
+    input: "src/components/popover/index.ts",
+    output: [
+      {
+        file: "dist/popover/index.js",
+        format: "esm",
+        sourcemap: isDev ? "inline" : true,
+      },
+      {
+        file: "dist/popover/index.cjs",
+        format: "cjs",
+        sourcemap: isDev ? "inline" : true,
+      },
+    ],
+    external,
+    plugins,
+  },
+
+  // DTS for main entry
   {
     input: "src/index.ts",
-    output: [{ file: packageJson.types, format: "es" }],
+    output: [{ file: "dist/index.d.ts", format: "es" }],
     plugins: [dts()],
-    external: [/\.css$/],
-  }
-);
+    external: [/\.css$/, /\.scss$/],
+  },
+
+  // DTS for popover
+  {
+    input: "src/components/popover/index.ts",
+    output: [{ file: "dist/popover/index.d.ts", format: "es" }],
+    plugins: [dts()],
+    external: [/\.css$/, /\.scss$/],
+  },
+];
 
 export default configs;

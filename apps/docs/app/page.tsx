@@ -1,6 +1,6 @@
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { createClient } from "@/lib/supabase/server";
-import { type FetchedCustomEmoji } from "@raihancodes/tiptap-extension-twemoji-react";
+import { type CustomEmoji } from "@raihancodes/tiptap-extension-twemoji-react";
 import { EMOJIS_TABLE_NAME } from "@/example/constants";
 
 export default async function Home() {
@@ -11,5 +11,5 @@ export default async function Home() {
     console.log(error.message);
   }
 
-  return <SimpleEditor customEmojis={(data as FetchedCustomEmoji[]) || []} />;
+  return <SimpleEditor customEmojis={(data as CustomEmoji[]) || []} />;
 }

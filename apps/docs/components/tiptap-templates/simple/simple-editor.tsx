@@ -81,11 +81,13 @@ import {
   setLatestCustomEmojis,
   TwemojiExtension,
   updateEmojiGridItems,
-  type FetchedCustomEmoji,
+  type CustomEmoji,
   type UploadCustEmojiProps,
 } from "@raihancodes/tiptap-extension-twemoji-react";
+
 import { createClient } from "@/lib/supabase/client";
 import { EMOJIS_BUCKET_NAME, EMOJIS_TABLE_NAME } from "@/example/constants";
+import IconFileButton from "../../IconFileButton";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -198,7 +200,7 @@ const MobileToolbarContent = ({
 export function SimpleEditor({
   customEmojis,
 }: {
-  customEmojis: FetchedCustomEmoji[];
+  customEmojis: CustomEmoji[];
 }) {
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -260,7 +262,7 @@ export function SimpleEditor({
     onSuccess(`${emojiName} has added your workspace`, () => {
       callback();
       router.refresh();
-      updateEmojiGridItems(data[0] as FetchedCustomEmoji);
+      updateEmojiGridItems(data[0] as CustomEmoji);
     });
   };
 
@@ -356,6 +358,9 @@ export function SimpleEditor({
       </Toolbar>
 
       <div className="content-wrapper">
+        <div className="simple-editor-content py-4 px-6">
+          <IconFileButton />
+        </div>
         <EditorContent
           editor={editor}
           role="presentation"

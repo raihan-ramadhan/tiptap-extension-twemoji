@@ -1,7 +1,7 @@
-import { FetchedCustomEmoji } from "@/types";
+import { CustomEmoji } from "@/types";
 
-export let latestCustomEmojis: FetchedCustomEmoji[] = [];
+export let latestCustomEmojis: CustomEmoji[] = [];
 
-export function setLatestCustomEmojis(emojis: FetchedCustomEmoji[]) {
+export function setLatestCustomEmojis(emojis: CustomEmoji[]) {
   latestCustomEmojis = emojis;
 }

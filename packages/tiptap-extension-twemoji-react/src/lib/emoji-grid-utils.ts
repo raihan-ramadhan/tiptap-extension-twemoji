@@ -2,7 +2,7 @@ import { Emoji } from "@/data/emoji-sprite-map";
 import {
   ActionBtnProps,
   ARRAY2D_ITEM_PROPS,
-  FetchedCustomEmoji,
+  CustomEmoji,
   GroupTitleProps,
   ItemData,
   SelectedCell,
@@ -150,22 +150,22 @@ export const getNumberOfRowsToScrollUp = ({
   return Math.floor(overflowPixels / CELL_HEIGHT);
 };
 
-export const hasEmoji = (
-  cell?: Emoji | FetchedCustomEmoji | ActionBtnProps | GroupTitleProps
+export const isEmoji = (
+  cell?: Emoji | CustomEmoji | ActionBtnProps | GroupTitleProps
 ): cell is Emoji => !!cell && typeof cell === "object" && "emoji" in cell;
 
 export const hasLabel = (
-  cell?: Emoji | FetchedCustomEmoji | ActionBtnProps | GroupTitleProps
+  cell?: Emoji | CustomEmoji | ActionBtnProps | GroupTitleProps
 ): cell is Emoji => !!cell && typeof cell === "object" && "label" in cell;
 
 export const hasButtonLabel = (
-  cell?: Emoji | FetchedCustomEmoji | ActionBtnProps | GroupTitleProps
+  cell?: Emoji | CustomEmoji | ActionBtnProps | GroupTitleProps
 ): cell is ActionBtnProps =>
   !!cell && typeof cell === "object" && "buttonLabel" in cell;
 
 export const isValidCell = (
-  cell?: Emoji | FetchedCustomEmoji | ActionBtnProps | GroupTitleProps
-): cell is Emoji | FetchedCustomEmoji | ActionBtnProps =>
+  cell?: Emoji | CustomEmoji | ActionBtnProps | GroupTitleProps
+): cell is Emoji | CustomEmoji | ActionBtnProps =>
   !!cell &&
   typeof cell === "object" &&
   ("label" in cell || "url" in cell || "buttonLabel" in cell);
@@ -500,3 +500,13 @@ export const getVisibleRowRange = ({
 
   return { startRow, endRow };
 };
+
+export function getRandomCellByItemCount(
+  itemCount: number,
+  items: Emoji[]
+): Emoji {
+  const index = Math.floor(Math.random() * itemCount); // Random flat index
+  const cell = items[index];
+
+  return cell;
+}

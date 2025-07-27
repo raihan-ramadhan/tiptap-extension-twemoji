@@ -1,9 +1,5 @@
 import { EMOJI_GROUPS, EMOJI_GROUPS_PROPS, getGroup } from "@/lib/emoji-groups";
-import {
-  ARRAY2D_ITEM_PROPS,
-  FetchedCustomEmoji,
-  SuggestionItems,
-} from "@/types";
+import { ARRAY2D_ITEM_PROPS, CustomEmoji, SuggestionItems } from "@/types";
 import { Emoji } from "@/data/emoji-sprite-map";
 
 // basicaly this function is to tranfrom from [Emoji, Emoji, ...rest] to
@@ -21,7 +17,7 @@ export const transformData = ({
   recent: SuggestionItems["recent"];
   filteredEmojis: Emoji[];
   MINIMUM_CELL_SHOW_GROUPS: number;
-  filteredCustomEmojis: FetchedCustomEmoji[] | undefined;
+  filteredCustomEmojis: CustomEmoji[] | undefined;
 }) => {
   const new2dArr: ARRAY2D_ITEM_PROPS[] = [];
   const titleEmojiMockup = (

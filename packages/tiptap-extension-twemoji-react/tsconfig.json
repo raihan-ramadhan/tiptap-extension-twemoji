@@ -19,5 +19,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "../../apps/docs/example"]
+  "include": ["src", "global.d.ts"]
 }

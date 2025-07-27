@@ -1,11 +1,8 @@
 {
   "name": "@raihancodes/tiptap-extension-twemoji-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "twemoji emoji extension for tiptap with react",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "cross-env BUILD=prod rollup -c",
     "dev": "cross-env BUILD=dev rollup -c --watch",
@@ -13,6 +10,26 @@
   },
   "author": "",
   "license": "ISC",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./popover": {
+      "import": "./dist/popover/index.js",
+      "require": "./dist/popover/index.cjs",
+      "types": "./dist/popover/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "assets"
+  ],
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
   "peerDependencies": {
     "@tiptap/core": "^3.0.7",
     "@tiptap/extension-mention": "^3.0.7",
@@ -56,7 +73,6 @@
     "tslib": "^2.6.3",
     "typescript": "^5.0.4"
   },
-  "keywords": [],
   "dependencies": {
     "@floating-ui/dom": "^1.7.2",
     "@floating-ui/react": "^0.27.13",
@@ -68,12 +84,5 @@
     "react-window": "^1.8.11",
     "tailwind-merge": "^3.0.1"
   },
-  "files": [
-    "dist",
-    "assets"
-  ],
-  "sideEffects": [
-    "**/*.css",
-    "**/*.scss"
-  ]
+  "keywords": []
 }

@@ -271,13 +271,3 @@ export function getEmojiAttributes(match: ExtendedRegExpMatchArray) {
 
   return attrs;
 }
-
-export function getRandomCellByItemCount(
-  itemCount: number,
-  items: Emoji[]
-): Emoji {
-  const index = Math.floor(Math.random() * itemCount); // Random flat index
-  const cell = items[index];
-
-  return cell;
-}

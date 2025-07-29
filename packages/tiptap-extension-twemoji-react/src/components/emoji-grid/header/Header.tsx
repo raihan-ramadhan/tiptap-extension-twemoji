@@ -1,7 +1,4 @@
-import {
-  getRandomCellByItemCount,
-  SKIN_TONE_CODES_PROPS,
-} from "@/lib/emoji-utils";
+import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
 import { Dispatch, SetStateAction } from "react";
 import SkinToneSelect from "./SkinToneSelect";
 import { Shuffle, Trash } from "lucide-react";
@@ -13,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Emoji } from "@/data/emoji-sprite-map";
 import { ComponentEmojiMentionProps } from "@/types";
+import { getRandomCellByItemCount } from "../../../lib/emoji-grid-utils";
 
 export type EmojiHeaderProps = {
   headerInput?: boolean;

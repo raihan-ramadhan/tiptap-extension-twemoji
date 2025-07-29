@@ -117,8 +117,9 @@ export const Nav = ({
           <li>
             <AddEmojiBtnWrapper
               asChild
+              style={{ width: `${navItemWidth}px` }}
               className={cn(
-                `w-[${navItemWidth}px] hover:bg-neutral-200 dark:hover:bg-neutral-800 aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`
+                `hover:bg-neutral-200 dark:hover:bg-neutral-800 aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`
               )}
               side="top"
               align="end"
@@ -162,8 +163,9 @@ const Item = ({
         <TooltipTrigger
           ref={ref}
           onClick={handleClick}
+          style={{ width: `${navItemWidth}px` }}
           className={cn(
-            `w-[${navItemWidth}px] aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`,
+            `aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`,
             !isGroupExist && "cursor-auto opacity-40",
             isGroupExist && "hover:bg-neutral-200 dark:hover:bg-neutral-800",
             isActive && "bg-neutral-200 dark:bg-neutral-800"

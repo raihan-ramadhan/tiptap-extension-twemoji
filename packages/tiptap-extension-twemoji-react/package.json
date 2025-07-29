@@ -4,22 +4,23 @@
   "type": "module",
   "description": "twemoji emoji extension for tiptap with react",
   "scripts": {
-    "build": "cross-env BUILD=prod rollup -c",
-    "dev": "cross-env BUILD=dev rollup -c --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "concurrently \"rollup -c --environment BUILD:prod\" \"rollup -c rollup.dts.config.js\" \"tsc --noEmit\"",
+    "dev": "concurrently -k \"rollup -c --watch --environment BUILD:dev\" \"rollup -c rollup.dts.config.js --watch\" \"tsc --noEmit --watch\"",
+    "report": "concurrently \"rollup -c --environment BUILD:report\" \"rollup -c rollup.dts.config.js\" \"tsc --noEmit\"",
+    "typecheck": "tsc --noEmit"
   },
   "author": "",
   "license": "ISC",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./popover": {
+      "types": "./dist/popover/index.d.ts",
       "import": "./dist/popover/index.js",
-      "require": "./dist/popover/index.cjs",
-      "types": "./dist/popover/index.d.ts"
+      "require": "./dist/popover/index.cjs"
     }
   },
   "files": [
@@ -45,7 +46,6 @@
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
     "@rollup/plugin-url": "^8.0.2",
     "@tailwindcss/postcss": "^4.1.11",
     "@tiptap/core": "^3.0.7",
@@ -58,19 +58,23 @@
     "@types/react-dom": "^19",
     "@types/react-window": "^1.8.8",
     "autoprefixer": "^10.4.21",
-    "cross-env": "^7.0.3",
+    "concurrently": "^9.2.0",
     "postcss": "^8.5.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
     "rollup": "^4.18.1",
-    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-dts": "^6.2.1",
+    "rollup-plugin-esbuild": "^6.2.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-tsconfig-paths": "^1.5.2",
+    "rollup-plugin-visualizer": "^6.0.3",
     "sass": "^1.89.2",
     "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4.1.11",
     "tslib": "^2.6.3",
+    "tsup": "^8.5.0",
     "typescript": "^5.0.4"
   },
   "dependencies": {
@@ -84,5 +88,9 @@
     "react-window": "^1.8.11",
     "tailwind-merge": "^3.0.1"
   },
-  "keywords": []
+  "keywords": [],
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  }
 }

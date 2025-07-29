@@ -1,9 +1,10 @@
 import { Emoji } from "@/data/emoji-sprite-map";
 import {
-  ActionBtnProps,
+  ActionBtn,
   ARRAY2D_ITEM_PROPS,
+  CELL_TYPES,
   CustomEmoji,
-  GroupTitleProps,
+  GroupTitle,
   ItemData,
   SelectedCell,
 } from "@/types";
@@ -150,22 +151,21 @@ export const getNumberOfRowsToScrollUp = ({
   return Math.floor(overflowPixels / CELL_HEIGHT);
 };
 
-export const isEmoji = (
-  cell?: Emoji | CustomEmoji | ActionBtnProps | GroupTitleProps
-): cell is Emoji => !!cell && typeof cell === "object" && "emoji" in cell;
+export const isEmoji = (cell: CELL_TYPES): cell is Emoji =>
+  !!cell && typeof cell === "object" && "emoji" in cell;
 
-export const hasLabel = (
-  cell?: Emoji | CustomEmoji | ActionBtnProps | GroupTitleProps
-): cell is Emoji => !!cell && typeof cell === "object" && "label" in cell;
+export const isCustomEmoji = (cell: CELL_TYPES): cell is CustomEmoji =>
+  !!cell && typeof cell === "object" && "id" in cell;
 
-export const hasButtonLabel = (
-  cell?: Emoji | CustomEmoji | ActionBtnProps | GroupTitleProps
-): cell is ActionBtnProps =>
+export const isActionBtn = (cell: CELL_TYPES): cell is ActionBtn =>
   !!cell && typeof cell === "object" && "buttonLabel" in cell;
 
+export const isGroupTitle = (cell: CELL_TYPES): cell is GroupTitle =>
+  !!cell && typeof cell === "object" && "groupTitle" in cell;
+
 export const isValidCell = (
-  cell?: Emoji | CustomEmoji | ActionBtnProps | GroupTitleProps
-): cell is Emoji | CustomEmoji | ActionBtnProps =>
+  cell: CELL_TYPES
+): cell is Emoji | CustomEmoji | ActionBtn =>
   !!cell &&
   typeof cell === "object" &&
   ("label" in cell || "url" in cell || "buttonLabel" in cell);

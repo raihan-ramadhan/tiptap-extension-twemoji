@@ -1,9 +1,9 @@
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { Slice, Fragment, Schema } from "@tiptap/pm/model";
-import { ExtensionName } from "@/index";
 
 import { getEmojiAttributes } from "@/lib/emoji-utils";
 import { COMBINED_REGEX_PASTE } from "@/assets/emoji-regexes";
+import { EXTENSION_NAME } from "@/constants";
 
 // Example function to replace text nodes like ":hug:" with an emoji node
 function replaceEmojiInFragmentPaste(
@@ -33,7 +33,7 @@ function replaceEmojiInFragmentPaste(
         let emojiNode;
 
         if (Object.keys(attributes).length !== 0) {
-          emojiNode = schema.nodes[ExtensionName]?.create(attributes);
+          emojiNode = schema.nodes[EXTENSION_NAME]?.create(attributes);
         }
 
         if (emojiNode) {

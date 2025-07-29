@@ -55,12 +55,15 @@ import EmojiGrid from "@/components/emoji-grid/EmojiGrid";
 import { latestCustomEmojis } from "@/store/custom-emojis-store";
 
 // CONSTANTS
-import { EMOJI_CLASS_NAME, LOCAL_STORAGE_RECENT_EMOJIS_KEY } from "@/constants";
-export const ExtensionName = "emojiExtension";
+import {
+  EMOJI_CLASS_NAME,
+  EXTENSION_NAME,
+  LOCAL_STORAGE_RECENT_EMOJIS_KEY,
+} from "@/constants";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
-    [ExtensionName]: {
+    [EXTENSION_NAME]: {
       insertEmoji: (
         emoji: Emoji | CustomEmoji,
         range: Range
@@ -69,7 +72,7 @@ declare module "@tiptap/core" {
   }
 }
 
-export interface EmojiExtensionOptions extends MentionOptions {
+interface EmojiExtensionOptions extends MentionOptions {
   /**
    * Acceptable file types for upload.
    * @default 'image/*'
@@ -108,7 +111,7 @@ let component: ReactRenderer<EmojiListRef, ComponentEmojiMentionProps> | null =
 
 let lastItems: SuggestionItems[] = [];
 
-export function updateEmojiGridItems(newItem: CustomEmoji) {
+function updateEmojiGridItems(newItem: CustomEmoji) {
   if (component && lastItems[0]) {
     const items: SuggestionItems[] = [
       {
@@ -125,7 +128,7 @@ export function updateEmojiGridItems(newItem: CustomEmoji) {
 }
 
 const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
-  name: ExtensionName,
+  name: EXTENSION_NAME,
   onCreate() {
     if (typeof document === "undefined") return; // for ssr
 
@@ -227,7 +230,7 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
 
           return commands.insertContent([
             {
-              type: ExtensionName,
+              type: EXTENSION_NAME,
               attrs,
             },
             { type: "text", text: " " },
@@ -507,7 +510,7 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
           let isBackspaceHandled = false;
 
           state.doc.nodesBetween(anchor - 1, anchor, (node, pos) => {
-            if (node.type.name === ExtensionName) {
+            if (node.type.name === EXTENSION_NAME) {
               tr.deleteRange(pos, pos + node.nodeSize);
               isBackspaceHandled = true;
               return false;
@@ -520,4 +523,4 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
   },
 });
 
-export { TwemojiExtension };
+export { TwemojiExtension, updateEmojiGridItems };

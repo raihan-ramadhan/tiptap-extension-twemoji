@@ -238,7 +238,7 @@ export function SimpleEditor({
       });
 
     if (uploadError || !uploadData) {
-      return onError(uploadError.message ?? "Upload Error");
+      return onError?.(uploadError.message ?? "Upload Error");
     }
 
     const objectPath = uploadData.path;
@@ -256,11 +256,11 @@ export function SimpleEditor({
       .select("*");
 
     if (insertError) {
-      return onError(insertError.message);
+      return onError?.(insertError.message);
     }
 
-    onSuccess(`${emojiName} has added your workspace`, () => {
-      callback();
+    onSuccess?.(`${emojiName} has added your workspace`, () => {
+      callback?.();
       router.refresh();
       updateEmojiGridItems(data[0] as CustomEmoji);
     });

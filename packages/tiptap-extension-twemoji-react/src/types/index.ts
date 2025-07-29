@@ -69,26 +69,23 @@ export type ComponentEmojiMentionProps = ExtensionOptions & {
   focusImmediately?: boolean;
 };
 
-export type GroupTitleProps = { groupTitle: string };
-export type ActionBtnProps = {
+export type GroupTitle = { groupTitle: string };
+export type ActionBtn = {
   buttonLabel: string;
   align?: "start" | "center" | "end";
 };
 
-export type ARRAY2D_ITEM_PROPS = (
+export type CELL_TYPES =
   | Emoji
   | CustomEmoji
-  | ActionBtnProps
-  | GroupTitleProps
-  | undefined
-)[];
+  | ActionBtn
+  | GroupTitle
+  | undefined;
+
+export type ARRAY2D_ITEM_PROPS = CELL_TYPES[];
 
 export type SelectEmojiFunc = (props: {
-  emoji:
-    | (Emoji & {
-        hexcode: string;
-      })
-    | CustomEmoji;
+  emoji: Emoji | CustomEmoji;
   baseHexcode?: string;
   range?: Range;
 }) => void;

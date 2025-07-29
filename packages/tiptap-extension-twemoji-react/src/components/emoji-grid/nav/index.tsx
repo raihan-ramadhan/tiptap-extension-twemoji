@@ -1,2 +1,1 @@
-export * from "./nav";
-export * from "./nav-icons";
+export * from "./Nav";

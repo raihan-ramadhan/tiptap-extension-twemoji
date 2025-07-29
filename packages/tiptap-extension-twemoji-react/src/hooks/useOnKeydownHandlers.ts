@@ -9,6 +9,8 @@ import {
   checkIfScrollingDown,
   checkIfScrollingUp,
   scrollGridByRows,
+  isEmoji,
+  isCustomEmoji,
 } from "@/lib/emoji-grid-utils";
 import {
   ARRAY2D_ITEM_PROPS,
@@ -165,18 +167,18 @@ export function useOnKeydownHandlers({
     );
   };
 
-  const enterHandler = (skinTone: SKIN_TONE_CODES_PROPS) => {
+  const enterHandler = (
+    event: KeyboardEvent,
+    skinTone: SKIN_TONE_CODES_PROPS
+  ) => {
+    event.stopImmediatePropagation();
+    event.preventDefault();
     const { row, column } = selectedCellRef.current;
     const data = arr2d[row]?.[column];
 
     const tone: string = SKIN_TONE_MAP[skinTone].tone;
 
-    if (
-      data &&
-      typeof data === "object" &&
-      "label" in data &&
-      "emoji" in data
-    ) {
+    if (isEmoji(data)) {
       const { skins } = data;
 
       let newEmoji = data;
@@ -185,12 +187,7 @@ export function useOnKeydownHandlers({
         newEmoji = skins[tone] as Emoji;
       }
       onSelectEmoji({ emoji: newEmoji, baseHexcode: data.hexcode, range });
-    } else if (
-      data &&
-      typeof data === "object" &&
-      "url" in data &&
-      "label" in data
-    ) {
+    } else if (isCustomEmoji(data)) {
       onSelectEmoji({
         emoji: data,
         range,
@@ -200,11 +197,17 @@ export function useOnKeydownHandlers({
     }
   };
 
+  const tabHandler = (event: KeyboardEvent) => {
+    event.preventDefault();
+  };
+
+  // only run if user still focus at editor
   useImperativeHandle(ref, () => {
     return {
       onKeyDown: ({ event }) => {
         const keyMap: Record<string, () => void> = {
-          Enter: () => enterHandler(skinTone),
+          Enter: () => enterHandler(event, skinTone),
+          Tab: () => tabHandler(event),
         };
 
         const handler = keyMap[event.key];
@@ -226,6 +229,7 @@ export function useOnKeydownHandlers({
         ArrowDown: downHandler,
         ArrowLeft: leftHandler,
         ArrowRight: rightHandler,
+        Enter: () => enterHandler(event, skinTone),
       };
 
       const handler = keyMap[event.key];

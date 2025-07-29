@@ -70,21 +70,25 @@ const IconFileButton = () => {
       selectEmojiHandler={selectEmojiHandler}
     >
       {iconAttrs ? (
-        <Image
-          alt={iconAttrs.alt}
-          src={iconAttrs.src}
-          width={78}
-          height={78}
-          draggable={iconAttrs.draggable}
-          style={
-            typeof iconAttrs.style === "string" ? undefined : iconAttrs.style
-          }
-          className="p-1 rounded-md hover:bg-white/20 transition-colors cursor-pointer"
-        />
+        <div
+          role="button"
+          className="p-1 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer focus-visible:bg-black/50 w-fit h-fit"
+        >
+          <Image
+            alt={iconAttrs.alt}
+            src={iconAttrs.src}
+            width={78}
+            height={78}
+            draggable={iconAttrs.draggable}
+            style={
+              typeof iconAttrs.style === "string" ? undefined : iconAttrs.style
+            }
+          />
+        </div>
       ) : (
         <button
           type="button"
-          className="bg-white/10 p-1 rounded-md hover:bg-white/20 transition-colors cursor-pointer"
+          className="dark:bg-white/5 bg-black/5 p-1 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer"
         >
           Add Emoji
         </button>

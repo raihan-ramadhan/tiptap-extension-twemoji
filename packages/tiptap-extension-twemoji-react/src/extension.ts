@@ -15,7 +15,7 @@ import { InputPlugin } from "@/plugins/input-plugin";
 import { EmojiCopyPlugin } from "@/plugins/copy-plugin";
 import { EmojiPastePlugin } from "@/plugins/paste-plugin";
 import { EmojiFallbackCleanupPlugin } from "@/plugins/emoji-fallback-cleanup-plugin";
-import { isEmoji } from "@/lib/emoji-grid-utils";
+import { isCustomEmoji, isEmoji } from "@/lib/emoji-grid-utils";
 
 // TYPES ONLY
 import type { CommandProps, Range } from "@tiptap/core";
@@ -206,21 +206,43 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
           const start = range.from;
           let end = range.to;
 
-          let attrs;
+          let attrs: {
+            src: string;
+            alt: string;
+            draggable: boolean;
+            className: string;
+            style: string | React.CSSProperties;
+          };
+
+          function appendCursorStyle(
+            style: string | React.CSSProperties,
+            cursorValue = "text"
+          ): string | React.CSSProperties {
+            return typeof style === "string"
+              ? `${style}; cursor: ${cursorValue};`
+              : { ...style, cursor: cursorValue };
+          }
 
           if (isEmoji(data)) {
-            attrs = getAttributes({
+            const { style, ...attributes } = getAttributes({
               data,
               styleOption: { type: "string" },
             });
-          } else {
+
+            attrs = {
+              ...attributes,
+              style: appendCursorStyle(style),
+            };
+          } else if (isCustomEmoji(data)) {
             attrs = {
               alt: data.label,
               src: data.url,
               draggable: false,
-              style:
-                "width:1em; height:1em; display:inline-block; margin:0 0.1em; vertical-align:-0.1em; object-fit: contain;",
+              className: EMOJI_CLASS_NAME,
+              style: appendCursorStyle("width:1em; height:1em;"),
             };
+          } else {
+            return false;
           }
 
           commands.deleteRange({

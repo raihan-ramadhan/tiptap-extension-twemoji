@@ -222,22 +222,30 @@ export const getAttributes = ({
 
   const size = sizeInpixel ? `${sizeInpixel}px` : "1em";
 
-  // i get inspiration for this from notion emoji it self
-  return {
+  // i use TRANSPARENT_GIF just like what notion did :)
+  const base = {
     src: TRANSPARENT_GIF,
     alt: emoji,
-    draggable: false, // Prevents the emoji from being dragged, because we want it be treated as an text that able to selected
+    draggable: false,
     className: EMOJI_CLASS_NAME,
-    style:
-      type === "object"
-        ? ({
-            width: size,
-            height: size,
-            backgroundPosition: `-${positionX} -${positionY}`,
-            backgroundSize: `${scaledBgSizeX} ${scaledBgSizeY}`,
-          } as React.CSSProperties)
-        : `width: 1em; height: 1em; background-position: -${positionX} -${positionY}; background-size: ${scaledBgSizeX} ${scaledBgSizeY}; cursor: text;`,
-    [type === "object" ? "contentEditable" : "contenteditable"]: false, // Prevents the emoji from being edited, it should be not able edited because it's editor not text, if it set true then after emoji created keyboard event will be broken
+    [type === "object" ? "contentEditable" : "contenteditable"]: false,
+  };
+
+  if (type === "object") {
+    return {
+      ...base,
+      style: {
+        width: size,
+        height: size,
+        backgroundPosition: `-${positionX} -${positionY}`,
+        backgroundSize: `${scaledBgSizeX} ${scaledBgSizeY}`,
+      } as React.CSSProperties,
+    };
+  }
+
+  return {
+    ...base,
+    style: `width: 1em; height: 1em; background-position: -${positionX} -${positionY}; background-size: ${scaledBgSizeX} ${scaledBgSizeY};`,
   };
 };
 

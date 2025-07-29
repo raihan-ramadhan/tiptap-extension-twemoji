@@ -1,15 +1,18 @@
 import { cn } from "@/lib/utils";
-import { AddEmojiIcon, navIcons } from "./nav-icons";
 import { FixedSizeGrid as Grid } from "react-window";
 import { EMOJI_GROUPS_PROPS } from "@/lib/emoji-groups";
-import { useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { ARRAY2D_ITEM_PROPS, ExtensionOptions, ItemData } from "@/types";
 import AddEmojiBtnWrapper from "@/components/emoji-grid/add-custom-emoji/AddEmojiBtnWrapper";
+import { debounce } from "lodash-es";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/tiptap-ui-primitive/tooltip";
+import { Plus } from "lucide-react";
+import NavItem from "./NavItem";
+import { navIcons } from "./nav-icon";
 
 interface NavProps {
   navItemWidth: number;
@@ -21,7 +24,7 @@ interface NavProps {
   setKeyboardEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Nav = ({
+const Nav = ({
   navItemWidth,
   gridRef,
   groupsIndexes,
@@ -33,9 +36,11 @@ export const Nav = ({
   onSuccess,
   upload,
 }: NavProps & ExtensionOptions) => {
-  const initialActiveNav = Object.keys(groupsIndexes).find(
-    (key) => groupsIndexes[key as EMOJI_GROUPS_PROPS] === 0
-  ) as EMOJI_GROUPS_PROPS | undefined;
+  const initialActiveNav = useMemo(() => {
+    return Object.keys(groupsIndexes).find(
+      (key) => groupsIndexes[key as EMOJI_GROUPS_PROPS] === 0
+    ) as EMOJI_GROUPS_PROPS | undefined;
+  }, [groupsIndexes]);
 
   const [activeNav, setActiveNav] = useState<EMOJI_GROUPS_PROPS | undefined>(
     initialActiveNav
@@ -51,12 +56,17 @@ export const Nav = ({
     });
   }
 
-  useEffect(() => {
-    if (!outerRef || !outerRef.current) {
-      return;
-    }
+  const stopEnterKey = useCallback(
+    (event: React.KeyboardEvent<HTMLElement>) => {
+      if (event.key === "Enter") event.stopPropagation();
+    },
+    []
+  );
 
-    const trackScroll = () => {
+  useEffect(() => {
+    if (!outerRef?.current) return;
+
+    const trackScroll = debounce(() => {
       const currentScrollTop = outerRef.current?.scrollTop || 0;
       const keys = Object.keys(groupsIndexes).reverse();
 
@@ -71,11 +81,16 @@ export const Nav = ({
           }
         }
       }
-    };
+    }, 50); // Adjust delay as needed
 
-    outerRef.current?.addEventListener("scroll", trackScroll);
-    return () => outerRef.current?.removeEventListener("scroll", trackScroll);
-  }, [gridRef, groupsIndexes]);
+    const outer = outerRef.current;
+    outer.addEventListener("scroll", trackScroll);
+
+    return () => {
+      outer.removeEventListener("scroll", trackScroll);
+      trackScroll.cancel();
+    };
+  }, [outerRef, groupsIndexes, navItemWidth]);
 
   useEffect(() => {
     setActiveNav(initialActiveNav);
@@ -93,7 +108,10 @@ export const Nav = ({
           const isGroupExist = typeof groupsIndexes[item.title] !== "undefined";
           const isActive = activeNav === item.title;
 
-          const handleClick = () => {
+          const handleClick = (event: React.MouseEvent) => {
+            event.stopPropagation();
+            event.preventDefault();
+
             if (isGroupExist) {
               setActiveNav(item.title);
               if (typeof groupsIndexes[item.title] !== "undefined") {
@@ -103,13 +121,14 @@ export const Nav = ({
           };
 
           return (
-            <Item
+            <NavItem
               key={index}
-              handleClick={handleClick}
               item={item}
-              navItemWidth={navItemWidth}
-              isGroupExist={isGroupExist}
               isActive={isActive}
+              handleClick={handleClick}
+              navItemWidth={navItemWidth}
+              stopEnterKey={stopEnterKey}
+              isGroupExist={isGroupExist}
             />
           );
         })}
@@ -128,9 +147,10 @@ export const Nav = ({
               onErrorUpload={onError}
               onSuccess={onSuccess}
               upload={upload}
+              onKeyDown={stopEnterKey}
             >
               <TooltipTrigger>
-                <AddEmojiIcon />
+                <Plus className="bg-black rounded-full text-white font-bold stroke-2 size-full" />
               </TooltipTrigger>
             </AddEmojiBtnWrapper>
           </li>
@@ -143,40 +163,4 @@ export const Nav = ({
   );
 };
 
-const Item = ({
-  item,
-  navItemWidth,
-  isGroupExist,
-  isActive,
-  handleClick,
-}: {
-  handleClick: () => void;
-  item: (typeof navIcons)[number];
-  navItemWidth: number;
-  isGroupExist: boolean;
-  isActive: boolean;
-}) => {
-  const ref = useRef<HTMLLIElement | null>(null);
-  return (
-    <Tooltip delay={200}>
-      <li>
-        <TooltipTrigger
-          ref={ref}
-          onClick={handleClick}
-          style={{ width: `${navItemWidth}px` }}
-          className={cn(
-            `aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`,
-            !isGroupExist && "cursor-auto opacity-40",
-            isGroupExist && "hover:bg-neutral-200 dark:hover:bg-neutral-800",
-            isActive && "bg-neutral-200 dark:bg-neutral-800"
-          )}
-        >
-          {<item.icon />}
-        </TooltipTrigger>
-      </li>
-      <TooltipContent>
-        <span>{item.title}</span>
-      </TooltipContent>
-    </Tooltip>
-  );
-};
+export default memo(Nav);

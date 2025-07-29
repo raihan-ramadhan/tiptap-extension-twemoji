@@ -1,21 +1,22 @@
-import {
-  useEffect,
-  useState,
-  useMemo,
-  memo,
-  useRef,
-  useCallback,
-  HTMLAttributes,
-} from "react";
-import { FixedSizeGrid as Grid, GridChildComponentProps } from "react-window";
-import {
-  getAttributes,
-  SKIN_TONE_CODES_PROPS,
-  SKIN_TONE_MAP,
-} from "@/lib/emoji-utils";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { FixedSizeGrid as Grid } from "react-window";
+import { createFocusTrap } from "focus-trap";
+import { debounce } from "lodash-es";
+import { Plus } from "lucide-react";
+
+// LIB
+import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
 import { cn } from "@/lib/utils";
+import {
+  getTargetCellVertically,
+  getVisibleRowRange,
+} from "@/lib/emoji-grid-utils";
+
+// HOOKS
 import { useOnKeydownHandlers } from "@/hooks/useOnKeydownHandlers";
 import { transformData } from "@/hooks/transformData";
+
+// TYPES
 import {
   type SelectedCell,
   type ItemData,
@@ -23,33 +24,19 @@ import {
   SelectedCellElementRef,
 } from "@/types";
 
-import { LOCAL_STORAGE_SKIN_TONE_KEY } from "@/constants";
-import { Emoji } from "@/data/emoji-sprite-map";
-import { debounce } from "lodash-es";
-
-import { createFocusTrap } from "focus-trap";
-import { Nav } from "@/components/emoji-grid/nav";
-import EmojiHeader from "@/components/emoji-grid/header/Header";
-import AddEmojiBtnWrapper from "@/components/emoji-grid/add-custom-emoji/AddEmojiBtnWrapper";
-
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/tiptap-ui-primitive/tooltip";
+  CELL_HEIGHT,
+  COLUMNS,
+  LOCAL_STORAGE_SKIN_TONE_KEY,
+  MAX_VISIBLE_ROW,
+} from "@/constants";
 
-import { Plus } from "lucide-react";
-import {
-  getTargetCellVertically,
-  getVisibleRowRange,
-} from "@/lib/emoji-grid-utils";
-
+// COMPONENTS
 import { computePosition, autoUpdate, offset, flip } from "@floating-ui/dom";
-
-// constants
-export const COLUMNS = 12;
-const CELL_HEIGHT = 32;
-const MAX_VISIBLE_ROW = 9;
+import AddEmojiBtnWrapper from "@/components/emoji-grid/add-custom-emoji/AddEmojiBtnWrapper";
+import EmojiHeader from "@/components/emoji-grid/header/Header";
+import Cell from "@/components/emoji-grid/Cell";
+import Nav from "@/components/emoji-grid/nav/Nav";
 
 export default function ({
   ref,
@@ -373,10 +360,16 @@ export default function ({
     if (key === prevKey) return;
 
     const prevEl = cellRefs.current.get(prevKey);
-    if (prevEl) prevEl.classList.remove("bg-neutral-800");
+    if (prevEl) {
+      prevEl.classList.remove("dark:bg-neutral-800");
+      prevEl.classList.remove("bg-neutral-200");
+    }
 
     const currentEl = cellRefs.current.get(key);
-    if (currentEl) currentEl.classList.add("bg-neutral-800");
+    if (currentEl) {
+      currentEl.classList.add("dark:bg-neutral-800");
+      currentEl.classList.add("bg-neutral-200");
+    }
 
     prevKey = key;
     debouncedSetSelectedCell.cancel();
@@ -488,278 +481,3 @@ export default function ({
     </div>
   );
 }
-
-const Cell: React.FC<GridChildComponentProps<ItemData>> = memo(
-  ({ columnIndex, rowIndex, style, data }) => {
-    const {
-      arr2d,
-      selectedCell,
-      onSelectEmoji,
-      selectedCellElementRef,
-      skinTone,
-      range,
-      setKeyboardEnabled,
-      cellRefs,
-      handleHover,
-      onError,
-      onSuccess,
-      upload,
-    } = data;
-    const emojiData = arr2d[rowIndex][columnIndex];
-
-    if (!emojiData) return null;
-
-    const baseSharedAttrs: HTMLAttributes<HTMLElement> & {
-      ref: (node: HTMLDivElement) => void;
-    } = {
-      style: style,
-      className: cn(
-        "flex justify-center items-center rounded p-1 cursor-pointer outline-none font-normal",
-        `size-[${CELL_HEIGHT}px]`,
-        selectedCell.row === rowIndex &&
-          selectedCell.column === columnIndex &&
-          "bg-neutral-800"
-      ),
-      onMouseMoveCapture: () => {
-        handleHover(rowIndex, columnIndex);
-      },
-      ref: (node: HTMLDivElement) => {
-        cellRefs.current.set(`${rowIndex}-${columnIndex}`, node);
-      },
-    };
-
-    type ButtonAttrs = HTMLAttributes<HTMLButtonElement> & {
-      "data-selected-cell": boolean;
-      ref: (node: HTMLButtonElement) => void;
-    };
-
-    const buttonAttrs: ButtonAttrs = {
-      ...baseSharedAttrs,
-      ["data-selected-cell"]: true,
-      ref: (node: HTMLButtonElement) => {
-        if (
-          selectedCell.column === columnIndex &&
-          selectedCell.row === rowIndex
-        ) {
-          selectedCellElementRef.current = node;
-        }
-        cellRefs.current.set(`${rowIndex}-${columnIndex}`, node);
-      },
-    };
-
-    if (
-      emojiData &&
-      typeof emojiData === "object" &&
-      "label" in emojiData &&
-      "emoji" in emojiData
-    ) {
-      const { label, skins } = emojiData;
-
-      let newEmoji = emojiData;
-      const tone: string = SKIN_TONE_MAP[skinTone].tone;
-
-      if (skinTone && skinTone !== "default" && skins && skins[tone]) {
-        newEmoji = skins[tone] as Emoji;
-      }
-
-      const htmlAttr = getAttributes({
-        data: newEmoji,
-        styleOption: { type: "object", sizeInpixel: 24 },
-      });
-
-      let content = (
-        <img
-          {...htmlAttr}
-          style={
-            typeof htmlAttr.style === "string" ? undefined : htmlAttr.style // only for typescript, to avoid error
-          }
-        />
-      );
-
-      // if (
-      //   selectedCell.column === columnIndex &&
-      //   selectedCell.row === rowIndex
-      // ) {
-      return (
-        <Tooltip>
-          <TooltipTrigger
-            tabIndex={
-              selectedCell.column === columnIndex &&
-              selectedCell.row === rowIndex
-                ? undefined
-                : -1
-            }
-            onClick={() => {
-              // setSelectedCell({ row: -1, column: -1 });
-              onSelectEmoji({
-                emoji: newEmoji,
-                baseHexcode: emojiData.hexcode,
-                range,
-              });
-            }}
-            {...buttonAttrs}
-          >
-            {content}
-          </TooltipTrigger>
-          <TooltipContent>
-            <span>{label}</span>
-          </TooltipContent>
-        </Tooltip>
-      );
-      // } else {
-      //   return <div {...baseSharedAttrs}>{content}</div>;
-      // }
-    }
-
-    if (
-      emojiData &&
-      typeof emojiData === "object" &&
-      "url" in emojiData &&
-      "label" in emojiData
-    ) {
-      const { url, label } = emojiData;
-
-      const content = (
-        <img
-          loading="lazy"
-          alt={label}
-          src={url}
-          draggable={false}
-          style={{
-            width: 24,
-            height: 24,
-            display: "inline-block",
-            margin: "0 0.1em",
-            verticalAlign: "-0.1em",
-            objectFit: "contain",
-          }}
-        />
-      );
-
-      // if (
-      //   selectedCell.column === columnIndex &&
-      //   selectedCell.row === rowIndex
-      // ) {
-      return (
-        <Tooltip>
-          <TooltipTrigger
-            tabIndex={
-              selectedCell.column === columnIndex &&
-              selectedCell.row === rowIndex
-                ? undefined
-                : -1
-            }
-            onClick={() => {
-              // setSelectedCell({ row: -1, column: -1 });
-              onSelectEmoji({
-                emoji: emojiData,
-                range,
-              });
-            }}
-            {...buttonAttrs}
-          >
-            {content}
-          </TooltipTrigger>
-          <TooltipContent>
-            <span>{label}</span>
-          </TooltipContent>
-        </Tooltip>
-      );
-      // } else {
-      //   return <div {...baseSharedAttrs}>{content}</div>;
-      // }
-    }
-
-    if (
-      emojiData &&
-      typeof emojiData === "object" &&
-      "buttonLabel" in emojiData
-    ) {
-      const { buttonLabel, align } = emojiData;
-
-      const content = (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="dark:text-neutral-400 text-neutral-600"
-        >
-          <path d="M5 12h14" />
-          <path d="M12 5v14" />
-        </svg>
-      );
-
-      // if (
-      //   selectedCell.column === columnIndex &&
-      //   selectedCell.row === rowIndex
-      // ) {
-      return (
-        <Tooltip>
-          <AddEmojiBtnWrapper
-            asChild
-            {...buttonAttrs}
-            onMount={() => setKeyboardEnabled(false)}
-            onUnmount={() => setKeyboardEnabled(true)}
-            align={align}
-            fallback={["bottom"]}
-            side="top"
-            className={cn(
-              "relative inset-0 size-full cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black",
-              selectedCell.row === rowIndex &&
-                selectedCell.column === columnIndex &&
-                "bg-neutral-800"
-            )}
-            upload={upload}
-            onErrorUpload={onError}
-            onSuccess={onSuccess}
-          >
-            <TooltipTrigger>{content}</TooltipTrigger>
-          </AddEmojiBtnWrapper>
-
-          <TooltipContent>
-            <span>{buttonLabel}</span>
-          </TooltipContent>
-        </Tooltip>
-      );
-      // } else {
-      //   return (
-      //     <div
-      //       {...baseSharedAttrs}
-      //       className={cn(
-      //         "relative inset-0 size-full cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black",
-      //         selectedCell.row === rowIndex &&
-      //           selectedCell.column === columnIndex &&
-      //           "bg-neutral-800"
-      //       )}
-      //     >
-      //       {content}
-      //     </div>
-      //   );
-      // }
-    }
-
-    if (
-      emojiData &&
-      typeof emojiData === "object" &&
-      "groupTitle" in emojiData
-    ) {
-      // this is for group title
-      return (
-        <div
-          style={style}
-          className="text-nowrap text-xs font-medium inline-flex items-center "
-        >
-          {emojiData.groupTitle}
-        </div>
-      );
-    }
-
-    return null;
-  }
-);

@@ -1,16 +1,13 @@
 import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
-import { Dispatch, SetStateAction } from "react";
-import SkinToneSelect from "./SkinToneSelect";
-import { Shuffle, Trash } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/tiptap-ui-primitive/tooltip";
-import { cn } from "@/lib/utils";
+import { Dispatch, memo, SetStateAction, useCallback } from "react";
 import { Emoji } from "@/data/emoji-sprite-map";
 import { ComponentEmojiMentionProps } from "@/types";
-import { getRandomCellByItemCount } from "../../../lib/emoji-grid-utils";
+
+// COMPONENTS
+import SkinToneSelect from "./SkinToneSelect";
+import RandomButton from "./RandomButton";
+import RemoveButton from "./RemoveButton";
+import Input from "./Input";
 
 export type EmojiHeaderProps = {
   headerInput?: boolean;
@@ -37,62 +34,40 @@ const EmojiHeader = ({
   removeButton,
   onCancel,
 }: EmojiHeaderProps) => {
+  const stopEnterPropagation = useCallback(
+    (event: React.KeyboardEvent<HTMLElement>) => {
+      if (event.key === "Enter") {
+        event.stopPropagation();
+      }
+    },
+    []
+  );
+
   return (
     <div className="flex gap-1 justify-end h-10 border-neutral-200 dark:border-neutral-800 border-b text-black dark:text-white p-1 transition duration-500">
       {headerInput ? (
-        <input
-          className={cn(
-            "flex-1 grow flex bg-white/10 focus-within:ring-blue-600 focus-within:ring focus:outline-none"
-          )}
-          value={query}
-          onChange={(e) => {
-            if (setQuery) {
-              setQuery(e.target.value);
-            }
-          }}
+        <Input
+          stopEnterPropagation={stopEnterPropagation}
+          query={query}
+          setQuery={setQuery}
         />
       ) : null}
       {randomButton ? (
-        <Tooltip delay={200}>
-          <TooltipTrigger
-            className="aspect-square h-full"
-            onClick={() => {
-              if (callback) {
-                callback(
-                  getRandomCellByItemCount(
-                    filteredEmojis.length,
-                    filteredEmojis
-                  )
-                );
-              }
-            }}
-          >
-            <Shuffle />
-          </TooltipTrigger>
-          <TooltipContent>
-            <span>Random</span>
-          </TooltipContent>
-        </Tooltip>
+        <RandomButton
+          filteredEmojis={filteredEmojis}
+          stopEnterPropagation={stopEnterPropagation}
+          callback={callback}
+        />
       ) : null}
       {removeButton ? (
-        <Tooltip delay={200}>
-          <TooltipTrigger
-            className="aspect-square h-full"
-            onClick={() => {
-              if (callback) callback(null);
-              if (onCancel) onCancel();
-            }}
-          >
-            <Trash />
-          </TooltipTrigger>
-          <TooltipContent>
-            <span>Remove</span>
-          </TooltipContent>
-        </Tooltip>
+        <RemoveButton
+          callback={callback}
+          onCancel={onCancel}
+          stopEnterPropagation={stopEnterPropagation}
+        />
       ) : null}
       <SkinToneSelect setSkinTone={setSkinTone} skinTone={skinTone} />
     </div>
   );
 };
-
-export default EmojiHeader;
+export default memo(EmojiHeader);

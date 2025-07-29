@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement, useState } from "react";
+import { cloneElement, isValidElement, memo, useState } from "react";
 import Content from "./Content";
 import { Popover } from "@/components/popover/Popover";
 import { Alignment, Placement, Side } from "@floating-ui/dom";
@@ -60,4 +60,4 @@ const AddEmojiBtnWrapper = ({
   );
 };
 
-export default AddEmojiBtnWrapper;
+export default memo(AddEmojiBtnWrapper);

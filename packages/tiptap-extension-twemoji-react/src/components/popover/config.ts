@@ -32,7 +32,7 @@ export const floatingStyles: {
     top: "0",
     left: "0",
     zIndex: 9999,
-    background: "black",
+    background: "white",
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
     borderRadius: "8px",
     minHeight: "32px",

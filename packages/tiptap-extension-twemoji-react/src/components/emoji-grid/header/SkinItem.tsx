@@ -37,6 +37,11 @@ const SkinItem = ({
       <li>
         <TooltipTrigger
           onClick={handleSelect}
+          onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => {
+            if (event.key === "Enter") {
+              event.stopPropagation();
+            }
+          }}
           className={cn(
             "size-8 p-0 aspect-square cursor-pointer rounded-md flex justify-center items-center hover:bg-neutral-200 hover:dark:bg-neutral-800",
             code === skinTone && "ring ring-blue-500"

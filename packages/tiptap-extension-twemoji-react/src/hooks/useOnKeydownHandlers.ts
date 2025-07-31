@@ -70,11 +70,14 @@ export function useOnKeydownHandlers({
   };
   const upHandler = () => {
     if (selectedCellRef.current.row === 1) {
-      return scrollGridByRows({
-        direction: "up",
-        rowMultiplier: 1,
-        ...sharedScrollParams,
+      requestAnimationFrame(() => {
+        scrollGridByRows({
+          direction: "up",
+          rowMultiplier: 1,
+          ...sharedScrollParams,
+        });
       });
+      return;
     }
 
     let targetCell = selectedCellRef.current;
@@ -106,7 +109,6 @@ export function useOnKeydownHandlers({
       return targetCell;
     });
 
-    // if (rowsToScroll >= 1) {
     requestAnimationFrame(() => {
       scrollGridByRows({
         direction: "up",
@@ -114,7 +116,6 @@ export function useOnKeydownHandlers({
         ...sharedScrollParams,
       });
     });
-    // }
   };
 
   const downHandler = () => {
@@ -148,7 +149,6 @@ export function useOnKeydownHandlers({
       return targetCell;
     });
 
-    // if (rowsToScroll >= 1) {
     requestAnimationFrame(() => {
       scrollGridByRows({
         direction: "down",
@@ -156,29 +156,56 @@ export function useOnKeydownHandlers({
         ...sharedScrollParams,
       });
     });
-    // }
   };
 
   const leftHandler = () => {
-    setSelectedCell((prev) =>
-      getTargetCellHorizontally({
+    let rowsToScroll = 0;
+
+    setSelectedCell((prev) => {
+      const { cell, targetRowsToScroll } = getTargetCellHorizontally({
         direction: "left",
         currentSelectedCell: prev,
         COLUMNS,
         ...sharedScrollParams,
-      })
-    );
+      });
+
+      if (targetRowsToScroll) rowsToScroll = targetRowsToScroll;
+
+      return cell;
+    });
+
+    requestAnimationFrame(() => {
+      scrollGridByRows({
+        direction: "up",
+        rowMultiplier: rowsToScroll,
+        ...sharedScrollParams,
+      });
+    });
   };
 
   const rightHandler = () => {
-    setSelectedCell((prev) =>
-      getTargetCellHorizontally({
+    let rowsToScroll = 0;
+
+    setSelectedCell((prev) => {
+      const { cell, targetRowsToScroll } = getTargetCellHorizontally({
         direction: "right",
         currentSelectedCell: prev,
         COLUMNS,
         ...sharedScrollParams,
-      })
-    );
+      });
+
+      if (targetRowsToScroll) rowsToScroll = targetRowsToScroll;
+
+      return cell;
+    });
+
+    requestAnimationFrame(() => {
+      scrollGridByRows({
+        direction: "down",
+        rowMultiplier: rowsToScroll,
+        ...sharedScrollParams,
+      });
+    });
   };
 
   const enterHandler = (

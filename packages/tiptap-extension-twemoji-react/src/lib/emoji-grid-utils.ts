@@ -250,7 +250,7 @@ export const getTargetCellHorizontally: (props: {
   CELL_HEIGHT: number;
   MAX_VISIBLE_ROW: number;
   COLUMNS: number;
-}) => SelectedCell = ({
+}) => { cell: SelectedCell; targetRowsToScroll?: number } = ({
   direction,
   currentSelectedCell,
   CELL_HEIGHT,
@@ -260,6 +260,8 @@ export const getTargetCellHorizontally: (props: {
   outerRef,
   COLUMNS,
 }) => {
+  let targetRowsToScroll = 0;
+
   // this to decide want to go prev or next column
   const targetCell = ({ row, column }: { row: number; column: number }) => {
     return arr2d[row]?.[column];
@@ -276,8 +278,10 @@ export const getTargetCellHorizontally: (props: {
     )
   ) {
     return {
-      row: currentSelectedCell.row,
-      column: currentSelectedCell.column + offset,
+      cell: {
+        row: currentSelectedCell.row,
+        column: currentSelectedCell.column + offset,
+      },
     };
   }
 
@@ -296,28 +300,21 @@ export const getTargetCellHorizontally: (props: {
         outerRef,
       });
 
-      const rowsToScroll = getNumberOfRowsToScrollUp({
-        gridRef,
-        targetRow: currentSelectedCell.row - 1,
-        CELL_HEIGHT,
-        outerRef,
-      });
-
       if (isScrollingUp) {
-        scrollGridByRows({
-          direction: "up",
-          rowMultiplier: rowsToScroll,
+        targetRowsToScroll = getNumberOfRowsToScrollUp({
           gridRef,
-          outerRef,
+          targetRow: currentSelectedCell.row - 1,
           CELL_HEIGHT,
-          MAX_VISIBLE_ROW,
-          arr2d,
+          outerRef,
         });
       }
 
       return {
-        row: currentSelectedCell.row,
-        column: currentSelectedCell.column,
+        cell: {
+          row: currentSelectedCell.row,
+          column: currentSelectedCell.column,
+        },
+        targetRowsToScroll,
       };
     }
 
@@ -338,25 +335,18 @@ export const getTargetCellHorizontally: (props: {
       });
 
       if (isScrollingUp) {
-        const rowsToScroll = getNumberOfRowsToScrollUp({
+        targetRowsToScroll = getNumberOfRowsToScrollUp({
           gridRef,
           targetRow: currentSelectedCell.row - 1,
           CELL_HEIGHT,
           outerRef,
         });
-
-        scrollGridByRows({
-          direction: "up",
-          rowMultiplier: rowsToScroll,
-          gridRef,
-          outerRef,
-          CELL_HEIGHT,
-          MAX_VISIBLE_ROW,
-          arr2d,
-        });
       }
 
-      return { row: currentSelectedCell.row - 1, column: COLUMNS - 1 };
+      return {
+        cell: { row: currentSelectedCell.row - 1, column: COLUMNS - 1 },
+        targetRowsToScroll,
+      };
     }
 
     const isScrollingUp = checkIfScrollingUp({
@@ -366,30 +356,23 @@ export const getTargetCellHorizontally: (props: {
       outerRef,
     });
 
-    const rowsToScroll = getNumberOfRowsToScrollUp({
-      gridRef,
-      targetRow: currentSelectedCell.row - 2,
-      CELL_HEIGHT,
-      outerRef,
-    });
-
     if (isScrollingUp) {
-      scrollGridByRows({
-        direction: "up",
-        rowMultiplier: rowsToScroll,
+      targetRowsToScroll = getNumberOfRowsToScrollUp({
         gridRef,
-        outerRef,
+        targetRow: currentSelectedCell.row - 2,
         CELL_HEIGHT,
-        MAX_VISIBLE_ROW,
-        arr2d,
+        outerRef,
       });
     }
 
     // if we are here it's mean last column from previouse row not have a emoji because it's refer to heading row
     // If we're on the first column, move to the 2 previous row and get the last column that has an emoji.
     return {
-      row: currentSelectedCell.row - 2,
-      column: findLastStringIndex(arr2d[currentSelectedCell.row - 2]),
+      cell: {
+        row: currentSelectedCell.row - 2,
+        column: findLastStringIndex(arr2d[currentSelectedCell.row - 2]),
+      },
+      targetRowsToScroll,
     };
   }
 
@@ -408,24 +391,17 @@ export const getTargetCellHorizontally: (props: {
       });
 
       if (isScrollingDown) {
-        const rowsToScroll = getNumberOfRowsToScrollDown({
+        targetRowsToScroll = getNumberOfRowsToScrollDown({
           gridRef,
           targetRow: currentSelectedCell.row + 1,
           CELL_HEIGHT,
           outerRef,
         });
-
-        scrollGridByRows({
-          direction: "down",
-          rowMultiplier: rowsToScroll,
-          gridRef,
-          outerRef,
-          CELL_HEIGHT,
-          MAX_VISIBLE_ROW,
-          arr2d,
-        });
       }
-      return { row: currentSelectedCell.row + 1, column: 0 };
+      return {
+        cell: { row: currentSelectedCell.row + 1, column: 0 },
+        targetRowsToScroll,
+      };
     }
 
     if (
@@ -439,30 +415,26 @@ export const getTargetCellHorizontally: (props: {
       });
       // scroll down 2 row if the target is not visible
       if (isScrollingDown) {
-        const rowsToScroll = getNumberOfRowsToScrollDown({
+        targetRowsToScroll = getNumberOfRowsToScrollDown({
           gridRef,
           targetRow: currentSelectedCell.row + 2,
           CELL_HEIGHT,
           outerRef,
         });
-
-        scrollGridByRows({
-          direction: "down",
-          rowMultiplier: rowsToScroll,
-          gridRef,
-          outerRef,
-          CELL_HEIGHT,
-          MAX_VISIBLE_ROW,
-          arr2d,
-        });
       }
-      return { row: currentSelectedCell.row + 2, column: 0 };
+
+      return {
+        cell: { row: currentSelectedCell.row + 2, column: 0 },
+        targetRowsToScroll,
+      };
     }
   }
   // default value
   return {
-    row: currentSelectedCell.row,
-    column: currentSelectedCell.column,
+    cell: {
+      row: currentSelectedCell.row,
+      column: currentSelectedCell.column,
+    },
   };
 };
 

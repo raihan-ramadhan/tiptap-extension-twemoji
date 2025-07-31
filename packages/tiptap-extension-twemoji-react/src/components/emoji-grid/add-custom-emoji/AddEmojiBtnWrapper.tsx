@@ -1,8 +1,16 @@
-import { cloneElement, isValidElement, memo, useState } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  memo,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Content from "./Content";
 import { Popover } from "@/components/popover/Popover";
 import { Alignment, Placement, Side } from "@floating-ui/dom";
 import { ExtensionOptions } from "@/types";
+import { createFocusTrap } from "focus-trap";
 
 type Props = {
   onMount: () => void;
@@ -38,6 +46,28 @@ const AddEmojiBtnWrapper = ({
     );
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const trapRef = useRef<HTMLDivElement | null>(null);
+  const focusTrap = useRef<ReturnType<typeof createFocusTrap> | null>(null);
+
+  useEffect(() => {
+    if (isOpen && trapRef.current) {
+      focusTrap.current = createFocusTrap(trapRef.current, {
+        escapeDeactivates: false,
+        clickOutsideDeactivates: true,
+        returnFocusOnDeactivate: true,
+      });
+
+      // Immediately activate trap
+      focusTrap.current.activate();
+    }
+
+    return () => {
+      focusTrap.current?.deactivate();
+      focusTrap.current = null;
+    };
+  }, [isOpen]);
+
   return (
     <Popover
       open={isOpen}
@@ -47,6 +77,7 @@ const AddEmojiBtnWrapper = ({
       overlay
       fallback={fallback}
       trigger={triggerElement}
+      trapRef={trapRef}
     >
       <Content
         onMount={onMount}

@@ -12,6 +12,8 @@ import {
   floatingStyles,
 } from "./config";
 
+import { mergeRefs } from "@/lib/emoji-grid-utils";
+
 export function Popover({
   children,
   trigger,
@@ -21,6 +23,7 @@ export function Popover({
   align,
   side,
   fallback,
+  trapRef,
 }: {
   children: React.ReactNode;
   trigger: React.ReactElement<any, any>;
@@ -30,6 +33,7 @@ export function Popover({
   side?: Side;
   align?: Alignment | "center";
   fallback?: Placement[];
+  trapRef?: React.RefObject<HTMLDivElement | null>;
 }) {
   const referenceRef = useRef<HTMLButtonElement>(null);
   const floatingRef = useRef<HTMLDivElement>(null);
@@ -56,10 +60,9 @@ export function Popover({
     return cleanup;
   }, [open]);
 
-  // Outside click
+  // events listener
   useEffect(() => {
     if (!open) return;
-
     const cleanup = setupDismissListeners({
       safeElements: [referenceRef.current, floatingRef.current],
       onCancel: () => onOpenChange(false),
@@ -69,7 +72,7 @@ export function Popover({
   }, [open, onOpenChange]);
 
   const content = (
-    <div ref={floatingRef} style={floatingStyles.base}>
+    <div ref={mergeRefs(floatingRef, trapRef)} style={floatingStyles.base}>
       {children}
     </div>
   );

@@ -67,7 +67,7 @@ export function EmojiPopoverTriggerWrapper({
       onOpenChange={setIsOpen}
       align="center"
       fallback={[]}
-      trigger={trigger} // This is the `children` passed in by the user, with `onClick` merged
+      trigger={trigger}
     >
       <EmojiGrid
         focusImmediately

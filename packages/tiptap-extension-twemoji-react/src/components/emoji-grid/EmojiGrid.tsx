@@ -433,9 +433,9 @@ export default function ({
               setKeyboardEnabled,
               cellRefs,
               handleHover,
-              onError: onError,
-              onSuccess: onSuccess,
-              upload: upload,
+              onError,
+              onSuccess,
+              upload,
             }}
           >
             {Cell}

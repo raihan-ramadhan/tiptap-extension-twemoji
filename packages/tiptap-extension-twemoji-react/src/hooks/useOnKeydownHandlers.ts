@@ -68,7 +68,6 @@ export function useOnKeydownHandlers({
     MAX_VISIBLE_ROW,
     arr2d,
   };
-
   const upHandler = () => {
     if (selectedCellRef.current.row === 1) {
       return scrollGridByRows({
@@ -78,8 +77,11 @@ export function useOnKeydownHandlers({
       });
     }
 
+    let targetCell = selectedCellRef.current;
+    let rowsToScroll = 0;
+
     setSelectedCell((prev) => {
-      const targetCell = getTargetCellVertically({
+      targetCell = getTargetCellVertically({
         direction: "up",
         selectedCell: prev,
         ...sharedScrollParams,
@@ -93,27 +95,35 @@ export function useOnKeydownHandlers({
           outerRef,
         })
       ) {
-        const rowsToScroll = getNumberOfRowsToScrollUp({
+        rowsToScroll = getNumberOfRowsToScrollUp({
           gridRef,
           targetRow: targetCell.row,
           CELL_HEIGHT,
           outerRef,
         });
-
-        scrollGridByRows({
-          direction: "up",
-          rowMultiplier: rowsToScroll,
-          ...sharedScrollParams,
-        });
       }
 
       return targetCell;
     });
+
+    // if (rowsToScroll >= 1) {
+    requestAnimationFrame(() => {
+      scrollGridByRows({
+        direction: "up",
+        rowMultiplier: rowsToScroll,
+        ...sharedScrollParams,
+      });
+    });
+    // }
   };
 
   const downHandler = () => {
+    let targetCell = selectedCellRef.current; // fallback
+    let rowsToScroll = 0;
+
+    // Update selected cell without doing side-effects
     setSelectedCell((prev) => {
-      const targetCell = getTargetCellVertically({
+      targetCell = getTargetCellVertically({
         direction: "down",
         selectedCell: prev,
         ...sharedScrollParams,
@@ -127,22 +137,26 @@ export function useOnKeydownHandlers({
           outerRef,
         })
       ) {
-        const rowsToScroll = getNumberOfRowsToScrollDown({
+        rowsToScroll = getNumberOfRowsToScrollDown({
           gridRef,
           targetRow: targetCell.row,
           CELL_HEIGHT,
           outerRef,
         });
-
-        scrollGridByRows({
-          direction: "down",
-          rowMultiplier: rowsToScroll,
-          ...sharedScrollParams,
-        });
       }
 
       return targetCell;
     });
+
+    // if (rowsToScroll >= 1) {
+    requestAnimationFrame(() => {
+      scrollGridByRows({
+        direction: "down",
+        rowMultiplier: rowsToScroll,
+        ...sharedScrollParams,
+      });
+    });
+    // }
   };
 
   const leftHandler = () => {

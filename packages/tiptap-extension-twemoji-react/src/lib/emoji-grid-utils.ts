@@ -395,7 +395,10 @@ export const getTargetCellHorizontally: (props: {
 
   if (direction === "right") {
     // If we're on the last column, move to the next row
-    if (currentSelectedCell.column === COLUMNS - 1) {
+    if (
+      currentSelectedCell.column === COLUMNS - 1 &&
+      isValidCell(targetCell({ row: currentSelectedCell.row + 1, column: 0 }))
+    ) {
       // scroll down 1 row if the target is not visible
       const isScrollingDown = checkIfScrollingDown({
         gridRef,

@@ -11,14 +11,16 @@ const RemoveButton = ({
   onCancel,
   callback,
   stopEnterPropagation,
+  closeAfterDelete = true,
 }: {
   stopEnterPropagation: (event: React.KeyboardEvent<HTMLElement>) => void;
-  callback?: ComponentEmojiMentionProps["callback"];
+  callback?: () => void;
   onCancel?: ComponentEmojiMentionProps["onCancel"];
+  closeAfterDelete?: boolean;
 }) => {
   const handleRemoveClick = useCallback(() => {
-    callback?.(null);
-    onCancel?.();
+    callback?.();
+    if (closeAfterDelete) onCancel?.();
   }, [callback, onCancel]);
 
   return (

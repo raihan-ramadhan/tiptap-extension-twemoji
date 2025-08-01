@@ -77,6 +77,19 @@ export function Popover({
     </div>
   );
 
+  const prevFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    // Store focus before the popover opens
+    prevFocusRef.current = document.activeElement as HTMLElement;
+
+    return () => {
+      requestAnimationFrame(() => {
+        prevFocusRef.current?.focus();
+      });
+    };
+  }, []);
+
   return (
     <>
       {cloneElement(trigger, {
@@ -84,6 +97,9 @@ export function Popover({
         onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
           trigger.props.onClick?.(event);
           onOpenChange(!open);
+          requestAnimationFrame(() => {
+            prevFocusRef.current?.focus();
+          });
         },
       })}
 

@@ -65,8 +65,10 @@ export type ComponentEmojiMentionProps = ExtensionOptions & {
   removeButton?: EmojiHeaderProps["removeButton"];
   randomButton?: EmojiHeaderProps["randomButton"];
   editor?: Editor;
-  callback?: (emoji: Emoji | null) => void;
+  callback?: (emoji: Emoji | CustomEmoji) => void;
   focusImmediately?: boolean;
+  onDelete?: () => void;
+  closeAfterDelete?: boolean;
 };
 
 export type GroupTitle = { groupTitle: string };

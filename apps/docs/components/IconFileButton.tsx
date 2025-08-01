@@ -27,10 +27,8 @@ const IconFileButton = () => {
     | null
   >(null);
 
-  const selectEmojiHandler = (emoji: CustomEmoji | Emoji | null) => {
+  const selectEmojiHandler = (emoji: CustomEmoji | Emoji) => {
     let attrs;
-
-    if (emoji === null) return setIconAttrs(null);
 
     if (isEmoji(emoji)) {
       attrs = {
@@ -63,17 +61,26 @@ const IconFileButton = () => {
     }
   };
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const onDelete = () => {
+    setIconAttrs(null);
+  };
+
   return (
     <EmojiPopoverTriggerWrapper
       isEmpty={!iconAttrs}
       setRandomEmojiOnEmpty
       selectEmojiHandler={selectEmojiHandler}
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+      onDelete={onDelete}
     >
-      {iconAttrs ? (
-        <div
-          role="button"
-          className="p-1 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer focus-visible:bg-black/50 w-fit h-fit"
-        >
+      <button
+        type="button"
+        className="dark:bg-white/5 bg-black/5 p-1 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer"
+      >
+        {iconAttrs ? (
           <Image
             alt={iconAttrs.alt}
             src={iconAttrs.src}
@@ -84,15 +91,10 @@ const IconFileButton = () => {
               typeof iconAttrs.style === "string" ? undefined : iconAttrs.style
             }
           />
-        </div>
-      ) : (
-        <button
-          type="button"
-          className="dark:bg-white/5 bg-black/5 p-1 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer"
-        >
-          Add Emoji
-        </button>
-      )}
+        ) : (
+          "Add Emoji"
+        )}
+      </button>
     </EmojiPopoverTriggerWrapper>
   );
 };

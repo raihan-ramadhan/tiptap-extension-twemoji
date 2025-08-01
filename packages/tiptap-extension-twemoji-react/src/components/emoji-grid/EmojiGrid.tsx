@@ -54,6 +54,9 @@ export default function ({
   onError,
   onSuccess,
   upload,
+  editor,
+  onDelete,
+  closeAfterDelete,
 }: ComponentEmojiMentionProps) {
   const { recent, filteredEmojis, filteredCustomEmojis } = items[0];
 
@@ -388,6 +391,13 @@ export default function ({
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      //return the cursor at the last known position at editor
+      editor?.commands.focus();
+    };
+  }, []);
+
   return (
     <div
       tabIndex={-1}
@@ -406,6 +416,8 @@ export default function ({
         setQuery={setQuery}
         randomButton={randomButton}
         removeButton={removeButton}
+        onDelete={onDelete}
+        closeAfterDelete={closeAfterDelete}
       />
       {filteredEmojis.length +
         (recent?.length ?? 0) +

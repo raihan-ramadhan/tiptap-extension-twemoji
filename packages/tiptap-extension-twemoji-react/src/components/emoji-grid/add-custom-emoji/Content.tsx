@@ -18,7 +18,7 @@ const Content = ({
 }: {
   onMount: () => void;
   onUnmount: () => void;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: (open: boolean) => void;
 } & ExtensionOptions) => {
   const dismiss = () => setIsOpen(false);
 

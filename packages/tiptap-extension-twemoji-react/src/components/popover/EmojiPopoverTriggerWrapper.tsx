@@ -1,4 +1,4 @@
-import { Children, cloneElement, useCallback, useState } from "react";
+import { Children, cloneElement, useCallback, useRef, useState } from "react";
 
 // Utilities
 import { getRandomCellByItemCount } from "@/lib/emoji-grid-utils";
@@ -22,29 +22,51 @@ export function EmojiPopoverTriggerWrapper({
   headerInput = true,
   randomButton = true,
   removeButton = true,
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onOpenChange,
+  onDelete,
+  closeAfterDelete,
 }: {
-  children: React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+  children: React.ReactElement<
+    React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+  >;
   setRandomEmojiOnEmpty?: boolean;
-  selectEmojiHandler: (emoji: CustomEmoji | Emoji | null) => void;
+  selectEmojiHandler: (emoji: CustomEmoji | Emoji) => void;
   isEmpty?: boolean;
   headerInput?: boolean;
   randomButton?: boolean;
   removeButton?: boolean;
+  isOpen?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  onDelete?: () => void;
+  closeAfterDelete?: boolean;
 }) {
   const child = Children.only(children);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
+
+  const isControlled = controlledOpen !== undefined;
+  const isOpen = isControlled ? controlledOpen : uncontrolledOpen;
+
+  const setIsOpen = (open: boolean) => {
+    if (!isControlled) setUncontrolledOpen(open);
+    onOpenChange?.(open);
+  };
 
   const { query, setQuery, items, filteredEmojis } = useEmojiGridState();
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      if (child.props.onClick) {
-        child.props.onClick(e);
-      }
-      if (setRandomEmojiOnEmpty && isEmpty) {
-        selectEmojiHandler(
-          getRandomCellByItemCount(filteredEmojis.length, filteredEmojis)
+      child.props.onClick?.(e);
+
+      if (setRandomEmojiOnEmpty && isEmpty && filteredEmojis.length > 0) {
+        const randomEmoji = getRandomCellByItemCount(
+          filteredEmojis.length,
+          filteredEmojis
         );
+        selectEmojiHandler(randomEmoji);
       }
     },
     [
@@ -59,6 +81,7 @@ export function EmojiPopoverTriggerWrapper({
   const trigger = cloneElement(child, {
     ...child.props,
     onClick: handleClick,
+    ref: triggerRef,
   });
 
   return (
@@ -83,6 +106,8 @@ export function EmojiPopoverTriggerWrapper({
         }}
         onCancel={() => setIsOpen(false)}
         items={items}
+        onDelete={onDelete}
+        closeAfterDelete={closeAfterDelete}
       />
     </Popover>
   );

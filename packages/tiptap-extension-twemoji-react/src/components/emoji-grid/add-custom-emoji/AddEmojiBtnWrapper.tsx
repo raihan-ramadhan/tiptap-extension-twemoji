@@ -20,7 +20,7 @@ type Props = {
   fallback?: Placement[];
   asChild?: boolean;
   children?: React.ReactElement;
-} & React.HTMLAttributes<HTMLElement> &
+} & React.ComponentProps<"button"> &
   Omit<ExtensionOptions, "onError"> & {
     onErrorUpload?: ExtensionOptions["onError"];
   };

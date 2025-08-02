@@ -5,11 +5,6 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { ARRAY2D_ITEM_PROPS, ExtensionOptions, ItemData } from "@/types";
 import AddEmojiBtnWrapper from "@/components/emoji-grid/add-custom-emoji/AddEmojiBtnWrapper";
 import { debounce } from "lodash-es";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/tiptap-ui-primitive/tooltip";
 import { Plus } from "lucide-react";
 import NavItem from "./NavItem";
 import { navIcons } from "./nav-icon";
@@ -132,32 +127,24 @@ const Nav = ({
             />
           );
         })}
-        <Tooltip delay={200}>
-          <li>
-            <AddEmojiBtnWrapper
-              asChild
-              style={{ width: `${navItemWidth}px` }}
-              className={cn(
-                `hover:bg-neutral-200 dark:hover:bg-neutral-800 aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`
-              )}
-              side="top"
-              align="end"
-              onMount={() => setKeyboardEnabled(false)}
-              onUnmount={() => setKeyboardEnabled(true)}
-              onErrorUpload={onError}
-              onSuccess={onSuccess}
-              upload={upload}
-              onKeyDown={stopEnterKey}
-            >
-              <TooltipTrigger>
-                <Plus className="bg-black rounded-full text-white font-bold stroke-2 size-full" />
-              </TooltipTrigger>
-            </AddEmojiBtnWrapper>
-          </li>
-          <TooltipContent>
-            <span>Add emoji</span>
-          </TooltipContent>
-        </Tooltip>
+        <li>
+          <AddEmojiBtnWrapper
+            style={{ width: `${navItemWidth}px` }}
+            className={cn(
+              `hover:bg-neutral-200 dark:hover:bg-neutral-800 aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`
+            )}
+            side="top"
+            align="end"
+            onMount={() => setKeyboardEnabled(false)}
+            onUnmount={() => setKeyboardEnabled(true)}
+            onErrorUpload={onError}
+            onSuccess={onSuccess}
+            upload={upload}
+            onKeyDown={stopEnterKey}
+          >
+            <Plus className="bg-black rounded-full text-white font-bold stroke-2 size-full" />
+          </AddEmojiBtnWrapper>
+        </li>
       </ul>
     </div>
   );

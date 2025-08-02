@@ -1,16 +1,14 @@
-import {
-  cloneElement,
-  isValidElement,
-  memo,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import Content from "./Content";
 import { Popover } from "@/components/popover/Popover";
 import { Alignment, Placement, Side } from "@floating-ui/dom";
 import { ExtensionOptions } from "@/types";
 import { createFocusTrap } from "focus-trap";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../../tiptap-ui-primitive/tooltip";
 
 type Props = {
   onMount: () => void;
@@ -18,8 +16,8 @@ type Props = {
   side?: Side;
   align?: Alignment | "center";
   fallback?: Placement[];
-  asChild?: boolean;
   children?: React.ReactElement;
+  label?: string;
 } & React.ComponentProps<"button"> &
   Omit<ExtensionOptions, "onError"> & {
     onErrorUpload?: ExtensionOptions["onError"];
@@ -31,20 +29,13 @@ const AddEmojiBtnWrapper = ({
   align,
   side,
   fallback,
-  asChild,
   children,
   upload,
   onSuccess,
   onErrorUpload,
+  label = "Add Emoji",
   ...props
 }: Props) => {
-  const triggerElement =
-    asChild && isValidElement(children) ? (
-      cloneElement(children, { ...props })
-    ) : (
-      <button {...props}>{children}</button>
-    );
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const trapRef = useRef<HTMLDivElement | null>(null);
@@ -76,7 +67,14 @@ const AddEmojiBtnWrapper = ({
       side={side}
       overlay
       fallback={fallback}
-      trigger={triggerElement}
+      trigger={
+        <Tooltip>
+          <TooltipTrigger {...props}>{children}</TooltipTrigger>
+          <TooltipContent>
+            <span>{label}</span>
+          </TooltipContent>
+        </Tooltip>
+      }
       trapRef={trapRef}
     >
       <Content

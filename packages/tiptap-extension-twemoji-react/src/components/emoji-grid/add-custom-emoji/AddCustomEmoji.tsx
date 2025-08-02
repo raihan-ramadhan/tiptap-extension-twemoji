@@ -4,11 +4,6 @@ import { Popover } from "@/components/popover/Popover";
 import { Alignment, Placement, Side } from "@floating-ui/dom";
 import { ExtensionOptions } from "@/types";
 import { createFocusTrap } from "focus-trap";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "../../tiptap-ui-primitive/tooltip";
 
 type Props = {
   onMount: () => void;
@@ -67,15 +62,10 @@ const AddCustomEmoji = ({
       side={side}
       overlay
       fallback={fallback}
-      trigger={
-        <Tooltip>
-          <TooltipTrigger {...props}>{children}</TooltipTrigger>
-          <TooltipContent>
-            <span>{label}</span>
-          </TooltipContent>
-        </Tooltip>
-      }
+      trigger={<button {...props}>{children}</button>}
       trapRef={trapRef}
+      triggerLabel={label}
+      tooltipForTrigger
     >
       <Content
         onMount={onMount}

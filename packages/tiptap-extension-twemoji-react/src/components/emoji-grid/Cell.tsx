@@ -187,20 +187,20 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
 
     return (
       <AddCustomEmoji
-        {...buttonAttrs}
         onMount={() => setKeyboardEnabled(false)}
         onUnmount={() => setKeyboardEnabled(true)}
-        align={align}
+        onErrorUpload={onError}
         fallback={["bottom"]}
+        onSuccess={onSuccess}
+        label={buttonLabel}
+        upload={upload}
+        align={align}
         side="top"
+        {...buttonAttrs}
         className={cn(
           "relative inset-0 size-full cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black",
           isSelected && "bg-neutral-800"
         )}
-        upload={upload}
-        onErrorUpload={onError}
-        onSuccess={onSuccess}
-        label={buttonLabel}
       >
         {content}
       </AddCustomEmoji>

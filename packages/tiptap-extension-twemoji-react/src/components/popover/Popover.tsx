@@ -13,6 +13,11 @@ import {
 } from "./config";
 
 import { mergeRefs } from "@/lib/emoji-grid-utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/tiptap-ui-primitive/tooltip";
 
 export function Popover({
   children,
@@ -24,6 +29,8 @@ export function Popover({
   side,
   fallback,
   trapRef,
+  tooltipForTrigger = false,
+  triggerLabel,
 }: {
   children: React.ReactNode;
   trigger: React.ReactElement<any, any>;
@@ -34,6 +41,8 @@ export function Popover({
   align?: Alignment | "center";
   fallback?: Placement[];
   trapRef?: React.RefObject<HTMLDivElement | null>;
+  tooltipForTrigger?: boolean;
+  triggerLabel?: string;
 }) {
   const referenceRef = useRef<HTMLButtonElement>(null);
   const floatingRef = useRef<HTMLDivElement>(null);
@@ -90,18 +99,38 @@ export function Popover({
     };
   }, []);
 
+  const sharedProps = {
+    ...trigger.props,
+    ref: mergeRefs(referenceRef, trigger.props.ref),
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+      trigger.props.onClick?.(event);
+      onOpenChange(!open);
+      requestAnimationFrame(() => {
+        prevFocusRef.current?.focus();
+      });
+    },
+  };
+
+  let finalTrigger = trigger;
+
+  if (tooltipForTrigger) {
+    finalTrigger = (
+      <Tooltip>
+        <TooltipTrigger {...sharedProps}>
+          {trigger.props.children}
+        </TooltipTrigger>
+        <TooltipContent>
+          <span>{triggerLabel}</span>
+        </TooltipContent>
+      </Tooltip>
+    );
+  } else {
+    finalTrigger = cloneElement(trigger, sharedProps);
+  }
+
   return (
     <>
-      {cloneElement(trigger, {
-        ref: referenceRef,
-        onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
-          trigger.props.onClick?.(event);
-          onOpenChange(!open);
-          requestAnimationFrame(() => {
-            prevFocusRef.current?.focus();
-          });
-        },
-      })}
+      {finalTrigger}
 
       {open ? (
         <>

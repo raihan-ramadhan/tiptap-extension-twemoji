@@ -6,7 +6,6 @@ import { Plus } from "lucide-react";
 
 // LIB
 import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
-import { cn } from "@/lib/utils";
 import {
   getTargetCellVertically,
   getVisibleRowRange,
@@ -72,8 +71,6 @@ export default function ({
   const gridRef = useRef<Grid<ItemData>>(null);
 
   const MINIMUM_CELL_SHOW_GROUPS = 60;
-
-  const [keyboardEnabled, setKeyboardEnabled] = useState(true);
 
   const [skinTone, setSkinTone] = useState<SKIN_TONE_CODES_PROPS>(() => {
     // Runs only on client
@@ -219,24 +216,24 @@ export default function ({
 
   // handle keydown event globally for arrows, enter, escape,
   // and handle useImperativeHandle from tiptap onKeyDown props
-  useOnKeydownHandlers({
-    MAX_VISIBLE_ROW,
-    CELL_HEIGHT,
-    COLUMNS,
-    arr2d,
-    selectedCellRef,
-    ref,
-    gridRef,
-    outerRef,
-    onSelectEmoji,
-    setSelectedCell,
-    skinTone,
-    range,
-    keyboardEnabled,
-    selectedCellElementRef,
-    activateTrap,
-    deactivateTrap,
-  });
+  const { disableEmojiCellsNavigation, enableEmojiCellsNavigation } =
+    useOnKeydownHandlers({
+      MAX_VISIBLE_ROW,
+      CELL_HEIGHT,
+      COLUMNS,
+      arr2d,
+      selectedCellRef,
+      ref,
+      gridRef,
+      outerRef,
+      onSelectEmoji,
+      setSelectedCell,
+      skinTone,
+      range,
+      selectedCellElementRef,
+      activateTrap,
+      deactivateTrap,
+    });
 
   const toastRef = useRef<{
     element: HTMLDivElement | null;
@@ -406,6 +403,8 @@ export default function ({
       }}
     >
       <EmojiHeader
+        onSkinListMount={disableEmojiCellsNavigation}
+        onSkinListUnmount={enableEmojiCellsNavigation}
         onCancel={onCancel}
         callback={callback}
         filteredEmojis={items[0].filteredEmojis}
@@ -442,7 +441,8 @@ export default function ({
               onSelectEmoji,
               selectedCell,
               selectedCellElementRef,
-              setKeyboardEnabled,
+              disableEmojiCellsNavigation,
+              enableEmojiCellsNavigation,
               cellRefs,
               handleHover,
               onError,
@@ -458,7 +458,8 @@ export default function ({
               onSuccess={onSuccess}
               onError={onError}
               upload={upload}
-              setKeyboardEnabled={setKeyboardEnabled}
+              disableEmojiCellsNavigation={disableEmojiCellsNavigation}
+              enableEmojiCellsNavigation={enableEmojiCellsNavigation}
               arr2d={arr2d}
               width={widthGrid}
               outerRef={outerRef}
@@ -475,15 +476,16 @@ export default function ({
         >
           <span>No Result</span>
           <AddCustomEmoji
-            onSuccess={onSuccess}
-            onErrorUpload={onError}
-            upload={upload}
-            onMount={() => setKeyboardEnabled(false)}
-            onUnmount={() => setKeyboardEnabled(true)}
-            className={cn(
+            className={
               "relative inset-0 h-full px-2 cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black hover:bg-neutral-800"
-            )}
-            navigationCellDisableOnMount
+            }
+            onSubPopoverMount={disableEmojiCellsNavigation}
+            onSubPopoverUnmount={enableEmojiCellsNavigation}
+            onMount={disableEmojiCellsNavigation}
+            onUnmount={enableEmojiCellsNavigation}
+            onErrorUpload={onError}
+            onSuccess={onSuccess}
+            upload={upload}
           >
             <span className="flex items-center text-base px-2">
               <Plus /> <span> Add Emoji</span>

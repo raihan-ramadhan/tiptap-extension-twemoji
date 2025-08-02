@@ -32,12 +32,13 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     selectedCellElementRef,
     skinTone,
     range,
-    setKeyboardEnabled,
     cellRefs,
     handleHover,
     onError,
     onSuccess,
     upload,
+    disableEmojiCellsNavigation,
+    enableEmojiCellsNavigation,
   } = data;
   const emojiData = arr2d[rowIndex][columnIndex];
 
@@ -184,8 +185,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
 
     return (
       <AddCustomEmoji
-        onMount={() => setKeyboardEnabled(false)}
-        onUnmount={() => setKeyboardEnabled(true)}
+        onSubPopoverMount={disableEmojiCellsNavigation}
+        onSubPopoverUnmount={enableEmojiCellsNavigation}
         onErrorUpload={onError}
         fallback={["bottom"]}
         onSuccess={onSuccess}

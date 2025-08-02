@@ -6,17 +6,23 @@ import {
 } from "@/lib/emoji-utils";
 import SkinItem from "./SkinItem";
 
+type SkinListProps = {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  setSkinTone: Dispatch<SetStateAction<SKIN_TONE_CODES_PROPS>>;
+  skinTone: SKIN_TONE_CODES_PROPS;
+  toneTriggerRef: React.RefObject<HTMLButtonElement | null>;
+  onMount: () => void;
+  onUnmount: () => void;
+};
+
 const SkinList = ({
   setOpen,
   setSkinTone,
   skinTone,
   toneTriggerRef,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  setSkinTone: Dispatch<SetStateAction<SKIN_TONE_CODES_PROPS>>;
-  skinTone: SKIN_TONE_CODES_PROPS;
-  toneTriggerRef: React.RefObject<HTMLButtonElement | null>;
-}) => {
+  onMount,
+  onUnmount,
+}: SkinListProps) => {
   const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -28,8 +34,16 @@ const SkinList = ({
       returnFocusOnDeactivate: false,
     });
     trap.activate();
+
     return () => {
       trap.deactivate();
+    };
+  }, []);
+
+  useEffect(() => {
+    onMount();
+    return () => {
+      onUnmount();
     };
   }, []);
 

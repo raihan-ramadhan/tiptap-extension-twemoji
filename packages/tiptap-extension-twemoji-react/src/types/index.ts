@@ -104,7 +104,8 @@ export type ItemData = ExtensionOptions & {
   selectedCellElementRef: SelectedCellElementRef;
   skinTone: SKIN_TONE_CODES_PROPS;
   range?: Range;
-  setKeyboardEnabled: Dispatch<SetStateAction<boolean>>;
   cellRefs: React.RefObject<Map<string, HTMLDivElement | HTMLButtonElement>>;
   handleHover: (row: number, col: number) => void;
+  disableEmojiCellsNavigation: () => void;
+  enableEmojiCellsNavigation: () => void;
 };

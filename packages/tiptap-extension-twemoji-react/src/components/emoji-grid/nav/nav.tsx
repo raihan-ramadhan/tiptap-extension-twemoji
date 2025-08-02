@@ -16,7 +16,8 @@ interface NavProps {
   outerRef: React.RefObject<HTMLDivElement | null>;
   width: number;
   arr2d: ARRAY2D_ITEM_PROPS[];
-  setKeyboardEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  disableEmojiCellsNavigation: () => void;
+  enableEmojiCellsNavigation: () => void;
 }
 
 const Nav = ({
@@ -26,10 +27,11 @@ const Nav = ({
   outerRef,
   width,
   arr2d,
-  setKeyboardEnabled,
   onError,
   onSuccess,
   upload,
+  disableEmojiCellsNavigation,
+  enableEmojiCellsNavigation,
 }: NavProps & ExtensionOptions) => {
   const initialActiveNav = useMemo(() => {
     return Object.keys(groupsIndexes).find(
@@ -135,8 +137,8 @@ const Nav = ({
             )}
             side="top"
             align="end"
-            onMount={() => setKeyboardEnabled(false)}
-            onUnmount={() => setKeyboardEnabled(true)}
+            onSubPopoverMount={disableEmojiCellsNavigation}
+            onSubPopoverUnmount={enableEmojiCellsNavigation}
             onErrorUpload={onError}
             onSuccess={onSuccess}
             upload={upload}

@@ -1,13 +1,15 @@
 import { memo, useEffect, useRef, useState } from "react";
+import { createFocusTrap } from "focus-trap";
 import Content from "./Content";
 import { Popover } from "@/components/popover/Popover";
 import { Alignment, Placement, Side } from "@floating-ui/dom";
 import { ExtensionOptions } from "@/types";
-import { createFocusTrap } from "focus-trap";
 
-type Props = {
-  onMount: () => void;
-  onUnmount: () => void;
+type AddCustomEmojiProps = {
+  onSubPopoverMount: () => void;
+  onSubPopoverUnmount: () => void;
+  onMount?: () => void;
+  onUnmount?: () => void;
   side?: Side;
   align?: Alignment | "center";
   fallback?: Placement[];
@@ -20,19 +22,20 @@ type Props = {
   };
 
 const AddCustomEmoji = ({
+  onSubPopoverUnmount,
+  onSubPopoverMount,
+  onErrorUpload,
+  onSuccess,
   onUnmount,
-  onMount,
-  align,
-  side,
   fallback,
   children,
+  onMount,
   upload,
-  onSuccess,
-  onErrorUpload,
+  align,
   label = "Add Emoji",
-  navigationCellDisableOnMount = false,
+  side,
   ...props
-}: Props) => {
+}: AddCustomEmojiProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const trapRef = useRef<HTMLDivElement | null>(null);
@@ -57,14 +60,12 @@ const AddCustomEmoji = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (navigationCellDisableOnMount) {
-      onMount();
+    if (onMount) onMount();
 
-      return () => {
-        onUnmount();
-      };
-    }
-  }, [navigationCellDisableOnMount]);
+    return () => {
+      if (onUnmount) onUnmount();
+    };
+  }, [onMount, onUnmount]);
 
   return (
     <Popover
@@ -80,11 +81,11 @@ const AddCustomEmoji = ({
       tooltipForTrigger
     >
       <Content
-        onMount={onMount}
-        onUnmount={onUnmount}
-        setIsOpen={setIsOpen}
+        onUnmount={onSubPopoverUnmount}
+        onMount={onSubPopoverMount}
         onError={onErrorUpload}
         onSuccess={onSuccess}
+        setIsOpen={setIsOpen}
         upload={upload}
       />
     </Popover>

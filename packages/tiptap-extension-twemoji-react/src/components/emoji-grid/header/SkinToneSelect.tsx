@@ -8,13 +8,19 @@ import {
 import { useClickOutside } from "@/hooks/use-click-outside";
 import SkinList from "./SkinList";
 
+type SkinToneSelectProps = {
+  setSkinTone: Dispatch<SetStateAction<SKIN_TONE_CODES_PROPS>>;
+  skinTone: SKIN_TONE_CODES_PROPS;
+  onSkinListMount: () => void;
+  onSkinListUnmount: () => void;
+};
+
 const SkinToneSelect = ({
   skinTone,
   setSkinTone,
-}: {
-  setSkinTone: Dispatch<SetStateAction<SKIN_TONE_CODES_PROPS>>;
-  skinTone: SKIN_TONE_CODES_PROPS;
-}) => {
+  onSkinListMount,
+  onSkinListUnmount,
+}: SkinToneSelectProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -32,6 +38,8 @@ const SkinToneSelect = ({
           setSkinTone={setSkinTone}
           skinTone={skinTone}
           toneTriggerRef={toneTriggerRef}
+          onMount={onSkinListMount}
+          onUnmount={onSkinListUnmount}
         />
       ) : (
         <Tooltip delay={200}>

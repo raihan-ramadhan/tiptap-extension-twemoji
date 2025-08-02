@@ -1,4 +1,4 @@
-import { useEffect, useImperativeHandle } from "react";
+import { useEffect, useImperativeHandle, useState } from "react";
 import { FixedSizeGrid as Grid } from "react-window";
 import { Emoji } from "@/data/emoji-sprite-map";
 import {
@@ -37,7 +37,6 @@ interface OnKeydownHandlersProps {
   COLUMNS: number;
   skinTone: SKIN_TONE_CODES_PROPS;
   range?: SuggestionProps<any, MentionNodeAttrs>["range"];
-  keyboardEnabled: boolean;
   selectedCellElementRef: SelectedCellElementRef;
   deactivateTrap: () => void;
   activateTrap: () => void;
@@ -56,7 +55,6 @@ export function useOnKeydownHandlers({
   ref,
   skinTone,
   range,
-  keyboardEnabled,
   selectedCellElementRef,
   activateTrap,
   deactivateTrap,
@@ -68,6 +66,16 @@ export function useOnKeydownHandlers({
     MAX_VISIBLE_ROW,
     arr2d,
   };
+
+  const [isActive, setIsActive] = useState(true);
+
+  const disableEmojiCellsNavigation = () => {
+    setIsActive(false);
+  };
+  const enableEmojiCellsNavigation = () => {
+    setIsActive(true);
+  };
+
   const upHandler = () => {
     if (selectedCellRef.current.row === 1) {
       requestAnimationFrame(() => {
@@ -263,7 +271,7 @@ export function useOnKeydownHandlers({
   });
 
   useEffect(() => {
-    if (!keyboardEnabled) return;
+    if (!isActive) return;
     const onKeyDown = (event: KeyboardEvent) => {
       const keyMap: Record<string, () => void> = {
         ArrowUp: upHandler,
@@ -288,5 +296,10 @@ export function useOnKeydownHandlers({
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [arr2d, keyboardEnabled]);
+  }, [arr2d, isActive]);
+
+  return {
+    enableEmojiCellsNavigation,
+    disableEmojiCellsNavigation,
+  };
 }

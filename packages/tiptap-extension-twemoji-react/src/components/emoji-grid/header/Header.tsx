@@ -22,6 +22,8 @@ export type EmojiHeaderProps = {
   onCancel?: ComponentEmojiMentionProps["onCancel"];
   onDelete?: () => void;
   closeAfterDelete?: boolean;
+  onSkinListMount: () => void;
+  onSkinListUnmount: () => void;
 };
 
 const EmojiHeader = ({
@@ -37,6 +39,8 @@ const EmojiHeader = ({
   onCancel,
   onDelete,
   closeAfterDelete,
+  onSkinListMount,
+  onSkinListUnmount,
 }: EmojiHeaderProps) => {
   const stopEnterPropagation = useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {
@@ -71,7 +75,12 @@ const EmojiHeader = ({
           closeAfterDelete={closeAfterDelete}
         />
       ) : null}
-      <SkinToneSelect setSkinTone={setSkinTone} skinTone={skinTone} />
+      <SkinToneSelect
+        setSkinTone={setSkinTone}
+        skinTone={skinTone}
+        onSkinListMount={onSkinListMount}
+        onSkinListUnmount={onSkinListUnmount}
+      />
     </div>
   );
 };

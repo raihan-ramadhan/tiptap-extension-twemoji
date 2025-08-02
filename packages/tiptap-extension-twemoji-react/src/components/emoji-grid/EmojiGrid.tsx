@@ -33,7 +33,7 @@ import {
 
 // COMPONENTS
 import { computePosition, autoUpdate, offset, flip } from "@floating-ui/dom";
-import AddEmojiBtnWrapper from "@/components/emoji-grid/add-custom-emoji/AddEmojiBtnWrapper";
+import AddCustomEmoji from "@/components/emoji-grid/add-custom-emoji/AddCustomEmoji";
 import EmojiHeader from "@/components/emoji-grid/header/Header";
 import Cell from "@/components/emoji-grid/Cell";
 import Nav from "@/components/emoji-grid/nav/Nav";
@@ -474,7 +474,7 @@ export default function ({
           style={{ width: widthGrid, height: CELL_HEIGHT }}
         >
           <span>No Result</span>
-          <AddEmojiBtnWrapper
+          <AddCustomEmoji
             onSuccess={onSuccess}
             onErrorUpload={onError}
             upload={upload}
@@ -487,7 +487,7 @@ export default function ({
             <span className="flex items-center text-base px-2">
               <Plus /> <span> Add Emoji</span>
             </span>
-          </AddEmojiBtnWrapper>
+          </AddCustomEmoji>
         </div>
       )}
     </div>

@@ -17,7 +17,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/tiptap-ui-primitive/tooltip";
-import AddEmojiBtnWrapper from "@/components/emoji-grid/add-custom-emoji/AddEmojiBtnWrapper";
+import AddCustomEmoji from "@/components/emoji-grid/add-custom-emoji/AddCustomEmoji";
 
 const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
   columnIndex,
@@ -186,7 +186,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     );
 
     return (
-      <AddEmojiBtnWrapper
+      <AddCustomEmoji
         {...buttonAttrs}
         onMount={() => setKeyboardEnabled(false)}
         onUnmount={() => setKeyboardEnabled(true)}
@@ -203,7 +203,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         label={buttonLabel}
       >
         {content}
-      </AddEmojiBtnWrapper>
+      </AddCustomEmoji>
     );
   }
 

@@ -3,7 +3,7 @@ import { FixedSizeGrid as Grid } from "react-window";
 import { EMOJI_GROUPS_PROPS } from "@/lib/emoji-groups";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { ARRAY2D_ITEM_PROPS, ExtensionOptions, ItemData } from "@/types";
-import AddEmojiBtnWrapper from "@/components/emoji-grid/add-custom-emoji/AddEmojiBtnWrapper";
+import AddCustomEmoji from "@/components/emoji-grid/add-custom-emoji/AddCustomEmoji";
 import { debounce } from "lodash-es";
 import { Plus } from "lucide-react";
 import NavItem from "./NavItem";
@@ -128,7 +128,7 @@ const Nav = ({
           );
         })}
         <li>
-          <AddEmojiBtnWrapper
+          <AddCustomEmoji
             style={{ width: `${navItemWidth}px` }}
             className={cn(
               `hover:bg-neutral-200 dark:hover:bg-neutral-800 aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`
@@ -143,7 +143,7 @@ const Nav = ({
             onKeyDown={stopEnterKey}
           >
             <Plus className="bg-black rounded-full text-white font-bold stroke-2 size-full" />
-          </AddEmojiBtnWrapper>
+          </AddCustomEmoji>
         </li>
       </ul>
     </div>

@@ -23,7 +23,7 @@ type Props = {
     onErrorUpload?: ExtensionOptions["onError"];
   };
 
-const AddEmojiBtnWrapper = ({
+const AddCustomEmoji = ({
   onUnmount,
   onMount,
   align,
@@ -89,4 +89,4 @@ const AddEmojiBtnWrapper = ({
   );
 };
 
-export default memo(AddEmojiBtnWrapper);
+export default memo(AddCustomEmoji);

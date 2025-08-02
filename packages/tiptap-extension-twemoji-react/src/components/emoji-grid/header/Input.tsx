@@ -24,7 +24,12 @@ const Input = ({
       )}
       value={query}
       onChange={handleQueryChange}
-      onKeyDown={stopEnterPropagation}
+      onKeyDown={(event) => {
+        stopEnterPropagation(event);
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          event.stopPropagation();
+        }
+      }}
     />
   );
 };

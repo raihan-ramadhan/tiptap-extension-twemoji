@@ -70,6 +70,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
       }
       cellRefs.current.set(`${rowIndex}-${columnIndex}`, node);
     },
+    tabIndex: isSelected ? undefined : -1,
   };
 
   function renderEmojiCell(
@@ -79,11 +80,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
   ) {
     return (
       <Tooltip>
-        <TooltipTrigger
-          tabIndex={isSelected ? undefined : -1}
-          onClick={onClick}
-          {...buttonAttrs}
-        >
+        <TooltipTrigger onClick={onClick} {...buttonAttrs}>
           {content}
         </TooltipTrigger>
         <TooltipContent>

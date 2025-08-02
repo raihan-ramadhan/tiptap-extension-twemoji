@@ -483,6 +483,7 @@ export default function ({
             className={cn(
               "relative inset-0 h-full px-2 cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black hover:bg-neutral-800"
             )}
+            navigationCellDisableOnMount
           >
             <span className="flex items-center text-base px-2">
               <Plus /> <span> Add Emoji</span>

@@ -13,6 +13,7 @@ type Props = {
   fallback?: Placement[];
   children?: React.ReactElement;
   label?: string;
+  navigationCellDisableOnMount?: boolean;
 } & React.ComponentProps<"button"> &
   Omit<ExtensionOptions, "onError"> & {
     onErrorUpload?: ExtensionOptions["onError"];
@@ -29,6 +30,7 @@ const AddCustomEmoji = ({
   onSuccess,
   onErrorUpload,
   label = "Add Emoji",
+  navigationCellDisableOnMount = false,
   ...props
 }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -53,6 +55,16 @@ const AddCustomEmoji = ({
       focusTrap.current = null;
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (navigationCellDisableOnMount) {
+      onMount();
+
+      return () => {
+        onUnmount();
+      };
+    }
+  }, [navigationCellDisableOnMount]);
 
   return (
     <Popover

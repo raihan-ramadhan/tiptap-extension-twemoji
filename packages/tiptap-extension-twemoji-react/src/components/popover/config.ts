@@ -34,7 +34,7 @@ export const floatingStyles: {
     zIndex: 9999,
     background: "white",
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-    borderRadius: "8px",
+    borderRadius: "10px",
     minHeight: "32px",
     width: "fit-content",
     height: "fit-content",

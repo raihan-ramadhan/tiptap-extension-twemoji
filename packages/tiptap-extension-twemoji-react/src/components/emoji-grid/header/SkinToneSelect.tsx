@@ -13,6 +13,7 @@ type SkinToneSelectProps = {
   skinTone: SKIN_TONE_CODES_PROPS;
   onSkinListMount: () => void;
   onSkinListUnmount: () => void;
+  stopEnterPropagation: (event: React.KeyboardEvent<HTMLElement>) => void;
 };
 
 const SkinToneSelect = ({
@@ -20,6 +21,7 @@ const SkinToneSelect = ({
   setSkinTone,
   onSkinListMount,
   onSkinListUnmount,
+  stopEnterPropagation,
 }: SkinToneSelectProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -45,19 +47,12 @@ const SkinToneSelect = ({
         <Tooltip delay={200}>
           <TooltipTrigger
             ref={toneTriggerRef}
-            className={`size-8 p-1 aspect-square cursor-pointer rounded-md flex justify-center items-center hover:bg-neutral-200 hover:dark:bg-neutral-800`}
-            style={{
-              padding: 0,
-            }}
+            className="size-7 aspect-square cursor-pointer flex justify-center items-center hover:bg-neutral-200 hover:dark:bg-neutral-800 rounded-[8px] p-1.5 outline-1 outline-(--border-color) focus-visible:outline-2 focus-visible:outline-(--focus-active-color) focus-visible:-outline-offset-[2px]"
             onClick={() => setOpen((prev) => !prev)}
-            onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => {
-              if (event.key === "Enter") {
-                event.stopPropagation();
-              }
-            }}
+            onKeyDown={stopEnterPropagation}
           >
             <span
-              className="inline-block size-6 rounded"
+              className="inline-block size-full rounded-[4px]"
               style={{
                 backgroundColor: SKIN_TONE_MAP[skinTone].color,
               }}

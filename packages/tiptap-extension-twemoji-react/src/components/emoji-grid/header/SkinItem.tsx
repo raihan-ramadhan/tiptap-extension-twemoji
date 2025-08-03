@@ -43,14 +43,14 @@ const SkinItem = ({
             }
           }}
           className={cn(
-            "size-8 p-0 aspect-square cursor-pointer rounded-md flex justify-center items-center hover:bg-neutral-200 hover:dark:bg-neutral-800",
-            code === skinTone && "ring ring-blue-500"
+            "size-7 aspect-square cursor-pointer flex justify-center items-center hover:bg-neutral-200 hover:dark:bg-neutral-800 rounded-[8px] p-1.5 outline-1 outline-(--border-color) focus-visible:outline-2 focus-visible:outline-(--focus-active-color) focus-visible:-outline-offset-[2px]",
+            code === skinTone && "bg-(--secondary-color)"
           )}
           autoFocus={code === skinTone}
           draggable={false}
         >
           <span
-            className="inline-block size-6 rounded"
+            className="inline-block size-full rounded-[4px]"
             style={{
               backgroundColor: SKIN_TONE_MAP[code].color,
             }}

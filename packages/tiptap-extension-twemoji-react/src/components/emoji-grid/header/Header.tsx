@@ -8,6 +8,7 @@ import SkinToneSelect from "./SkinToneSelect";
 import RandomButton from "./RandomButton";
 import RemoveButton from "./RemoveButton";
 import Input from "./Input";
+import { CELL_HEIGHT, COLUMNS } from "@/constants";
 
 export type EmojiHeaderProps = {
   headerInput?: boolean;
@@ -42,6 +43,8 @@ const EmojiHeader = ({
   onSkinListMount,
   onSkinListUnmount,
 }: EmojiHeaderProps) => {
+  const widthGrid = COLUMNS * CELL_HEIGHT + 12;
+
   const stopEnterPropagation = useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {
       if (event.key === "Enter") {
@@ -52,7 +55,12 @@ const EmojiHeader = ({
   );
 
   return (
-    <div className="flex gap-1 justify-end h-10 border-neutral-200 dark:border-neutral-800 border-b text-black dark:text-white p-1 transition duration-500">
+    <div
+      className="flex gap-1.5 justify-end h-fit border-neutral-200 dark:border-neutral-800 border-b text-black dark:text-white p-1 transition duration-500"
+      style={{
+        width: widthGrid,
+      }}
+    >
       {headerInput ? (
         <Input
           stopEnterPropagation={stopEnterPropagation}
@@ -76,10 +84,11 @@ const EmojiHeader = ({
         />
       ) : null}
       <SkinToneSelect
+        stopEnterPropagation={stopEnterPropagation}
+        onSkinListUnmount={onSkinListUnmount}
+        onSkinListMount={onSkinListMount}
         setSkinTone={setSkinTone}
         skinTone={skinTone}
-        onSkinListMount={onSkinListMount}
-        onSkinListUnmount={onSkinListUnmount}
       />
     </div>
   );

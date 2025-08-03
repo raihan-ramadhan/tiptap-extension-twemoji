@@ -2,3 +2,12 @@
 @plugin 'tailwind-scrollbar';
 
 @custom-variant dark (&:is(.dark *));
+
+:root {
+  --bg-background: white;
+
+  --focus-active-color: oklch(70.7% 0.165 254.624);
+
+  --border-color: oklch(87.2% 0.01 258.338); /* gray 400 */
+  --secondary-color: oklch(96.7% 0.003 264.542); /* gray 200 */
+}

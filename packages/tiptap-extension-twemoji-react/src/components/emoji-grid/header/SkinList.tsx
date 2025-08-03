@@ -51,7 +51,7 @@ const SkinList = ({
     <ul
       ref={listRef}
       tabIndex={-1}
-      className="flex h-8 outline-none"
+      className="flex h-full outline-none gap-1.5"
       onKeyDownCapture={(e) => {
         if (e.key === "Escape") {
           e.preventDefault();

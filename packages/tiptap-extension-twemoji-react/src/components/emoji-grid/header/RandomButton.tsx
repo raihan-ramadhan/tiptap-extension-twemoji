@@ -27,11 +27,11 @@ const RandomButton = ({
   return (
     <Tooltip delay={200}>
       <TooltipTrigger
-        className="aspect-square h-full"
+        className="aspect-square size-7 flex justify-center items-center outline-1 outline-(--border-color) rounded-[8px] p-1.5 focus-visible:outline-2 focus-visible:outline-(--focus-active-color) focus-visible:-outline-offset-[2px]"
         onClick={handleRandomClick}
         onKeyDown={stopEnterPropagation}
       >
-        <Shuffle />
+        <Shuffle strokeWidth="1.5" />
       </TooltipTrigger>
       <TooltipContent>
         <span>Random</span>

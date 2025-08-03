@@ -187,7 +187,7 @@ const Dropzone = ({
     <DropzoneContext.Provider value={payLoad}>
       <div
         {...getRootProps({
-          className: cn("p-5 flex flex-col gap-6", className),
+          className: cn("p-5 flex flex-col gap-6 w-72", className),
         })}
         tabIndex={-1}
       >

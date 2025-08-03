@@ -31,7 +31,6 @@ import {
 } from "@/constants";
 
 // COMPONENTS
-import { computePosition, autoUpdate, offset, flip } from "@floating-ui/dom";
 import AddCustomEmoji from "@/components/emoji-grid/add-custom-emoji/AddCustomEmoji";
 import EmojiHeader from "@/components/emoji-grid/header/Header";
 import Cell from "@/components/emoji-grid/Cell";
@@ -187,22 +186,11 @@ export default function ({
       }
     };
 
-    // ✅ Reactivate when Tab is pressed
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Tab") {
-        if (!focusTrap.current?.active) {
-          trap.activate();
-        }
-      }
-    };
-
     document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       trap.deactivate();
       document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
@@ -233,104 +221,8 @@ export default function ({
       selectedCellElementRef,
       activateTrap,
       deactivateTrap,
+      trapRef,
     });
-
-  const toastRef = useRef<{
-    element: HTMLDivElement | null;
-    cleanup: (() => void) | null;
-    timeoutId: number | null;
-  }>({
-    element: null,
-    cleanup: null,
-    timeoutId: null,
-  });
-
-  function showToastAboveTrap(
-    trapEl: HTMLElement,
-    message: string,
-    toastRef: React.RefObject<{
-      element: HTMLDivElement | null;
-      cleanup: (() => void) | null;
-      timeoutId: number | null;
-    }>
-  ) {
-    // Clear existing toast
-    if (toastRef.current.element) {
-      toastRef.current.cleanup?.();
-      clearTimeout(toastRef.current.timeoutId!);
-      toastRef.current.element.remove();
-      toastRef.current.element = null;
-      toastRef.current.cleanup = null;
-      toastRef.current.timeoutId = null;
-    }
-
-    const toast = document.createElement("div");
-    toast.textContent = message;
-    toast.className =
-      "bg-black/50 text-white px-3 py-2 rounded shadow transition-opacity duration-300 opacity-100 pointer-events-none z-50 absolute";
-
-    document.body.appendChild(toast);
-
-    const cleanup = autoUpdate(trapEl, toast, () => {
-      computePosition(trapEl, toast, {
-        placement: "top",
-        middleware: [offset(8), flip({ fallbackPlacements: ["bottom"] })],
-      }).then(({ x, y }) => {
-        Object.assign(toast.style, {
-          left: `${x}px`,
-          top: `${y}px`,
-          position: "absolute",
-        });
-      });
-    });
-
-    const timeoutId = window.setTimeout(() => {
-      toast.style.opacity = "0";
-      setTimeout(() => {
-        cleanup();
-        toast.remove();
-        toastRef.current.element = null;
-        toastRef.current.cleanup = null;
-        toastRef.current.timeoutId = null;
-      }, 300);
-    }, 2000);
-
-    // Save references
-    toastRef.current.element = toast;
-    toastRef.current.cleanup = cleanup;
-    toastRef.current.timeoutId = timeoutId;
-  }
-
-  const dismissToast = () => {
-    if (toastRef.current.element) {
-      toastRef.current.cleanup?.();
-      clearTimeout(toastRef.current.timeoutId!);
-      toastRef.current.element.remove();
-      toastRef.current.element = null;
-      toastRef.current.cleanup = null;
-      toastRef.current.timeoutId = null;
-    }
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Tab") {
-        requestAnimationFrame(() => {
-          const activeEl = document.activeElement as HTMLElement;
-          if (activeEl?.hasAttribute("data-selected-cell") && trapRef.current) {
-            showToastAboveTrap(trapRef.current, "Move ⬅️⬆️⬇️➡️", toastRef);
-          } else {
-            dismissToast();
-          }
-        });
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   const cellRefs = useRef<Map<string, HTMLDivElement | HTMLButtonElement>>(
     new Map()
@@ -448,26 +340,37 @@ export default function ({
               onError,
               onSuccess,
               upload,
+              deactivateTrap,
+              activateTrap,
             }}
           >
             {Cell}
           </Grid>
-          {filteredEmojis.length + (filteredCustomEmojis?.length ?? 0) >
-          MINIMUM_CELL_SHOW_GROUPS ? (
-            <Nav
-              onSuccess={onSuccess}
-              onError={onError}
-              upload={upload}
-              disableEmojiCellsNavigation={disableEmojiCellsNavigation}
-              enableEmojiCellsNavigation={enableEmojiCellsNavigation}
-              arr2d={arr2d}
-              width={widthGrid}
-              outerRef={outerRef}
-              navItemWidth={CELL_HEIGHT}
-              gridRef={gridRef}
-              groupsIndexes={groupsIndexes}
-            />
-          ) : null}
+          <Nav
+            onSuccess={onSuccess}
+            onError={onError}
+            upload={upload}
+            disableEmojiCellsNavigation={() => {
+              deactivateTrap();
+              disableEmojiCellsNavigation();
+            }}
+            enableEmojiCellsNavigation={() => {
+              activateTrap();
+              enableEmojiCellsNavigation();
+            }}
+            arr2d={arr2d}
+            width={widthGrid}
+            outerRef={outerRef}
+            navItemWidth={CELL_HEIGHT}
+            gridRef={gridRef}
+            groupsIndexes={groupsIndexes}
+            className={
+              filteredEmojis.length + (filteredCustomEmojis?.length ?? 0) >
+              MINIMUM_CELL_SHOW_GROUPS
+                ? "sticky"
+                : "hidden"
+            }
+          />
         </>
       ) : (
         <div
@@ -476,11 +379,15 @@ export default function ({
         >
           <span>No Result</span>
           <AddCustomEmoji
-            className={
-              "relative inset-0 h-full px-2 cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black hover:bg-neutral-800"
-            }
-            onSubPopoverMount={disableEmojiCellsNavigation}
-            onSubPopoverUnmount={enableEmojiCellsNavigation}
+            className="relative inset-0 h-full px-2 cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black hover:bg-neutral-800"
+            onSubPopoverMount={() => {
+              deactivateTrap();
+              disableEmojiCellsNavigation();
+            }}
+            onSubPopoverUnmount={() => {
+              activateTrap();
+              enableEmojiCellsNavigation();
+            }}
             onMount={disableEmojiCellsNavigation}
             onUnmount={enableEmojiCellsNavigation}
             onErrorUpload={onError}

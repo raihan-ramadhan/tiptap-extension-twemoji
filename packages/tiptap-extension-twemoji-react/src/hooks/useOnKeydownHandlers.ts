@@ -1,4 +1,4 @@
-import { useEffect, useImperativeHandle, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { FixedSizeGrid as Grid } from "react-window";
 import { Emoji } from "@/data/emoji-sprite-map";
 import {
@@ -11,6 +11,7 @@ import {
   scrollGridByRows,
   isEmoji,
   isCustomEmoji,
+  isActionBtn,
 } from "@/lib/emoji-grid-utils";
 import {
   ARRAY2D_ITEM_PROPS,
@@ -23,6 +24,15 @@ import {
 import { SKIN_TONE_CODES_PROPS, SKIN_TONE_MAP } from "@/lib/emoji-utils";
 import { SuggestionProps } from "@tiptap/suggestion";
 import { MentionNodeAttrs } from "@tiptap/extension-mention";
+
+import { computePosition, autoUpdate, offset, flip } from "@floating-ui/dom";
+import { debounce } from "lodash-es";
+
+type ToastRef = {
+  element: HTMLDivElement | null;
+  cleanup: (() => void) | null;
+  timeoutId: number | null;
+};
 
 interface OnKeydownHandlersProps {
   onSelectEmoji: SelectEmojiFunc;
@@ -40,6 +50,7 @@ interface OnKeydownHandlersProps {
   selectedCellElementRef: SelectedCellElementRef;
   deactivateTrap: () => void;
   activateTrap: () => void;
+  trapRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export function useOnKeydownHandlers({
@@ -58,6 +69,7 @@ export function useOnKeydownHandlers({
   selectedCellElementRef,
   activateTrap,
   deactivateTrap,
+  trapRef,
 }: OnKeydownHandlersProps) {
   const sharedScrollParams = {
     gridRef,
@@ -241,13 +253,9 @@ export function useOnKeydownHandlers({
         emoji: data,
         range,
       });
-    } else if (data && typeof data === "object" && "buttonLabel" in data) {
+    } else if (isActionBtn(data)) {
       selectedCellElementRef.current?.click();
     }
-  };
-
-  const tabHandler = (event: KeyboardEvent) => {
-    event.preventDefault();
   };
 
   // only run if user still focus at editor
@@ -256,7 +264,10 @@ export function useOnKeydownHandlers({
       onKeyDown: ({ event }) => {
         const keyMap: Record<string, () => void> = {
           Enter: () => enterHandler(event, skinTone),
-          Tab: () => tabHandler(event),
+          Tab: () => {
+            event.preventDefault();
+            activateTrap();
+          },
         };
 
         const handler = keyMap[event.key];
@@ -270,6 +281,74 @@ export function useOnKeydownHandlers({
     };
   });
 
+  const toastRef = useRef<ToastRef>({
+    element: null,
+    cleanup: null,
+    timeoutId: null,
+  });
+
+  function clearToast(ref: React.MutableRefObject<ToastRef>) {
+    const { element, cleanup, timeoutId } = ref.current;
+    if (element) {
+      cleanup?.();
+      clearTimeout(timeoutId!);
+      element.remove();
+      ref.current.element = null;
+      ref.current.cleanup = null;
+      ref.current.timeoutId = null;
+    }
+  }
+
+  const dismissToast = () => clearToast(toastRef);
+
+  const showToastAboveTrap = (
+    trapEl: HTMLElement,
+    message: string,
+    ref = toastRef
+  ) => {
+    clearToast(ref);
+
+    const toast = document.createElement("div");
+    toast.textContent = message;
+    toast.className =
+      "bg-black/50 text-white px-3 py-2 rounded shadow transition-opacity duration-300 opacity-100 pointer-events-none z-50 absolute";
+
+    document.body.appendChild(toast);
+
+    const cleanup = autoUpdate(trapEl, toast, () => {
+      computePosition(trapEl, toast, {
+        placement: "top",
+        middleware: [offset(8), flip({ fallbackPlacements: ["bottom"] })],
+      }).then(({ x, y }) => {
+        Object.assign(toast.style, {
+          left: `${x}px`,
+          top: `${y}px`,
+          position: "absolute",
+        });
+      });
+    });
+
+    const timeoutId = window.setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => clearToast(ref), 300);
+    }, 2000);
+
+    ref.current = { element: toast, cleanup, timeoutId };
+  };
+
+  const debouncedShowToastAboveTrap = debounce(showToastAboveTrap, 100);
+
+  const tabHandler = () => {
+    requestAnimationFrame(() => {
+      const activeEl = document.activeElement as HTMLElement;
+      if (activeEl?.hasAttribute("data-selected-cell") && trapRef.current) {
+        debouncedShowToastAboveTrap(trapRef.current, "Move ⬅️⬆️⬇️➡️", toastRef);
+      } else {
+        dismissToast();
+      }
+    });
+  };
+
   useEffect(() => {
     if (!isActive) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -278,24 +357,29 @@ export function useOnKeydownHandlers({
         ArrowDown: downHandler,
         ArrowLeft: leftHandler,
         ArrowRight: rightHandler,
+        Tab: tabHandler,
         Enter: () => enterHandler(event, skinTone),
       };
 
       const handler = keyMap[event.key];
       if (handler) {
-        event.preventDefault();
-        event.stopPropagation();
         handler();
-        deactivateTrap();
-        requestAnimationFrame(() => {
-          selectedCellElementRef.current?.focus();
-          activateTrap();
-        });
+        if (event.key !== "Tab" && event.key !== "Enter") {
+          event.preventDefault();
+          event.stopPropagation();
+          deactivateTrap();
+          requestAnimationFrame(() => {
+            selectedCellElementRef.current?.focus();
+            activateTrap();
+          });
+        }
       }
     };
 
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
   }, [arr2d, isActive]);
 
   return {

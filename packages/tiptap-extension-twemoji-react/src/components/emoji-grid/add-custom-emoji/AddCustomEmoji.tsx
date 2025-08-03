@@ -38,13 +38,14 @@ const AddCustomEmoji = ({
 }: AddCustomEmojiProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const trapRef = useRef<HTMLDivElement | null>(null);
+  const subTrapRef = useRef<HTMLDivElement | null>(null);
   const focusTrap = useRef<ReturnType<typeof createFocusTrap> | null>(null);
 
   useEffect(() => {
-    if (isOpen && trapRef.current) {
-      focusTrap.current = createFocusTrap(trapRef.current, {
+    if (isOpen && subTrapRef.current) {
+      focusTrap.current = createFocusTrap(subTrapRef.current, {
         escapeDeactivates: false,
+
         clickOutsideDeactivates: true,
         returnFocusOnDeactivate: true,
       });
@@ -76,7 +77,7 @@ const AddCustomEmoji = ({
       overlay
       fallback={fallback}
       trigger={<button {...props}>{children}</button>}
-      trapRef={trapRef}
+      trapRef={subTrapRef}
       triggerLabel={label}
       tooltipForTrigger
     >

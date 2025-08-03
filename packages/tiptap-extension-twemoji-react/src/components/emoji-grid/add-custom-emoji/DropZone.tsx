@@ -189,8 +189,9 @@ const Dropzone = ({
         {...getRootProps({
           className: cn("p-5 flex flex-col gap-6", className),
         })}
+        tabIndex={-1}
       >
-        <input {...getInputProps({ multiple: MAX_FILES > 1 })} />
+        <input {...getInputProps({ multiple: MAX_FILES > 1 })} tabIndex={-1} />
         {children}
       </div>
     </DropzoneContext.Provider>
@@ -313,7 +314,7 @@ const DropzoneEmptyState = ({ className }: { className?: string }) => {
         type="button"
         onClick={() => inputRef.current?.click()}
         className={cn(
-          "bg-neutral-900 text-neutral-400 hover:bg-neutral-700 w-full flex items-center gap-1 justify-center py-3 rounded-md",
+          "bg-neutral-900 text-neutral-400 hover:bg-neutral-700 w-full flex items-center gap-1 justify-center py-3 rounded-md focus-visible:ring-blue-400 focus-visible:ring-2 focus-visible:ring-offset-1 outline-none",
           isDragActive && "bg-blue-400/20",
           isInvalid && "bg-red-400/20 hover:bg-red-400/20"
         )}

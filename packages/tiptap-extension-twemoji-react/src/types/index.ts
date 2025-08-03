@@ -108,4 +108,6 @@ export type ItemData = ExtensionOptions & {
   handleHover: (row: number, col: number) => void;
   disableEmojiCellsNavigation: () => void;
   enableEmojiCellsNavigation: () => void;
+  deactivateTrap: () => void;
+  activateTrap: () => void;
 };

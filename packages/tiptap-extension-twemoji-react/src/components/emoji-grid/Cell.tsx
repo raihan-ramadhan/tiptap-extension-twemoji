@@ -39,6 +39,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     upload,
     disableEmojiCellsNavigation,
     enableEmojiCellsNavigation,
+    activateTrap,
+    deactivateTrap,
   } = data;
   const emojiData = arr2d[rowIndex][columnIndex];
 
@@ -185,8 +187,14 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
 
     return (
       <AddCustomEmoji
-        onSubPopoverMount={disableEmojiCellsNavigation}
-        onSubPopoverUnmount={enableEmojiCellsNavigation}
+        onSubPopoverMount={() => {
+          deactivateTrap();
+          disableEmojiCellsNavigation();
+        }}
+        onSubPopoverUnmount={() => {
+          activateTrap();
+          enableEmojiCellsNavigation();
+        }}
         onErrorUpload={onError}
         fallback={["bottom"]}
         onSuccess={onSuccess}

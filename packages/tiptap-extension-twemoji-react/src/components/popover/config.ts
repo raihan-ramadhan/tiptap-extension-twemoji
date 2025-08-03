@@ -207,41 +207,61 @@ type OutsideClickHandlerOptions = {
   onCancel: () => void;
 };
 
+// Escape stack to track topmost popover
+const escapeStack: (() => void)[] = [];
+
+// Make sure Escape listener is only added once
+let escapeListenerAttached = false;
+
+function attachEscapeListenerOnce() {
+  if (escapeListenerAttached) return;
+  escapeListenerAttached = true;
+
+  document.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      const top = escapeStack[escapeStack.length - 1];
+      if (top) {
+        e.preventDefault();
+        e.stopPropagation();
+        top(); // Only run the topmost onCancel
+      }
+    }
+  });
+}
+
 export function setupDismissListeners({
   safeElements,
   onCancel,
 }: OutsideClickHandlerOptions): () => void {
+  attachEscapeListenerOnce(); // Attach the global Escape listener only once
+  escapeStack.push(onCancel); // Register this popover's cancel callback
+
+  // Click outside logic
   const handleClickOutside = (event: MouseEvent) => {
     const path = event.composedPath();
-
-    const clickedInside = path.some((node) => {
-      return (
+    const clickedInside = path.some(
+      (node) =>
         node instanceof HTMLElement &&
         (node.hasAttribute("data-overlay-popover") ||
           safeElements.some((el) => el?.contains(node)))
-      );
-    });
+    );
 
     if (!clickedInside) {
       onCancel();
     }
   };
 
-  const handleOnKeyDown = (e: globalThis.KeyboardEvent): void => {
-    if (e.key === "Escape") {
-      e.preventDefault();
-      e.stopPropagation();
-      onCancel();
-    }
-  };
-
   document.addEventListener("pointerdown", handleClickOutside);
-  document.addEventListener("keydown", handleOnKeyDown);
 
-  // Return cleanup function
+  // Cleanup function when popover unmounts or closes
   return () => {
     document.removeEventListener("pointerdown", handleClickOutside);
-    document.removeEventListener("keydown", handleOnKeyDown);
+
+    // Remove this popover's cancel from the stack
+    const index = escapeStack.lastIndexOf(onCancel);
+    if (index !== -1) {
+      escapeStack.splice(index, 1);
+    }
   };
 }
 

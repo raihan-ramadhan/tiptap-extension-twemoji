@@ -18,6 +18,7 @@ interface NavProps {
   arr2d: ARRAY2D_ITEM_PROPS[];
   disableEmojiCellsNavigation: () => void;
   enableEmojiCellsNavigation: () => void;
+  className?: string;
 }
 
 const Nav = ({
@@ -32,6 +33,7 @@ const Nav = ({
   upload,
   disableEmojiCellsNavigation,
   enableEmojiCellsNavigation,
+  className,
 }: NavProps & ExtensionOptions) => {
   const initialActiveNav = useMemo(() => {
     return Object.keys(groupsIndexes).find(
@@ -96,9 +98,10 @@ const Nav = ({
   return (
     <div
       style={{ width: `${width}px` }}
-      className={
-        "sticky bottom-0 bg-white dark:bg-black h-fit border-neutral-200 dark:border-neutral-800 border-t text-black dark:text-white"
-      }
+      className={cn(
+        "bottom-0 bg-white dark:bg-black h-fit border-neutral-200 dark:border-neutral-800 border-t text-black dark:text-white",
+        className
+      )}
     >
       <ul className="w-full p-1 pr-2 grid grid-cols-12">
         {navIcons.map((item, index) => {

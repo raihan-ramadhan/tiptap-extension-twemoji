@@ -81,7 +81,11 @@ export function Popover({
   }, [open, onOpenChange]);
 
   const content = (
-    <div ref={mergeRefs(floatingRef, trapRef)} style={floatingStyles.base}>
+    <div
+      ref={mergeRefs(trapRef, floatingRef)}
+      style={floatingStyles.base}
+      tabIndex={-1}
+    >
       {children}
     </div>
   );

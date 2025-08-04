@@ -374,30 +374,33 @@ export default function ({
         </>
       ) : (
         <div
-          className="h-full text-nowrap text-xs font-medium flex items-center justify-between pl-1"
-          style={{ width: widthGrid, height: CELL_HEIGHT }}
+          className="text-nowrap text-xs font-medium p-1"
+          style={{ width: widthGrid }}
         >
-          <span>No Result</span>
-          <AddCustomEmoji
-            className="relative inset-0 h-full px-2 cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black hover:bg-neutral-800"
-            onSubPopoverMount={() => {
-              deactivateTrap();
-              disableEmojiCellsNavigation();
-            }}
-            onSubPopoverUnmount={() => {
-              activateTrap();
-              enableEmojiCellsNavigation();
-            }}
-            onMount={disableEmojiCellsNavigation}
-            onUnmount={enableEmojiCellsNavigation}
-            onErrorUpload={onError}
-            onSuccess={onSuccess}
-            upload={upload}
-          >
-            <span className="flex items-center text-base px-2">
-              <Plus /> <span> Add Emoji</span>
-            </span>
-          </AddCustomEmoji>
+          <span className="block py-2">No Result</span>
+          <div>
+            <AddCustomEmoji
+              className="twemoji-button w-fit twemoji-border relative inline-flex items-center justify-center !py-1 !px-2"
+              onSubPopoverMount={() => {
+                deactivateTrap();
+                disableEmojiCellsNavigation();
+              }}
+              onSubPopoverUnmount={() => {
+                activateTrap();
+                enableEmojiCellsNavigation();
+              }}
+              onMount={disableEmojiCellsNavigation}
+              onUnmount={enableEmojiCellsNavigation}
+              onErrorUpload={onError}
+              onSuccess={onSuccess}
+              upload={upload}
+            >
+              <span className="flex items-center gap-0.5 text-xs">
+                <Plus className="size-4 aspect-square stroke-(length:--twemoji-icon-stroke-width)" />
+                <span> Add Emoji</span>
+              </span>
+            </AddCustomEmoji>
+          </div>
         </div>
       )}
     </div>

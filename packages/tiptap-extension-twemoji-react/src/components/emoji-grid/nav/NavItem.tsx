@@ -25,20 +25,25 @@ const NavItem = ({
   const ref = useRef<HTMLLIElement | null>(null);
   return (
     <Tooltip delay={200}>
-      <li>
+      <li
+        style={{ width: navItemWidth, height: navItemWidth }}
+        className="overflow-hidden"
+      >
         <TooltipTrigger
+          tabIndex={isGroupExist ? 0 : -1}
           ref={ref}
           onClick={handleClick}
           onKeyDown={stopEnterKey}
-          style={{ width: `${navItemWidth}px` }}
           className={cn(
-            `aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`,
-            !isGroupExist && "cursor-auto opacity-40",
-            isGroupExist && "hover:bg-neutral-200 dark:hover:bg-neutral-800",
-            isActive && "bg-neutral-200 dark:bg-neutral-800"
+            `justify-items-center content-center size-full twemoji-button`,
+            !isGroupExist && "cursor-auto opacity-25",
+            isGroupExist && "hover:bg-(--twemoji-secondary-color)",
+            isActive && "bg-(--twemoji-secondary-color)"
           )}
         >
-          {<item.icon />}
+          {
+            <item.icon className="stroke-(length:--twemoji-icon-stroke-width) size-full" />
+          }
         </TooltipTrigger>
       </li>
       <TooltipContent>

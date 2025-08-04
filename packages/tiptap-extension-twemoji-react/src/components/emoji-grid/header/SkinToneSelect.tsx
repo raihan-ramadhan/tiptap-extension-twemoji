@@ -33,7 +33,7 @@ const SkinToneSelect = ({
   });
 
   return (
-    <div className="h-full flex items-center justify-center mr-2" ref={ref}>
+    <div className="h-full flex items-center justify-center mr-1" ref={ref}>
       {open ? (
         <SkinList
           setOpen={setOpen}
@@ -47,7 +47,7 @@ const SkinToneSelect = ({
         <Tooltip delay={200}>
           <TooltipTrigger
             ref={toneTriggerRef}
-            className="size-7 aspect-square cursor-pointer flex justify-center items-center hover:bg-neutral-200 hover:dark:bg-neutral-800 rounded-[8px] p-1.5 outline-1 outline-(--border-color) focus-visible:outline-2 focus-visible:outline-(--focus-active-color) focus-visible:-outline-offset-[2px]"
+            className="size-7 aspect-square flex justify-center items-center twemoji-button twemoji-border"
             onClick={() => setOpen((prev) => !prev)}
             onKeyDown={stopEnterPropagation}
           >

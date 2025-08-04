@@ -99,7 +99,7 @@ const Nav = ({
     <div
       style={{ width: `${width}px` }}
       className={cn(
-        "bottom-0 bg-white dark:bg-black h-fit border-neutral-200 dark:border-neutral-800 border-t text-black dark:text-white",
+        "bottom-0 bg-white h-fit border-(--twemoji-border-color) border-t text-black dark:text-white",
         className
       )}
     >
@@ -132,12 +132,9 @@ const Nav = ({
             />
           );
         })}
-        <li>
+        <li style={{ width: navItemWidth, height: navItemWidth }}>
           <AddCustomEmoji
-            style={{ width: `${navItemWidth}px` }}
-            className={cn(
-              `hover:bg-neutral-200 dark:hover:bg-neutral-800 aspect-square justify-items-center content-center rounded cursor-pointer p-1.5`
-            )}
+            className="aspect-square justify-items-center content-center size-full twemoji-button"
             side="top"
             align="end"
             onSubPopoverMount={disableEmojiCellsNavigation}
@@ -147,7 +144,7 @@ const Nav = ({
             upload={upload}
             onKeyDown={stopEnterKey}
           >
-            <Plus className="bg-black rounded-full text-white font-bold stroke-2 size-full" />
+            <Plus className="rounded-full text-white font-bold size-full stroke-(length:--twemoji-icon-stroke-width) bg-(--twemoji-icon-color)" />
           </AddCustomEmoji>
         </li>
       </ul>

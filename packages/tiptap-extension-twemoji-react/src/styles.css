@@ -4,10 +4,26 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --bg-background: white;
+  --twemoji-bg-background: white;
 
-  --focus-active-color: oklch(70.7% 0.165 254.624);
+  --twemoji-focus-active-color: oklch(70.7% 0.165 254.624);
 
-  --border-color: oklch(87.2% 0.01 258.338); /* gray 400 */
-  --secondary-color: oklch(96.7% 0.003 264.542); /* gray 200 */
+  --twemoji-secondary-color: oklch(96.7% 0.003 264.542); /* tailwind gray 100 */
+
+  --twemoji-border-color: oklch(87.2% 0.01 258.338); /* tailwind gray 300 */
+
+  --twemoji-icon-stroke-width: 1.5;
+  --twemoji-icon-color: oklch(44.6% 0.03 256.802); /* tailwind gray 600 */
+}
+
+.twemoji-button {
+  @apply cursor-pointer hover:bg-(--twemoji-secondary-color) focus-visible:outline-2 focus-visible:outline-(--twemoji-focus-active-color) focus-visible:-outline-offset-[2px] focus-visible:bg-(--twemoji-secondary-color) rounded-[8px] p-1.5 text-(--twemoji-icon-color);
+}
+
+.twemoji-border {
+  @apply outline-1 outline-(--twemoji-border-color);
+}
+
+.twemoji-input {
+  @apply rounded-[8px] bg-(--twemoji-secondary-color) outline-1 outline-(--twemoji-border-color) focus-visible:outline-2 focus-visible:outline-(--twemoji-focus-active-color) focus-visible:-outline-offset-[2px];
 }

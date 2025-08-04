@@ -56,7 +56,7 @@ const EmojiHeader = ({
 
   return (
     <div
-      className="flex gap-1.5 justify-end h-fit border-neutral-200 dark:border-neutral-800 border-b text-black dark:text-white p-1 transition duration-500"
+      className="flex gap-1.5 justify-end h-fit border-(--twemoji-border-color) border-b p-1 transition duration-500"
       style={{
         width: widthGrid,
       }}

@@ -39,7 +39,7 @@ export const floatingStyles: {
     width: "fit-content",
     height: "fit-content",
     overflow: "auto",
-    border: "1px solid rgba(30,30,30)",
+    border: "1px solid var(--twemoji-border-color)" as string,
   },
   overlay: {
     position: "fixed" as const,

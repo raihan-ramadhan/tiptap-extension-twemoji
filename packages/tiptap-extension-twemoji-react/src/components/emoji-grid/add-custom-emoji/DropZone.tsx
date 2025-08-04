@@ -205,7 +205,7 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
   return (
     <div className="w-full flex justify-between">
       <button
-        className="cursor-pointer"
+        className="twemoji-button"
         type="button"
         onClick={() => {
           setFiles(null);
@@ -221,7 +221,7 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
           if (files) onUpload({ callback: dismiss });
         }}
         disabled={!files || loading}
-        className="flex items-center gap-1 cursor-pointer"
+        className="flex items-center gap-1 twemoji-button"
       >
         {loading ? (
           <>
@@ -254,7 +254,7 @@ const LabelInput = () => {
         id="emoji-name"
         placeholder="have-fun-with-it"
         value={emojiName}
-        className="w-full bg-white/10 py-2 px-3 rounded-md text-sm"
+        className="w-full py-2 px-3 text-sm twemoji-input"
       />
       {emojiNameError ? (
         <p className="text-red-400 text-xs">{emojiNameError}</p>
@@ -288,7 +288,7 @@ const DropzonePreview = () => {
         </div>
         <div className="text-xs inline-flex justify-center items-center w-full">
           <button
-            className="flex justify-center items-center gap-1 py-2 px-3 rounded-sm hover:bg-white/20 cursor-pointer"
+            className="flex justify-center items-center gap-1 py-2 px-3 twemoji-button"
             onClick={() => inputRef.current?.click()}
           >
             <RefreshCcw size={12} /> Replace
@@ -314,7 +314,7 @@ const DropzoneEmptyState = ({ className }: { className?: string }) => {
         type="button"
         onClick={() => inputRef.current?.click()}
         className={cn(
-          "bg-neutral-900 text-neutral-400 hover:bg-neutral-700 w-full flex items-center gap-1 justify-center py-3 rounded-md focus-visible:ring-blue-400 focus-visible:ring-2 focus-visible:ring-offset-1 outline-none",
+          "bg-neutral-900 text-neutral-400 hover:bg-neutral-700 w-full flex items-center gap-1 justify-center py-3 rounded-[8px] focus-visible:ring-(--twemoji-focus-active-color) focus-visible:ring-2 focus-visible:ring-offset-1 outline-none",
           isDragActive && "bg-blue-400/20",
           isInvalid && "bg-red-400/20 hover:bg-red-400/20"
         )}

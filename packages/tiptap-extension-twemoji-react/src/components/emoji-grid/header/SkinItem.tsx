@@ -43,8 +43,8 @@ const SkinItem = ({
             }
           }}
           className={cn(
-            "size-7 aspect-square cursor-pointer flex justify-center items-center hover:bg-neutral-200 hover:dark:bg-neutral-800 rounded-[8px] p-1.5 outline-1 outline-(--border-color) focus-visible:outline-2 focus-visible:outline-(--focus-active-color) focus-visible:-outline-offset-[2px]",
-            code === skinTone && "bg-(--secondary-color)"
+            "size-7 aspect-square flex justify-center items-center twemoji-button twemoji-border",
+            code === skinTone && "bg-gray-200"
           )}
           autoFocus={code === skinTone}
           draggable={false}

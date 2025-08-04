@@ -57,11 +57,9 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
   const buttonAttrs: ButtonAttrs = {
     style: style,
     className: cn(
-      "flex justify-center items-center rounded p-1 cursor-pointer outline-none font-normal",
+      "flex justify-center items-center twemoji-button !p-1",
       `size-[${CELL_HEIGHT}px]`,
-      selectedCell.row === rowIndex &&
-        selectedCell.column === columnIndex &&
-        "dark:bg-neutral-800 bg-neutral-200"
+      isSelected && "bg-(--twemoji-secondary-color)"
     ),
     onMouseMoveCapture: () => {
       handleHover(rowIndex, columnIndex);
@@ -204,8 +202,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         side="top"
         {...buttonAttrs}
         className={cn(
-          "relative inset-0 size-full cursor-pointer inline-flex items-center rounded-full justify-center ring-inset ring-[1px] ring-neutral-400 dark:ring-neutral-600 outline-none border-[1px] border-black",
-          isSelected && "bg-neutral-800"
+          "relative translate-x-[2px] translate-y-[2px] !size-7 flex items-center !rounded-full justify-center twemoji-button ring-inset ring-[1px] ring-(--twemoji-border-color)",
+          isSelected && "bg-(--twemoji-secondary-color)"
         )}
       >
         {content}

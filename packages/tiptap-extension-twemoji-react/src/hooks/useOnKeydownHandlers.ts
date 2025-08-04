@@ -311,7 +311,7 @@ export function useOnKeydownHandlers({
     const toast = document.createElement("div");
     toast.textContent = message;
     toast.className =
-      "bg-black/50 text-white px-3 py-2 rounded shadow transition-opacity duration-300 opacity-100 pointer-events-none z-50 absolute";
+      "text-(--twemoji-background) py-1 px-2 rounded-[8px] bg-(--twemoji-foreground)/80 shadow transition-opacity duration-300 opacity-100 pointer-events-none z-50 absolute text-sm";
 
     document.body.appendChild(toast);
 
@@ -330,7 +330,7 @@ export function useOnKeydownHandlers({
 
     const timeoutId = window.setTimeout(() => {
       toast.style.opacity = "0";
-      setTimeout(() => clearToast(ref), 300);
+      setTimeout(() => clearToast(ref), 500);
     }, 2000);
 
     ref.current = { element: toast, cleanup, timeoutId };

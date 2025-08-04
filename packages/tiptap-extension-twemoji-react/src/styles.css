@@ -4,7 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --twemoji-bg-background: white;
+  --twemoji-background: white;
+  --twemoji-foreground: black;
 
   --twemoji-focus-active-color: oklch(70.7% 0.165 254.624);
 

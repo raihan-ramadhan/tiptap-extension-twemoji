@@ -311,7 +311,7 @@ export function useOnKeydownHandlers({
     const toast = document.createElement("div");
     toast.textContent = message;
     toast.className =
-      "text-(--twemoji-background) py-1 px-2 rounded-[8px] bg-(--twemoji-foreground)/80 shadow transition-opacity duration-300 opacity-100 pointer-events-none z-50 absolute text-sm";
+      "text-(--twemoji-background) py-1 px-2 rounded-(--twemoji-rounded) bg-(--twemoji-foreground)/80 shadow transition-opacity duration-300 opacity-100 pointer-events-none z-50 absolute text-sm";
 
     document.body.appendChild(toast);
 

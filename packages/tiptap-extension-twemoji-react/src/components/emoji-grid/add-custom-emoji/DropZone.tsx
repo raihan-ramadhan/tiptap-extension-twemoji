@@ -187,7 +187,7 @@ const Dropzone = ({
     <DropzoneContext.Provider value={payLoad}>
       <div
         {...getRootProps({
-          className: cn("p-5 flex flex-col gap-6 w-72", className),
+          className: cn("p-4 flex flex-col gap-5 w-72", className),
         })}
         tabIndex={-1}
       >
@@ -205,7 +205,7 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
   return (
     <div className="w-full flex justify-between">
       <button
-        className="twemoji-button"
+        className="twemoji-button !py-1 !px-2 text-sm"
         type="button"
         onClick={() => {
           setFiles(null);
@@ -221,7 +221,7 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
           if (files) onUpload({ callback: dismiss });
         }}
         disabled={!files || loading}
-        className="flex items-center gap-1 twemoji-button"
+        className="twemoji-submit-button flex items-center gap-1 !py-1 !px-2 text-sm disabled:opacity-50"
       >
         {loading ? (
           <>
@@ -272,22 +272,23 @@ const DropzonePreview = () => {
 
   return (
     <div>
-      <div className="bg-white/20 pt-4 pb-2 rounded-md flex flex-col gap-2 text-center">
+      <div className="bg-(--twemoji-accent-color) pt-4 pb-2 rounded flex flex-col gap-2 text-center">
         <p className="text-xs">Preview</p>
         <div className="flex w-full justify-center gap-2">
           <img
             src={files.preview}
             alt={files.name}
-            className="p-1 object-contain h-12 w-12 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-black"
+            className="p-1 object-contain h-12 w-12 rounded-(--twemoji-rounded) overflow-hidden shrink-0 flex items-center justify-center bg-black"
           />
           <img
             src={files.preview}
             alt={files.name}
-            className="p-1 object-contain h-12 w-12 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-white"
+            className="p-1 object-contain h-12 w-12 rounded-(--twemoji-rounded) overflow-hidden shrink-0 flex items-center justify-center bg-white"
           />
         </div>
         <div className="text-xs inline-flex justify-center items-center w-full">
           <button
+            autoFocus
             className="flex justify-center items-center gap-1 py-2 px-3 twemoji-button"
             onClick={() => inputRef.current?.click()}
           >
@@ -314,7 +315,7 @@ const DropzoneEmptyState = ({ className }: { className?: string }) => {
         type="button"
         onClick={() => inputRef.current?.click()}
         className={cn(
-          "bg-neutral-900 text-neutral-400 hover:bg-neutral-700 w-full flex items-center gap-1 justify-center py-3 rounded-[8px] focus-visible:ring-(--twemoji-focus-active-color) focus-visible:ring-2 focus-visible:ring-offset-1 outline-none",
+          "twemoji-button bg-(--twemoji-accent-color) transition-colors duration-200 w-full flex items-center gap-1 justify-center !py-3",
           isDragActive && "bg-blue-400/20",
           isInvalid && "bg-red-400/20 hover:bg-red-400/20"
         )}

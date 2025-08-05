@@ -99,7 +99,7 @@ const Nav = ({
     <div
       style={{ width: `${width}px` }}
       className={cn(
-        "bottom-0 bg-white h-fit border-(--twemoji-border-color) border-t text-black dark:text-white",
+        "bottom-0 bg-(--twemoji-background) h-fit border-(--twemoji-border-color) border-t text-(--twemoji-foreground)",
         className
       )}
     >
@@ -144,7 +144,7 @@ const Nav = ({
             upload={upload}
             onKeyDown={stopEnterKey}
           >
-            <Plus className="rounded-full text-white font-bold size-full stroke-(length:--twemoji-icon-stroke-width) bg-(--twemoji-icon-color)" />
+            <Plus className="rounded-full text-(--twemoji-background) font-bold p-0.5 size-full stroke-(length:--twemoji-icon-stroke-width) bg-(--twemoji-icon-color)" />
           </AddCustomEmoji>
         </li>
       </ul>

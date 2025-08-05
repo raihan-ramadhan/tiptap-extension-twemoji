@@ -44,7 +44,7 @@ const SkinItem = ({
           }}
           className={cn(
             "size-7 aspect-square flex justify-center items-center twemoji-button twemoji-border",
-            code === skinTone && "bg-gray-200"
+            code === skinTone && "bg-(--twemoji-secondary-color)"
           )}
           autoFocus={code === skinTone}
           draggable={false}

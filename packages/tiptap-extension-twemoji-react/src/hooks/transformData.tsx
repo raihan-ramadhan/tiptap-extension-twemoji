@@ -59,11 +59,10 @@ export const transformData = ({
     }
   }
 
-  if (
-    filteredEmojis.length + (filteredCustomEmojis?.length ?? 0) > 0 &&
-    filteredEmojis.length + (filteredCustomEmojis?.length ?? 0) <=
-      MINIMUM_CELL_SHOW_GROUPS
-  ) {
+  const itemsSuggestion =
+    filteredEmojis.length + (filteredCustomEmojis?.length ?? 0);
+
+  if (itemsSuggestion > 0 && itemsSuggestion <= MINIMUM_CELL_SHOW_GROUPS) {
     new2dArr.push(...temp2dArrRecent);
 
     new2dArr.push([titleEmojiMockup(EMOJI_GROUPS[11])]);
@@ -92,10 +91,11 @@ export const transformData = ({
       }
     }
 
+    // ACTION BUTTON
     tempArr.push({ buttonLabel: "Add Emoji" });
 
     if (tempArr.length > 0) new2dArr.push(tempArr);
-  } else if (filteredEmojis.length + (filteredCustomEmojis?.length ?? 0) > 0) {
+  } else if (itemsSuggestion > 0) {
     new2dArr.push(...temp2dArrRecent);
 
     for (let i = 0; i < filteredEmojis.length; i++) {
@@ -139,7 +139,7 @@ export const transformData = ({
     new2dArr.push([titleEmojiMockup(EMOJI_GROUPS[10])]);
     groupsIndexes.Custom = new2dArr.length;
 
-    // Add action button
+    // ACTION BUTTON
     tempArr.push({ buttonLabel: "Add Emoji", align: "start" });
 
     if (filteredCustomEmojis && filteredCustomEmojis.length > 0) {
@@ -159,10 +159,12 @@ export const transformData = ({
   } else {
     if (recent) {
       if (temp2dArrRecent[temp2dArrRecent.length - 1].length % COLUMNS) {
+        // ACTION BUTTON
         temp2dArrRecent[temp2dArrRecent.length - 1].push({
           buttonLabel: "Add Emoji",
         });
       } else {
+        // ACTION BUTTON
         temp2dArrRecent.push([{ buttonLabel: "Add Emoji" }]);
       }
 

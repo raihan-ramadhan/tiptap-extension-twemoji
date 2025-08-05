@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { DropzoneState, FileRejection, useDropzone } from "react-dropzone";
-import { ExtensionOptions, UploadCustEmojiFunc } from "@/types";
+import { ExtensionOptions } from "@/types";
 
 export const MAX_FILES = 1;
 export const MAX_FILE_SIZE = 1000 * 1000 * 10; // 10MB
@@ -257,7 +257,7 @@ const LabelInput = () => {
         className="w-full py-2 px-3 text-sm twemoji-input"
       />
       {emojiNameError ? (
-        <p className="text-red-400 text-xs">{emojiNameError}</p>
+        <p className="text-(--twemoji-error-color) text-xs">{emojiNameError}</p>
       ) : null}
     </div>
   );

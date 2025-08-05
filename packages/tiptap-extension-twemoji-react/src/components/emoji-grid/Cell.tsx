@@ -176,7 +176,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="dark:text-neutral-400 text-neutral-600"
+        className="text-(--twemoji-border-color)"
       >
         <path d="M5 12h14" />
         <path d="M12 5v14" />

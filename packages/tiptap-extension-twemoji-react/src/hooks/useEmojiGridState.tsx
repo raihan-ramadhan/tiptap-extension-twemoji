@@ -38,6 +38,8 @@ export function useEmojiGridState() {
   }, [matchedHexcodes]);
 
   const recentEmojis = useMemo(() => {
+    if (query.length > 0) return null;
+
     if (typeof window === "undefined") return null;
     const stored = localStorage.getItem(LOCAL_STORAGE_RECENT_EMOJIS_KEY);
     if (!stored) return null;
@@ -49,7 +51,7 @@ export function useEmojiGridState() {
     } catch {
       return null;
     }
-  }, []);
+  }, [query]);
 
   const items: SuggestionItems[] = [
     {

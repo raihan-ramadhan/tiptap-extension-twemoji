@@ -227,7 +227,7 @@ export const getAttributes = ({
     src: TRANSPARENT_GIF,
     alt: emoji,
     draggable: false,
-    className: EMOJI_CLASS_NAME,
+    class: EMOJI_CLASS_NAME,
     [type === "object" ? "contentEditable" : "contenteditable"]: false,
   };
 

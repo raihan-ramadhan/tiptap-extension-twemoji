@@ -350,6 +350,12 @@ export function useOnKeydownHandlers({
   };
 
   useEffect(() => {
+    return () => {
+      dismissToast();
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isActive) return;
     const onKeyDown = (event: KeyboardEvent) => {
       const keyMap: Record<string, () => void> = {

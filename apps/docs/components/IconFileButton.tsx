@@ -78,7 +78,7 @@ const IconFileButton = () => {
     >
       <button
         type="button"
-        className="dark:bg-white/5 bg-black/5 p-1 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer"
+        className="dark:bg-white/5 bg-black/5 p-1 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer "
       >
         {iconAttrs ? (
           <Image
@@ -90,6 +90,7 @@ const IconFileButton = () => {
             style={
               typeof iconAttrs.style === "string" ? undefined : iconAttrs.style
             }
+            className="aspect-square"
           />
         ) : (
           "Add Emoji"

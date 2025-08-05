@@ -56,6 +56,7 @@ import { latestCustomEmojis } from "@/store/custom-emojis-store";
 
 // CONSTANTS
 import {
+  CUSTOM_EMOJI_CLASS_NAME,
   EMOJI_CLASS_NAME,
   EXTENSION_NAME,
   LOCAL_STORAGE_RECENT_EMOJIS_KEY,
@@ -144,6 +145,14 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
       vertical-align: -0.1em !important;
       object-fit: contain !important;
     }
+    .${CUSTOM_EMOJI_CLASS_NAME} {
+      background-repeat: no-repeat !important;
+      display: inline-block !important;
+      vertical-align: -0.1em !important;
+      object-fit: contain !important;
+      width: 1em;
+      height: 1em;
+    }
   `;
 
     const sheet = document.createElement("style");
@@ -174,7 +183,7 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
       style: { default: null },
       draggable: { default: false },
       contenteditable: { default: false },
-      class: { default: EMOJI_CLASS_NAME },
+      class: { default: null },
     };
   },
   parseHTML() {
@@ -210,36 +219,33 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
             src: string;
             alt: string;
             draggable: boolean;
-            className: string;
-            style: string | React.CSSProperties;
+            class: string;
+            style?: string | React.CSSProperties;
           };
-
-          function appendCursorStyle(
-            style: string | React.CSSProperties,
-            cursorValue = "text"
-          ): string | React.CSSProperties {
-            return typeof style === "string"
-              ? `${style}; cursor: ${cursorValue};`
-              : { ...style, cursor: cursorValue };
-          }
 
           if (isEmoji(data)) {
             const { style, ...attributes } = getAttributes({
               data,
               styleOption: { type: "string" },
-            });
+            }) as {
+              [x: string]: string | boolean;
+              src: string;
+              alt: string;
+              draggable: boolean;
+              class: string;
+              style: string;
+            };
 
             attrs = {
               ...attributes,
-              style: appendCursorStyle(style),
+              style: `${style} cursor: text;`,
             };
           } else if (isCustomEmoji(data)) {
             attrs = {
               alt: data.label,
               src: data.url,
               draggable: false,
-              className: EMOJI_CLASS_NAME,
-              style: appendCursorStyle("width:1em; height:1em;"),
+              class: CUSTOM_EMOJI_CLASS_NAME,
             };
           } else {
             return false;

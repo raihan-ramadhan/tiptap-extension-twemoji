@@ -227,13 +227,13 @@ export const getAttributes = ({
     src: TRANSPARENT_GIF,
     alt: emoji,
     draggable: false,
-    class: EMOJI_CLASS_NAME,
     [type === "object" ? "contentEditable" : "contenteditable"]: false,
   };
 
   if (type === "object") {
     return {
       ...base,
+      className: EMOJI_CLASS_NAME,
       style: {
         width: size,
         height: size,
@@ -245,6 +245,7 @@ export const getAttributes = ({
 
   return {
     ...base,
+    class: EMOJI_CLASS_NAME,
     style: `width: 1em; height: 1em; background-position: -${positionX} -${positionY}; background-size: ${scaledBgSizeX} ${scaledBgSizeY};`,
   };
 };

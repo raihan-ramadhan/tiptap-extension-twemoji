@@ -9,7 +9,7 @@ import { Popover } from "./Popover";
 
 // TYPES
 import { Emoji } from "@/data/emoji-sprite-map";
-import { CustomEmoji } from "@/types";
+import { CustomEmoji, ExtensionOptions } from "@/types";
 
 // Hooks
 import { useEmojiGridState } from "@/hooks/useEmojiGridState";
@@ -27,7 +27,11 @@ export function EmojiPopoverTriggerWrapper({
   onOpenChange,
   onDelete,
   closeAfterDelete,
-}: {
+  customEmojis,
+  upload,
+  onError,
+  onSuccess,
+}: ExtensionOptions & {
   children: React.ReactElement<
     React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
   >;
@@ -42,6 +46,7 @@ export function EmojiPopoverTriggerWrapper({
   onOpenChange?: (open: boolean) => void;
   onDelete?: () => void;
   closeAfterDelete?: boolean;
+  customEmojis?: CustomEmoji[];
 }) {
   const child = Children.only(children);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -55,7 +60,9 @@ export function EmojiPopoverTriggerWrapper({
     onOpenChange?.(open);
   };
 
-  const { query, setQuery, items, filteredEmojis } = useEmojiGridState();
+  const { query, setQuery, items, filteredEmojis } = useEmojiGridState({
+    customEmojis,
+  });
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -108,6 +115,9 @@ export function EmojiPopoverTriggerWrapper({
         items={items}
         onDelete={onDelete}
         closeAfterDelete={closeAfterDelete}
+        upload={upload}
+        onSuccess={onSuccess}
+        onError={onError}
       />
     </Popover>
   );

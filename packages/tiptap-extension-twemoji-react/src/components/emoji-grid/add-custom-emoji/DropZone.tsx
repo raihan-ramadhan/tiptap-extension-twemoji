@@ -143,7 +143,7 @@ const Dropzone = ({
         await uploadCallback({
           emojiName,
           files,
-          onError: onError,
+          onError,
           onSuccess,
           callback,
         });
@@ -169,7 +169,7 @@ const Dropzone = ({
     multiple: true,
   });
 
-  const payLoad: DropzoneContextProps = {
+  const value: DropzoneContextProps = {
     ...restProps,
     ...dropzoneProps,
     files,
@@ -184,7 +184,7 @@ const Dropzone = ({
   };
 
   return (
-    <DropzoneContext.Provider value={payLoad}>
+    <DropzoneContext.Provider value={value}>
       <div
         {...getRootProps({
           className: cn("p-4 flex flex-col gap-5 w-72", className),

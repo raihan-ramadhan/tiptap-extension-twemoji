@@ -1,8 +1,5 @@
 import { useMemo, useState } from "react";
 
-// Store
-import { latestCustomEmojis } from "@/store/custom-emojis-store";
-
 // Utilities
 import { getEmojiSprite } from "@/lib/emoji-utils";
 
@@ -17,13 +14,17 @@ import emojisSubstringIndexes from "@/assets/emoji-substring-index.json";
 import emojiSpriteOrder from "@/data/emoji-sprite-order";
 import emojis, { Emoji } from "@/data/emoji-sprite-map";
 
-export function useEmojiGridState() {
+export function useEmojiGridState({
+  customEmojis = [],
+}: {
+  customEmojis?: CustomEmoji[];
+}) {
   const [query, setQuery] = useState<string>("");
   const lowerQuery = query.toLowerCase().trim();
 
   const filteredCustomEmojis = useMemo(() => {
-    return latestCustomEmojis.filter(({ label }) => label.includes(lowerQuery));
-  }, [lowerQuery]);
+    return customEmojis.filter(({ label }) => label.includes(lowerQuery));
+  }, [lowerQuery, customEmojis]);
 
   const emojisIndexes = emojisSubstringIndexes as Record<string, string[]>;
   const matchedHexcodes =

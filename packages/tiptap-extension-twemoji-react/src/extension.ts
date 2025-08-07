@@ -51,9 +51,6 @@ import {
 } from "@/components/popover/config";
 import EmojiGrid from "@/components/emoji-grid/EmojiGrid";
 
-// STORE
-import { latestCustomEmojis } from "@/store/custom-emojis-store";
-
 // CONSTANTS
 import {
   CUSTOM_EMOJI_CLASS_NAME,
@@ -69,6 +66,13 @@ declare module "@tiptap/core" {
         emoji: Emoji | CustomEmoji,
         range: Range
       ) => (props: CommandProps) => boolean;
+      updateCustomEmojis: (emojis: CustomEmoji[]) => ReturnType;
+    };
+  }
+  interface Storage {
+    [EXTENSION_NAME]?: {
+      query: string;
+      customEmojis?: CustomEmoji[];
     };
   }
 }
@@ -107,29 +111,22 @@ interface EmojiExtensionOptions extends MentionOptions {
   spriteUrl?: string;
 }
 
+export interface EmojiExtensionStorage {
+  customEmojis: CustomEmoji[];
+  query: string;
+}
+
 let component: ReactRenderer<EmojiListRef, ComponentEmojiMentionProps> | null =
   null;
 
 let lastItems: SuggestionItems[] = [];
 
-function updateEmojiGridItems(newItem: CustomEmoji) {
-  if (component && lastItems[0]) {
-    const items: SuggestionItems[] = [
-      {
-        ...lastItems[0],
-        filteredCustomEmojis: [
-          ...(lastItems[0].filteredCustomEmojis ?? []),
-          newItem,
-        ],
-      },
-    ];
-
-    component.updateProps({ items });
-  }
-}
-
-const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
+const TwemojiExtension = Mention.extend<
+  EmojiExtensionOptions,
+  EmojiExtensionStorage
+>({
   name: EXTENSION_NAME,
+
   onCreate() {
     if (typeof document === "undefined") return; // for ssr
 
@@ -159,6 +156,12 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
     sheet.id = "emoji-sprite-style";
     sheet.innerHTML = style;
     document.head.appendChild(sheet);
+  },
+  addStorage() {
+    return {
+      query: "",
+      customEmojis: [] as CustomEmoji[],
+    };
   },
   addOptions() {
     return {
@@ -209,6 +212,35 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
   },
   addCommands() {
     return {
+      updateCustomEmojis:
+        (emojis: CustomEmoji[]) =>
+        ({ editor }) => {
+          function updateEmojiGridItems(newItems: CustomEmoji[]) {
+            if (component) {
+              const items: SuggestionItems[] = [
+                {
+                  ...(lastItems[0] ?? {}),
+                  filteredCustomEmojis: newItems,
+                },
+              ];
+
+              component.updateProps({ items });
+            }
+          }
+
+          if (editor.storage[EXTENSION_NAME]) {
+            editor.storage[EXTENSION_NAME].customEmojis = emojis;
+          }
+
+          const lowerQuery = this.storage.query.toLowerCase().trim();
+
+          const filteredCustomEmojis = emojis.filter(({ label }) =>
+            label.includes(lowerQuery)
+          );
+
+          updateEmojiGridItems(filteredCustomEmojis); // update mutable ui on EmojiGrids on editor
+          return true;
+        },
       insertEmoji:
         (data, range) =>
         ({ commands }) => {
@@ -267,6 +299,8 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
     };
   },
   addProseMirrorPlugins() {
+    const storage = this.storage;
+
     return [
       Suggestion({
         editor: this.editor,
@@ -308,14 +342,17 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
           return false;
         },
         items: ({ query }) => {
+          // update storage query to latest query
+          storage.query = query;
+
           if (query !== "") {
             const lowerQuery = query.toLowerCase().trim();
             if (!lowerQuery) return [];
 
-            const defaultCustomEmojis = latestCustomEmojis;
+            const customEmojis = this.storage.customEmojis ?? [];
 
-            const filteredCustomEmojis = defaultCustomEmojis.filter(
-              ({ label }) => label.includes(lowerQuery)
+            const filteredCustomEmojis = customEmojis.filter(({ label }) =>
+              label.includes(lowerQuery)
             );
 
             const emojisIndexes = emojisSubstringIndexes as Record<
@@ -387,7 +424,8 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
               editor,
               items,
               range,
-            }: SuggestionProps<any, MentionNodeAttrs>) => {
+              query,
+            }: SuggestionProps<SuggestionItems, MentionNodeAttrs>) => {
               const onSelectEmoji: SelectEmojiFunc = ({
                 baseHexcode,
                 emoji,
@@ -511,6 +549,10 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
               return false;
             },
             onExit() {
+              // clear stale value
+              storage.query = "";
+
+              lastItems = [];
               onCancel();
             },
           };
@@ -551,4 +593,4 @@ const TwemojiExtension = Mention.extend<EmojiExtensionOptions>({
   },
 });
 
-export { TwemojiExtension, updateEmojiGridItems };
+export { TwemojiExtension };

@@ -8,6 +8,10 @@ import {
 } from "@raihancodes/tiptap-extension-twemoji-react";
 import React, { useState } from "react";
 import Image from "next/image";
+import { getLatestCustomEmojis } from "@/store/custom-emojis-store";
+import { handleEmojiUpload } from "../lib/handleEmojiUpload";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const IconFileButton = () => {
   const [iconAttrs, setIconAttrs] = useState<
@@ -67,6 +71,9 @@ const IconFileButton = () => {
     setIconAttrs(null);
   };
 
+  const customEmojis = getLatestCustomEmojis();
+  const router = useRouter();
+
   return (
     <EmojiPopoverTriggerWrapper
       isEmpty={!iconAttrs}
@@ -75,6 +82,16 @@ const IconFileButton = () => {
       isOpen={isOpen}
       onOpenChange={setIsOpen}
       onDelete={onDelete}
+      customEmojis={customEmojis}
+      upload={handleEmojiUpload}
+      onError={(errorMessage) => {
+        toast.error(errorMessage);
+      }}
+      onSuccess={(successMessage, callback) => {
+        toast.success(successMessage);
+        callback?.();
+        router.refresh();
+      }}
     >
       <button
         type="button"

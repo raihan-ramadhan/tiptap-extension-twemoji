@@ -78,16 +78,13 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 import content from "@/components/tiptap-templates/simple/data/content.json";
 
 import {
-  setLatestCustomEmojis,
   TwemojiExtension,
-  updateEmojiGridItems,
   type CustomEmoji,
-  type UploadCustEmojiProps,
 } from "@raihancodes/tiptap-extension-twemoji-react";
 
-import { createClient } from "@/lib/supabase/client";
-import { EMOJIS_BUCKET_NAME, EMOJIS_TABLE_NAME } from "@/example/constants";
 import IconFileButton from "../../IconFileButton";
+import { setLatestCustomEmojis } from "@/store/custom-emojis-store";
+import { handleEmojiUpload } from "../../../lib/handleEmojiUpload";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -210,66 +207,6 @@ export function SimpleEditor({
   >("main");
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
-  const handleEmojiUpload = async ({
-    emojiName,
-    files,
-    onSuccess,
-    onError,
-    callback,
-  }: UploadCustEmojiProps) => {
-    /**
-     * The number of seconds the asset is cached in the browser and in the Supabase CDN.
-     *
-     * This is set in the Cache-Control: max-age=<seconds> header. Defaults to 3600 seconds.
-     */
-    const cacheControl = 3600;
-
-    const supabase = createClient();
-    const randomSuffix = `${Date.now()}-${Math.floor(Math.random() * 1_000_000)}`;
-
-    const baseName = `${emojiName}-${randomSuffix}`;
-    const fullPath = baseName;
-
-    const { error: uploadError, data: uploadData } = await supabase.storage
-      .from(EMOJIS_BUCKET_NAME)
-      .upload(fullPath, files, {
-        cacheControl: cacheControl.toString(),
-        upsert: false,
-      });
-
-    if (uploadError || !uploadData) {
-      return onError?.(uploadError.message ?? "Upload Error");
-    }
-
-    const objectPath = uploadData.path;
-    const { data: urlData } = supabase.storage
-      .from(EMOJIS_BUCKET_NAME)
-      .getPublicUrl(objectPath);
-    const imageUrl = urlData.publicUrl;
-
-    const { error: insertError, data } = await supabase
-      .from(EMOJIS_TABLE_NAME)
-      .insert({
-        url: imageUrl,
-        label: emojiName,
-      })
-      .select("*");
-
-    if (insertError) {
-      return onError?.(insertError.message);
-    }
-
-    onSuccess?.(`${emojiName} has added your workspace`, () => {
-      callback?.();
-      router.refresh();
-      updateEmojiGridItems(data[0] as CustomEmoji);
-    });
-  };
-
-  React.useEffect(() => {
-    setLatestCustomEmojis(customEmojis);
-  }, [customEmojis]);
-
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
@@ -314,11 +251,21 @@ export function SimpleEditor({
         onSuccess: (successMessage, callback) => {
           toast.success(successMessage);
           callback?.();
+          router.refresh();
         },
       }),
     ],
     content,
   });
+
+  // Very important, initialization customEmojis storage and for reactivity items on EmojiGrid
+  React.useEffect(() => {
+    setLatestCustomEmojis(customEmojis);
+
+    if (editor) {
+      editor.commands.updateCustomEmojis(customEmojis);
+    }
+  }, [editor, customEmojis]);
 
   const bodyRect = useCursorVisibility({
     editor,

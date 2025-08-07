@@ -10,6 +10,4 @@ export {
   isGroupTitle,
 } from "@/lib/emoji-grid-utils";
 
-export { setLatestCustomEmojis } from "@/store/custom-emojis-store";
-
-export { TwemojiExtension, updateEmojiGridItems } from "./extension";
+export { TwemojiExtension } from "./extension";

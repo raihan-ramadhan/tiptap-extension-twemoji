@@ -370,36 +370,35 @@ const TwemojiExtension = Mention.extend<
               };
             }
 
-            const items: SuggestionItems[] = [
-              {
-                filteredEmojis,
-                filteredCustomEmojis,
-                recent: null,
-              },
-            ];
+            let recent: (Emoji | CustomEmoji)[] | null = null;
 
             const storedEmojis = localStorage.getItem(
               LOCAL_STORAGE_RECENT_EMOJIS_KEY
             );
-            if (storedEmojis) {
-              const parsedStoredEmojis = JSON.parse(
-                storedEmojis
-              ) as StoredEmoji[];
 
-              items[0].recent = parsedStoredEmojis.map(
-                ({ hexcode, ...rest }) => {
-                  let emoji: Emoji | CustomEmoji;
-                  if (hexcode) {
-                    emoji = getEmojiSprite({ hexcode }) as Emoji & {
-                      hexcode: string;
-                    };
-                  } else {
-                    emoji = rest as CustomEmoji;
-                  }
-                  return emoji;
+            const shouldShowRecent = storedEmojis && query.length === 1;
+
+            if (shouldShowRecent) {
+              const parsed: StoredEmoji[] = JSON.parse(storedEmojis);
+
+              recent = parsed.map((emojiData) => {
+                const { hexcode, ...rest } = emojiData;
+
+                if (hexcode) {
+                  return getEmojiSprite({ hexcode }) as Emoji;
                 }
-              );
+
+                return rest as CustomEmoji;
+              });
             }
+
+            const items: SuggestionItems[] = [
+              {
+                filteredEmojis,
+                filteredCustomEmojis,
+                recent,
+              },
+            ];
 
             return items;
           }
@@ -424,7 +423,6 @@ const TwemojiExtension = Mention.extend<
               editor,
               items,
               range,
-              query,
             }: SuggestionProps<SuggestionItems, MentionNodeAttrs>) => {
               const onSelectEmoji: SelectEmojiFunc = ({
                 baseHexcode,

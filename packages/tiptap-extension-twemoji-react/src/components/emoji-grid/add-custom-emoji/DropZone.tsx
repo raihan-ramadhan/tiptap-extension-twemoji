@@ -74,25 +74,33 @@ const Dropzone = ({
   const [emojiName, setEmojiName] = useState<string>("");
   const [emojiNameError, setEmojiNameError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const isValid = /^[a-z0-9_-]+$/.test(emojiName);
-    const isLengthValid = emojiName.length < 50;
+  const VALID_NAME_REGEX = /^[a-z0-9_-]+$/;
 
-    if (emojiName === "" || (isValid && isLengthValid)) {
-      setEmojiNameError(null);
-    } else if (!isValid) {
-      setEmojiNameError(
-        "Name can only contain lowercase letters, numbers, hyphens, or underscores"
-      );
-    } else if (!isLengthValid) {
-      setEmojiNameError("Name must be less than 50 characters");
+  function cleanEmojiName(name: string) {
+    return name.toLowerCase().replace(/[^a-z0-9_-]/g, "");
+  }
+
+  function validateEmojiName(name: string): string | null {
+    if (name === "") return null;
+    if (!VALID_NAME_REGEX.test(name)) {
+      return "Name can only contain lowercase letters, numbers, hyphens, or underscores";
     }
+    if (name.length >= 50) {
+      return "Name must be less than 50 characters";
+    }
+    return null;
+  }
+
+  useEffect(() => {
+    const error = validateEmojiName(emojiName);
+    setEmojiNameError(error);
   }, [emojiName]);
 
   useEffect(() => {
     if (files && emojiName.length === 0) {
       const nameWithoutExt = files.name.replace(/\.[^/.]+$/, "");
-      setEmojiName(nameWithoutExt);
+      const cleanedName = cleanEmojiName(nameWithoutExt);
+      setEmojiName(cleanedName);
     }
   }, [files]);
 

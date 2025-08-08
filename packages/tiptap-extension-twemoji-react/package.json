@@ -1,15 +1,19 @@
 {
   "name": "@raihancodes/tiptap-extension-twemoji-react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
-  "description": "advance emoji extension with twemoji for tiptap with react",
+  "description": "Advanced Tiptap emoji extension built with React - supports Twemoji, emoticon, shortcodes, and cross-platform consistency with modern editor UX",
   "scripts": {
     "build": "concurrently \"rollup -c --environment BUILD:prod\" \"rollup -c rollup.dts.config.js\" \"tsc --noEmit\"",
     "dev": "concurrently -k \"rollup -c --watch --environment BUILD:dev\" \"rollup -c rollup.dts.config.js --watch\" \"tsc --noEmit --watch\"",
     "report": "concurrently \"rollup -c --environment BUILD:report\" \"rollup -c rollup.dts.config.js\" \"tsc --noEmit\"",
     "typecheck": "tsc --noEmit"
   },
-  "author": "Raihan Ramadhan",
+  "author": {
+    "name": "Raihan Ramadhan",
+    "email": "raihanramadhan.rn22@gmail.com",
+    "url": "https://github.com/raihan-ramadhan"
+  },
   "license": "MIT",
   "exports": {
     ".": {
@@ -82,7 +86,6 @@
   "dependencies": {
     "@floating-ui/dom": "^1.7.2",
     "@floating-ui/react": "^0.27.13",
-    "@raihancodes/shared-assets": "workspace:^",
     "clsx": "^2.1.1",
     "emojibase-regex": "^16.0.0",
     "focus-trap": "^7.6.5",

@@ -26,3 +26,4 @@ dist-ssr
 rollup.config-*.cjs
 
 stats.html
+*.tgz

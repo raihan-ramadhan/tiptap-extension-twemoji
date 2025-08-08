@@ -5,7 +5,7 @@ import { getEmojiSprite, getAttributes } from "@/lib/emoji-utils";
 
 // ASSETS
 import emojisSubstringIndexes from "@/assets/emoji-substring-index.json";
-import emojiSprite from "@raihancodes/shared-assets/emoji-sprite.webp";
+import emojiSprite from "../../../assets/emoji-sprite.webp";
 
 // DATA
 import emojis from "@/data/emoji-sprite-map";

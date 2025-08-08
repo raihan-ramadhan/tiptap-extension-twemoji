@@ -12,7 +12,7 @@ export default [
   },
   {
     input: "src/components/popover/index.ts",
-    output: [{ file: "dist/popover/index.d.ts", format: "es" }],
+    output: [{ file: "dist/popover.d.ts", format: "es" }],
     plugins,
     external: [/\.css$/, /\.scss$/],
   },

@@ -1,0 +1,10 @@
+{
+  "name": "@raihancodes/shared-assets",
+  "version": "0.0.1",
+  "private": false,
+  "files": [
+    "emoji-sprite.webp"
+  ],
+  "main": "emoji-sprite.webp",
+  "type": "module"
+}

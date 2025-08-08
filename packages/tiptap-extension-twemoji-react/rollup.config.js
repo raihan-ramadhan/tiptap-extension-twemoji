@@ -61,25 +61,28 @@ const plugins = [
     }),
 ].filter(Boolean);
 
-const entries = [
-  { input: "src/index.ts", outDir: "" },
-  { input: "src/components/popover/index.ts", outDir: "popover" },
-];
-
-export default entries.map(({ input, outDir }) => ({
-  input,
+export default {
+  input: {
+    index: "src/index.ts",
+    popover: "src/components/popover/index.ts",
+  },
   output: [
     {
-      file: `dist/${outDir ? `${outDir}/` : ""}index.js`,
+      dir: "dist",
       format: "esm",
       sourcemap: isDev ? "inline" : true,
+      entryFileNames: "[name].js",
+      chunkFileNames: "chunks/[name]-[hash].js",
     },
     {
-      file: `dist/${outDir ? `${outDir}/` : ""}index.cjs`,
+      dir: "dist",
       format: "cjs",
       sourcemap: isDev ? "inline" : true,
+      entryFileNames: "[name].cjs",
+      chunkFileNames: "chunks/[name]-[hash].cjs",
     },
   ],
   external,
   plugins,
-}));
+  preserveEntrySignatures: "strict",
+};

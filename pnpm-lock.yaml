@@ -4,9 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  tiptap-extension-twemoji-react: link:C:\Users\user\AppData\Local\pnpm\global\5\node_modules\@raihancodes\tiptap-extension-twemoji-react
+
 importers:
 
   .:
+    dependencies:
+      tiptap-extension-twemoji-react:
+        specifier: link:C:\Users\user\AppData\Local\pnpm\global\5\node_modules\@raihancodes\tiptap-extension-twemoji-react
+        version: link:C:/Users/user/AppData/Local/pnpm/global/5/node_modules/@raihancodes/tiptap-extension-twemoji-react
     devDependencies:
       '@workspace/eslint-config':
         specifier: workspace:*
@@ -196,6 +203,8 @@ importers:
         specifier: ^8.24.1
         version: 8.24.1(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
 
+  packages/shared-assets: {}
+
   packages/tiptap-extension-twemoji-react:
     dependencies:
       '@floating-ui/dom':
@@ -204,6 +213,9 @@ importers:
       '@floating-ui/react':
         specifier: ^0.27.13
         version: 0.27.13(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@raihancodes/shared-assets':
+        specifier: workspace:^
+        version: link:../shared-assets
       clsx:
         specifier: ^2.1.1
         version: 2.1.1

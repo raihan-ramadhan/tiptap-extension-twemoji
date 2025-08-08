@@ -1,16 +1,16 @@
 {
   "name": "@raihancodes/tiptap-extension-twemoji-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
-  "description": "twemoji emoji extension for tiptap with react",
+  "description": "advance emoji extension with twemoji for tiptap with react",
   "scripts": {
     "build": "concurrently \"rollup -c --environment BUILD:prod\" \"rollup -c rollup.dts.config.js\" \"tsc --noEmit\"",
     "dev": "concurrently -k \"rollup -c --watch --environment BUILD:dev\" \"rollup -c rollup.dts.config.js --watch\" \"tsc --noEmit --watch\"",
     "report": "concurrently \"rollup -c --environment BUILD:report\" \"rollup -c rollup.dts.config.js\" \"tsc --noEmit\"",
     "typecheck": "tsc --noEmit"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Raihan Ramadhan",
+  "license": "MIT",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -18,14 +18,16 @@
       "require": "./dist/index.cjs"
     },
     "./popover": {
-      "types": "./dist/popover/index.d.ts",
-      "import": "./dist/popover/index.js",
-      "require": "./dist/popover/index.cjs"
+      "types": "./dist/popover.d.ts",
+      "import": "./dist/popover.js",
+      "require": "./dist/popover.cjs"
     }
   },
   "files": [
     "dist",
-    "assets"
+    "!dist/assets",
+    "README.md",
+    "package.json"
   ],
   "sideEffects": [
     "**/*.css",
@@ -80,6 +82,7 @@
   "dependencies": {
     "@floating-ui/dom": "^1.7.2",
     "@floating-ui/react": "^0.27.13",
+    "@raihancodes/shared-assets": "workspace:^",
     "clsx": "^2.1.1",
     "emojibase-regex": "^16.0.0",
     "focus-trap": "^7.6.5",
@@ -88,7 +91,18 @@
     "react-window": "^1.8.11",
     "tailwind-merge": "^3.0.1"
   },
-  "keywords": [],
+  "keywords": [
+    "tiptap",
+    "twemoji",
+    "emoji",
+    "react",
+    "prosemirror",
+    "emoji-picker",
+    "tiptap-extension"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18",
     "pnpm": ">=8"

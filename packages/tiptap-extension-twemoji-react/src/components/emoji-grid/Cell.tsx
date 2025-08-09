@@ -120,7 +120,9 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         loading="lazy"
         {...htmlAttr}
         style={
-          typeof htmlAttr.style === "string" ? undefined : htmlAttr.style // only for typescript, to avoid error
+          typeof htmlAttr.style === "string"
+            ? undefined
+            : { ...htmlAttr.style, cursor: "pointer" } // only for typescript, to avoid error
         }
       />
     );
@@ -150,6 +152,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
           margin: "0 0.1em",
           verticalAlign: "-0.1em",
           objectFit: "contain",
+          cursor: "pointer",
         }}
       />
     );

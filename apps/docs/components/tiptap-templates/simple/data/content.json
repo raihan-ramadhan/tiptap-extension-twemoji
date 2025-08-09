@@ -5,44 +5,9 @@
       "type": "heading",
       "attrs": {
         "textAlign": null,
-        "level": 1
+        "level": 3
       },
       "content": [
-        {
-          "type": "text",
-          "text": "Getting started"
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "text",
-          "text": "Welcome to the "
-        },
-        {
-          "type": "text",
-          "marks": [
-            {
-              "type": "italic"
-            },
-            {
-              "type": "highlight",
-              "attrs": {
-                "color": "var(--tt-color-highlight-yellow)"
-              }
-            }
-          ],
-          "text": "Simple Editor"
-        },
-        {
-          "type": "text",
-          "text": " template! This template integrates "
-        },
         {
           "type": "text",
           "marks": [
@@ -50,67 +15,11 @@
               "type": "bold"
             }
           ],
-          "text": "open source"
+          "text": "@raihancodes/tiptap-extension-twemoji-react"
         },
         {
           "type": "text",
-          "text": " UI components and Tiptap extensions licensed under "
-        },
-        {
-          "type": "text",
-          "marks": [
-            {
-              "type": "bold"
-            }
-          ],
-          "text": "MIT"
-        },
-        {
-          "type": "text",
-          "text": "."
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "text",
-          "text": "Integrate it by following the "
-        },
-        {
-          "type": "text",
-          "marks": [
-            {
-              "type": "link",
-              "attrs": {
-                "href": "https://tiptap.dev/docs/ui-components/templates/simple-editor",
-                "target": "_blank",
-                "rel": "noopener noreferrer nofollow",
-                "class": null
-              }
-            }
-          ],
-          "text": "Tiptap UI Components docs"
-        },
-        {
-          "type": "text",
-          "text": " or using our CLI tool."
-        }
-      ]
-    },
-    {
-      "type": "codeBlock",
-      "attrs": {
-        "language": null
-      },
-      "content": [
-        {
-          "type": "text",
-          "text": "npx @tiptap/cli init"
+          "text": " Features"
         }
       ]
     },
@@ -123,354 +32,453 @@
       "content": [
         {
           "type": "text",
-          "text": "Features"
+          "marks": [
+            {
+              "type": "bold"
+            }
+          ],
+          "text": "Editor Emoji Picker"
         }
       ]
     },
     {
-      "type": "blockquote",
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
       "content": [
         {
-          "type": "paragraph",
+          "type": "emojiExtension",
           "attrs": {
-            "textAlign": null
-          },
-          "content": [
-            {
-              "type": "text",
-              "marks": [
-                {
-                  "type": "italic"
-                }
-              ],
-              "text": "A fully responsive rich text editor with built-in support for common formatting and layout tools. Type markdown "
-            },
-            {
-              "type": "text",
-              "marks": [
-                {
-                  "type": "code"
-                }
-              ],
-              "text": "**"
-            },
-            {
-              "type": "text",
-              "marks": [
-                {
-                  "type": "italic"
-                }
-              ],
-              "text": " or use keyboard shortcuts "
-            },
-            {
-              "type": "text",
-              "marks": [
-                {
-                  "type": "code"
-                }
-              ],
-              "text": "⌘+B"
-            },
-            {
-              "type": "text",
-              "text": " for "
-            },
-            {
-              "type": "text",
-              "marks": [
-                {
-                  "type": "strike"
-                }
-              ],
-              "text": "most"
-            },
-            {
-              "type": "text",
-              "text": " all common markdown marks. 🪄"
-            }
-          ]
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "✨️",
+            "style": "width: 1em; height: 1em; background-position: -8.222222222222221em -55.5em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " Suggested items displayed in a picker grid UI  "
         }
       ]
     },
     {
       "type": "paragraph",
       "attrs": {
-        "textAlign": "left"
+        "textAlign": null
       },
       "content": [
         {
-          "type": "text",
-          "text": "Add images, customize alignment, and apply "
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "⬆️",
+            "style": "width: 1em; height: 1em; background-position: -43.166666666666664em -58.583333333333336em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
         },
         {
           "type": "text",
-          "marks": [
-            {
-              "type": "highlight",
-              "attrs": {
-                "color": "var(--tt-color-highlight-blue)"
-              }
-            }
-          ],
-          "text": "advanced formatting"
+          "text": " "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "⬇️",
+            "style": "width: 1em; height: 1em; background-position: -47.27777777777778em -58.583333333333336em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
         },
         {
           "type": "text",
-          "text": " to make your writing more engaging and professional."
-        }
-      ]
-    },
-    {
-      "type": "image",
-      "attrs": {
-        "src": "/images/tiptap-ui-placeholder-image.jpg",
-        "alt": "placeholder-image",
-        "title": "placeholder-image"
-      }
-    },
-    {
-      "type": "bulletList",
-      "content": [
-        {
-          "type": "listItem",
-          "content": [
-            {
-              "type": "paragraph",
-              "attrs": {
-                "textAlign": "left"
-              },
-              "content": [
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "bold"
-                    }
-                  ],
-                  "text": "Superscript"
-                },
-                {
-                  "type": "text",
-                  "text": " (x"
-                },
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "superscript"
-                    }
-                  ],
-                  "text": "2"
-                },
-                {
-                  "type": "text",
-                  "text": ") and "
-                },
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "bold"
-                    }
-                  ],
-                  "text": "Subscript"
-                },
-                {
-                  "type": "text",
-                  "text": " (H"
-                },
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "subscript"
-                    }
-                  ],
-                  "text": "2"
-                },
-                {
-                  "type": "text",
-                  "text": "O) for precision."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "listItem",
-          "content": [
-            {
-              "type": "paragraph",
-              "attrs": {
-                "textAlign": "left"
-              },
-              "content": [
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "bold"
-                    }
-                  ],
-                  "text": "Typographic conversion"
-                },
-                {
-                  "type": "text",
-                  "text": ": automatically convert to "
-                },
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "code"
-                    }
-                  ],
-                  "text": "->"
-                },
-                {
-                  "type": "text",
-                  "text": " an arrow "
-                },
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "bold"
-                    }
-                  ],
-                  "text": "→"
-                },
-                {
-                  "type": "text",
-                  "text": "."
-                }
-              ]
-            }
-          ]
+          "text": " Arrow key, Tab navigation  "
         }
       ]
     },
     {
       "type": "paragraph",
       "attrs": {
-        "textAlign": "left"
+        "textAlign": null
       },
       "content": [
         {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🎨",
+            "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -28.77777777777778em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
           "type": "text",
-          "marks": [
-            {
-              "type": "italic"
-            }
-          ],
-          "text": "→ "
+          "text": " Skin tone select  "
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🆕",
+            "style": "width: 1em; height: 1em; background-position: -60.638888888888886em -6.166666666666667em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " Custom emoji support (reactive updates)  "
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "📋️",
+            "style": "width: 1em; height: 1em; background-position: -39.05555555555556em -57.55555555555556em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " Copy & paste functionality (convert from normal emoji to twemoji, vice versa) "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🥰",
+            "style": "width: 1em; height: 1em; background-position: -6.166666666666667em -4.111111111111111em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "😄",
+            "style": "width: 1em; height: 1em; background-position: -5.138888888888889em -3.0833333333333335em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "❤️",
+            "style": "width: 1em; height: 1em; background-position: -13.36111111111111em -0em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🐦️",
+            "style": "width: 1em; height: 1em; background-position: -51.388888888888886em -38.02777777777778em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " Twemoji support (cross-platform consistency) "
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🔤",
+            "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -59.611111111111114em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " Shortcodes support (e.g., "
         },
         {
           "type": "text",
           "marks": [
             {
-              "type": "link",
-              "attrs": {
-                "href": "https://tiptap.dev/docs/ui-components/templates/simple-editor#features",
-                "target": "_blank",
-                "rel": "noopener noreferrer nofollow",
-                "class": null
-              }
+              "type": "code"
             }
           ],
-          "text": "Learn more"
+          "text": ":hug:"
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ],
+          "text": ":heart:"
+        },
+        {
+          "type": "text",
+          "text": ")  "
         }
       ]
     },
     {
-      "type": "horizontalRule"
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "😄",
+            "style": "width: 1em; height: 1em; background-position: -5.138888888888889em -3.0833333333333335em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " Emoticon support (e.g., "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ],
+          "text": ":)"
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ],
+          "text": "XD"
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ],
+          "text": ":P"
+        },
+        {
+          "type": "text",
+          "text": ")  "
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "textAlign": null
+      },
+      "content": [
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🌙",
+            "style": "width: 1em; height: 1em; background-position: -55.5em -18.5em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " Dark Mode "
+        }
+      ]
     },
     {
       "type": "heading",
       "attrs": {
-        "textAlign": "left",
+        "textAlign": null,
         "level": 2
       },
       "content": [
         {
           "type": "text",
-          "text": "Make it your own"
+          "marks": [
+            {
+              "type": "bold"
+            }
+          ],
+          "text": "Components"
         }
       ]
     },
     {
       "type": "paragraph",
       "attrs": {
-        "textAlign": "left"
+        "textAlign": null
       },
       "content": [
         {
-          "type": "text",
-          "text": "Switch between light and dark modes, and tailor the editor's appearance with customizable CSS to match your style."
-        }
-      ]
-    },
-    {
-      "type": "taskList",
-      "content": [
-        {
-          "type": "taskItem",
+          "type": "emojiExtension",
           "attrs": {
-            "checked": true
-          },
-          "content": [
-            {
-              "type": "paragraph",
-              "attrs": {
-                "textAlign": "left"
-              },
-              "content": [
-                {
-                  "type": "text",
-                  "text": "Test template"
-                }
-              ]
-            }
-          ]
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🔧",
+            "style": "width: 1em; height: 1em; background-position: -58.583333333333336em -10.277777777777779em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
         },
         {
-          "type": "taskItem",
-          "attrs": {
-            "checked": false
-          },
-          "content": [
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "text",
+          "marks": [
             {
-              "type": "paragraph",
-              "attrs": {
-                "textAlign": "left"
-              },
-              "content": [
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "link",
-                      "attrs": {
-                        "href": "https://tiptap.dev/docs/ui-components/templates/simple-editor",
-                        "target": "_blank",
-                        "rel": "noopener noreferrer nofollow",
-                        "class": null
-                      }
-                    }
-                  ],
-                  "text": "Integrate the free template"
-                }
-              ]
+              "type": "code"
             }
-          ]
+          ],
+          "text": "<EmojiPopoverTriggerWrapper />"
         }
       ]
     },
     {
       "type": "paragraph",
       "attrs": {
-        "textAlign": "left"
+        "textAlign": null
       }
     }
   ]

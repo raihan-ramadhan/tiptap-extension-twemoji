@@ -141,14 +141,16 @@ const TwemojiExtension = Mention.extend<
       display: inline-block !important;
       vertical-align: -0.1em !important;
       object-fit: contain !important;
-    }
-    .${CUSTOM_EMOJI_CLASS_NAME} {
-      background-repeat: no-repeat !important;
-      display: inline-block !important;
-      vertical-align: -0.1em !important;
-      object-fit: contain !important;
-      width: 1em;
-      height: 1em;
+      cursor: text;
+      }
+      .${CUSTOM_EMOJI_CLASS_NAME} {
+        background-repeat: no-repeat !important;
+        display: inline-block !important;
+        vertical-align: -0.1em !important;
+        object-fit: contain !important;
+        width: 1em;
+        height: 1em;
+        cursor: text;
     }
   `;
 
@@ -434,6 +436,17 @@ const TwemojiExtension = Mention.extend<
                 const storedEmojis = localStorage.getItem(
                   LOCAL_STORAGE_RECENT_EMOJIS_KEY
                 );
+
+                const selectedEmoji = isEmoji(emoji)
+                  ? {
+                      hexcode: baseHexcode,
+                    }
+                  : {
+                      id: emoji.id,
+                      label: emoji.label,
+                      url: emoji.url,
+                    };
+
                 if (storedEmojis) {
                   const parsedStoredEmojis = JSON.parse(
                     storedEmojis
@@ -448,17 +461,7 @@ const TwemojiExtension = Mention.extend<
 
                   if (index !== -1) parsedStoredEmojis.splice(index, 1);
 
-                  if (isEmoji(emoji)) {
-                    parsedStoredEmojis.unshift({
-                      hexcode: baseHexcode,
-                    });
-                  } else {
-                    parsedStoredEmojis.unshift({
-                      id: emoji.id,
-                      label: emoji.label,
-                      url: emoji.url,
-                    });
-                  }
+                  parsedStoredEmojis.unshift(selectedEmoji);
 
                   localStorage.setItem(
                     LOCAL_STORAGE_RECENT_EMOJIS_KEY,
@@ -467,7 +470,7 @@ const TwemojiExtension = Mention.extend<
                 } else {
                   localStorage.setItem(
                     LOCAL_STORAGE_RECENT_EMOJIS_KEY,
-                    JSON.stringify([{ hexcode: baseHexcode }])
+                    JSON.stringify([selectedEmoji])
                   );
                 }
 

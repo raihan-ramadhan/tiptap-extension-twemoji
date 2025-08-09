@@ -9,10 +9,13 @@
     "report": "concurrently \"rollup -c --environment BUILD:report\" \"rollup -c rollup.dts.config.js\" \"tsc --noEmit\"",
     "typecheck": "tsc --noEmit"
   },
-  "author": {
-    "name": "Raihan Ramadhan",
-    "email": "raihanramadhan.rn22@gmail.com",
-    "url": "https://github.com/raihan-ramadhan"
+  "author": "Raihan Ramadhan <raihanramadhan.rn22@gmail.com> (https://github.com/raihan-ramadhan/)",
+  "contributors": [
+    "Raihan Ramadhan <raihanramadhan.rn22@gmail.com> (https://github.com/raihan-ramadhan/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raihan-ramadhan/tiptap-extension-twemoji.git"
   },
   "license": "MIT",
   "exports": {

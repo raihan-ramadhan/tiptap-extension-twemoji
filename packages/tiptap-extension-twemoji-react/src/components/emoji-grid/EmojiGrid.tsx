@@ -23,12 +23,7 @@ import {
   SelectedCellElementRef,
 } from "@/types";
 
-import {
-  CELL_HEIGHT,
-  COLUMNS,
-  LOCAL_STORAGE_SKIN_TONE_KEY,
-  MAX_VISIBLE_ROW,
-} from "@/constants";
+import { COLUMNS, LOCAL_STORAGE_SKIN_TONE_KEY } from "@/constants";
 
 // COMPONENTS
 import AddCustomEmoji from "@/components/emoji-grid/add-custom-emoji/AddCustomEmoji";
@@ -57,6 +52,9 @@ export default function ({
   accept,
   maxSize,
   skinToneSelect,
+  minCellsToHideNav,
+  cellSize,
+  visibleRows,
 }: ComponentEmojiMentionProps) {
   const { recent, filteredEmojis, filteredCustomEmojis } = items[0];
 
@@ -70,8 +68,6 @@ export default function ({
 
   const outerRef = useRef<HTMLDivElement | null>(null);
   const gridRef = useRef<Grid<ItemData>>(null);
-
-  const MINIMUM_CELL_SHOW_GROUPS = 60;
 
   const [skinTone, setSkinTone] = useState<SKIN_TONE_CODES_PROPS>(() => {
     // Runs only on client
@@ -100,17 +96,14 @@ export default function ({
       COLUMNS,
       recent,
       filteredEmojis,
-      MINIMUM_CELL_SHOW_GROUPS,
+      minCellsToHideNav,
     });
   }, [recent, filteredEmojis, filteredCustomEmojis]);
 
   // max height between the total height of the grid and the max visible row
-  // the purpose to have dynamic height by setting the max height (MAX_VISIBLE_ROW * CELL_HEIGHT)
-  const heightList = Math.min(
-    arr2d.length * CELL_HEIGHT,
-    MAX_VISIBLE_ROW * CELL_HEIGHT
-  );
-  const widthGrid = COLUMNS * CELL_HEIGHT + 12; // 8 for scrollbar width and 4 for manual padding-right
+  // the purpose to have dynamic height by setting the max height (visibleRows * cellSize)
+  const heightList = Math.min(arr2d.length * cellSize, visibleRows * cellSize);
+  const widthGrid = COLUMNS * cellSize + 12; // 8 for scrollbar width and 4 for manual padding-right
 
   useEffect(() => {
     selectedCellRef.current = selectedCell;
@@ -120,7 +113,7 @@ export default function ({
   const handleScrollStop = useCallback(
     debounce(() => {
       const { endRow, startRow } = getVisibleRowRange({
-        CELL_HEIGHT,
+        cellSize,
         gridRef,
         outerRef,
       });
@@ -208,8 +201,8 @@ export default function ({
   // and handle useImperativeHandle from tiptap onKeyDown props
   const { disableEmojiCellsNavigation, enableEmojiCellsNavigation } =
     useOnKeydownHandlers({
-      MAX_VISIBLE_ROW,
-      CELL_HEIGHT,
+      visibleRows,
+      cellSize,
       COLUMNS,
       arr2d,
       selectedCellRef,
@@ -313,6 +306,7 @@ export default function ({
           closeAfterDelete={closeAfterDelete}
           skinToneSelect={skinToneSelect}
           onSelectEmoji={onSelectEmoji}
+          cellSize={cellSize}
           range={range}
         />
       ) : null}
@@ -329,9 +323,9 @@ export default function ({
             outerRef={outerRef}
             overscanRowCount={5}
             columnCount={COLUMNS}
-            rowHeight={CELL_HEIGHT}
+            rowHeight={cellSize}
             rowCount={arr2d.length}
-            columnWidth={CELL_HEIGHT}
+            columnWidth={cellSize}
             itemData={{
               disableEmojiCellsNavigation,
               enableEmojiCellsNavigation,
@@ -344,6 +338,7 @@ export default function ({
               onSuccess,
               skinTone,
               cellRefs,
+              cellSize,
               onError,
               maxSize,
               upload,
@@ -371,12 +366,12 @@ export default function ({
             arr2d={arr2d}
             width={widthGrid}
             outerRef={outerRef}
-            navItemWidth={CELL_HEIGHT}
+            navItemWidth={cellSize}
             gridRef={gridRef}
             groupsIndexes={groupsIndexes}
             className={
               filteredEmojis.length + (filteredCustomEmojis?.length ?? 0) >
-              MINIMUM_CELL_SHOW_GROUPS
+              minCellsToHideNav
                 ? "sticky"
                 : "hidden"
             }

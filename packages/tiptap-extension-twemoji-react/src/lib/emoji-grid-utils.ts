@@ -15,36 +15,35 @@ export const scrollGridByRows = ({
   rowMultiplier,
   gridRef,
   outerRef,
-  CELL_HEIGHT,
-  MAX_VISIBLE_ROW,
+  cellSize,
+  visibleRows,
   arr2d,
 }: {
   direction: "up" | "down";
   rowMultiplier: number;
   gridRef: React.RefObject<Grid<ItemData> | null>;
   outerRef: React.RefObject<HTMLDivElement | null>;
-  MAX_VISIBLE_ROW: number;
-  CELL_HEIGHT: number;
+  visibleRows: number;
+  cellSize: number;
   arr2d: ARRAY2D_ITEM_PROPS[];
 }) => {
   if (!gridRef.current) return;
 
   const currentTop = outerRef.current?.scrollTop || 0;
 
-  const isMisaligned = currentTop % CELL_HEIGHT !== 0;
+  const isMisaligned = currentTop % cellSize !== 0;
   const alignedTop = isMisaligned
-    ? currentTop - (currentTop % CELL_HEIGHT) + CELL_HEIGHT
+    ? currentTop - (currentTop % cellSize) + cellSize
     : currentTop;
 
-  const scrollOffset = CELL_HEIGHT * rowMultiplier;
+  const scrollOffset = cellSize * rowMultiplier;
 
   const targetTop =
     direction === "down"
       ? alignedTop + scrollOffset
       : alignedTop - scrollOffset;
 
-  const maxScrollTop =
-    arr2d.length * CELL_HEIGHT - MAX_VISIBLE_ROW * CELL_HEIGHT;
+  const maxScrollTop = arr2d.length * cellSize - visibleRows * cellSize;
 
   gridRef.current.scrollTo({
     scrollLeft: 0,
@@ -58,12 +57,12 @@ export const scrollGridByRows = ({
 export const checkIfScrollingDown = ({
   gridRef,
   targetRow,
-  CELL_HEIGHT,
+  cellSize,
   outerRef,
 }: {
   gridRef: React.RefObject<Grid<ItemData> | null>;
   targetRow: number;
-  CELL_HEIGHT: number;
+  cellSize: number;
   outerRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   if (!gridRef.current) return false;
@@ -75,18 +74,18 @@ export const checkIfScrollingDown = ({
 
   const bottomPixel = scrollTop + clientHeight;
 
-  return targetRow * CELL_HEIGHT > bottomPixel - CELL_HEIGHT;
+  return targetRow * cellSize > bottomPixel - cellSize;
 };
 
 export const checkIfScrollingUp = ({
   gridRef,
   targetRow,
-  CELL_HEIGHT,
+  cellSize,
   outerRef,
 }: {
   gridRef: React.RefObject<Grid<ItemData> | null>;
   targetRow: number;
-  CELL_HEIGHT: number;
+  cellSize: number;
   outerRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   if (!gridRef.current) return false;
@@ -98,18 +97,18 @@ export const checkIfScrollingUp = ({
 
   const topPixel = scrollTop;
 
-  return targetRow * CELL_HEIGHT < topPixel;
+  return targetRow * cellSize < topPixel;
 };
 
 export const getNumberOfRowsToScrollDown = ({
   targetRow,
   gridRef,
-  CELL_HEIGHT,
+  cellSize,
   outerRef,
 }: {
   targetRow: number;
   gridRef: React.RefObject<Grid<ItemData> | null>;
-  CELL_HEIGHT: number;
+  cellSize: number;
   outerRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   if (!gridRef.current) return 0;
@@ -120,21 +119,21 @@ export const getNumberOfRowsToScrollDown = ({
   };
 
   const viewportBottom = scrollTop + clientHeight;
-  const targetRowBottom = (targetRow + 1) * CELL_HEIGHT;
+  const targetRowBottom = (targetRow + 1) * cellSize;
   const overflowPixels = targetRowBottom - viewportBottom;
 
-  return Math.floor(overflowPixels / CELL_HEIGHT);
+  return Math.floor(overflowPixels / cellSize);
 };
 
 export const getNumberOfRowsToScrollUp = ({
   targetRow,
   gridRef,
-  CELL_HEIGHT,
+  cellSize,
   outerRef,
 }: {
   targetRow: number;
   gridRef: React.RefObject<Grid<ItemData> | null>;
-  CELL_HEIGHT: number;
+  cellSize: number;
   outerRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   if (!gridRef.current) return 0;
@@ -145,10 +144,10 @@ export const getNumberOfRowsToScrollUp = ({
   };
 
   const viewportTop = scrollTop;
-  const targetRowTop = targetRow * CELL_HEIGHT;
+  const targetRowTop = targetRow * cellSize;
   const overflowPixels = viewportTop - targetRowTop;
 
-  return Math.floor(overflowPixels / CELL_HEIGHT);
+  return Math.floor(overflowPixels / cellSize);
 };
 
 export const isEmoji = (cell: CELL_TYPES): cell is Emoji =>
@@ -247,14 +246,12 @@ export const getTargetCellHorizontally: (props: {
   arr2d: ARRAY2D_ITEM_PROPS[];
   gridRef: React.RefObject<Grid<ItemData> | null>;
   outerRef: React.RefObject<HTMLDivElement | null>;
-  CELL_HEIGHT: number;
-  MAX_VISIBLE_ROW: number;
+  cellSize: number;
   COLUMNS: number;
 }) => { cell: SelectedCell; targetRowsToScroll?: number } = ({
   direction,
   currentSelectedCell,
-  CELL_HEIGHT,
-  MAX_VISIBLE_ROW,
+  cellSize,
   arr2d,
   gridRef,
   outerRef,
@@ -296,7 +293,7 @@ export const getTargetCellHorizontally: (props: {
       const isScrollingUp = checkIfScrollingUp({
         gridRef,
         targetRow: currentSelectedCell.row - 1,
-        CELL_HEIGHT,
+        cellSize,
         outerRef,
       });
 
@@ -304,7 +301,7 @@ export const getTargetCellHorizontally: (props: {
         targetRowsToScroll = getNumberOfRowsToScrollUp({
           gridRef,
           targetRow: currentSelectedCell.row - 1,
-          CELL_HEIGHT,
+          cellSize,
           outerRef,
         });
       }
@@ -330,7 +327,7 @@ export const getTargetCellHorizontally: (props: {
       const isScrollingUp = checkIfScrollingUp({
         gridRef,
         targetRow: currentSelectedCell.row - 1,
-        CELL_HEIGHT,
+        cellSize,
         outerRef,
       });
 
@@ -338,7 +335,7 @@ export const getTargetCellHorizontally: (props: {
         targetRowsToScroll = getNumberOfRowsToScrollUp({
           gridRef,
           targetRow: currentSelectedCell.row - 1,
-          CELL_HEIGHT,
+          cellSize,
           outerRef,
         });
       }
@@ -352,7 +349,7 @@ export const getTargetCellHorizontally: (props: {
     const isScrollingUp = checkIfScrollingUp({
       gridRef,
       targetRow: currentSelectedCell.row - 2,
-      CELL_HEIGHT,
+      cellSize,
       outerRef,
     });
 
@@ -360,7 +357,7 @@ export const getTargetCellHorizontally: (props: {
       targetRowsToScroll = getNumberOfRowsToScrollUp({
         gridRef,
         targetRow: currentSelectedCell.row - 2,
-        CELL_HEIGHT,
+        cellSize,
         outerRef,
       });
     }
@@ -386,7 +383,7 @@ export const getTargetCellHorizontally: (props: {
       const isScrollingDown = checkIfScrollingDown({
         gridRef,
         targetRow: currentSelectedCell.row + 1,
-        CELL_HEIGHT,
+        cellSize,
         outerRef,
       });
 
@@ -394,7 +391,7 @@ export const getTargetCellHorizontally: (props: {
         targetRowsToScroll = getNumberOfRowsToScrollDown({
           gridRef,
           targetRow: currentSelectedCell.row + 1,
-          CELL_HEIGHT,
+          cellSize,
           outerRef,
         });
       }
@@ -410,7 +407,7 @@ export const getTargetCellHorizontally: (props: {
       const isScrollingDown = checkIfScrollingDown({
         gridRef,
         targetRow: currentSelectedCell.row + 2,
-        CELL_HEIGHT,
+        cellSize,
         outerRef,
       });
       // scroll down 2 row if the target is not visible
@@ -418,7 +415,7 @@ export const getTargetCellHorizontally: (props: {
         targetRowsToScroll = getNumberOfRowsToScrollDown({
           gridRef,
           targetRow: currentSelectedCell.row + 2,
-          CELL_HEIGHT,
+          cellSize,
           outerRef,
         });
       }
@@ -439,11 +436,11 @@ export const getTargetCellHorizontally: (props: {
 };
 
 export const getVisibleRowRange = ({
-  CELL_HEIGHT,
+  cellSize,
   gridRef,
   outerRef,
 }: {
-  CELL_HEIGHT: number;
+  cellSize: number;
   gridRef: React.RefObject<Grid<ItemData> | null>;
   outerRef: React.RefObject<HTMLDivElement | null>;
 }) => {
@@ -455,7 +452,7 @@ export const getVisibleRowRange = ({
   };
 
   const topPixel = scrollTop;
-  const visibleTopRowFloat = topPixel / CELL_HEIGHT;
+  const visibleTopRowFloat = topPixel / cellSize;
   const visibleTopRowFloor = Math.floor(visibleTopRowFloat);
 
   const startRow =
@@ -464,9 +461,9 @@ export const getVisibleRowRange = ({
       : visibleTopRowFloor + 1;
 
   const bottomPixel = scrollTop + clientHeight;
-  const visibleBottomRowFloat = bottomPixel / CELL_HEIGHT;
+  const visibleBottomRowFloat = bottomPixel / cellSize;
   const visibleBottomRowFloor = Math.floor(
-    (scrollTop + clientHeight) / CELL_HEIGHT
+    (scrollTop + clientHeight) / cellSize
   );
   const endRow =
     visibleBottomRowFloat - visibleBottomRowFloor < 0.5

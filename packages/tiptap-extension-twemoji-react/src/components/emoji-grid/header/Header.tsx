@@ -1,14 +1,18 @@
 import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
 import { Dispatch, memo, SetStateAction, useCallback } from "react";
 import { Emoji } from "@/data/emoji-sprite-map";
-import { ComponentEmojiMentionProps, HeaderUisProps } from "@/types";
+import {
+  ComponentEmojiMentionProps,
+  HeaderUisProps,
+  SelectEmojiFunc,
+} from "@/types";
 
 // COMPONENTS
 import SkinToneSelect from "./SkinToneSelect";
 import RandomButton from "./RandomButton";
 import RemoveButton from "./RemoveButton";
 import Input from "./Input";
-import { CELL_HEIGHT, COLUMNS } from "@/constants";
+import { COLUMNS } from "@/constants";
 import { SuggestionProps } from "@tiptap/suggestion";
 import { MentionNodeAttrs } from "@tiptap/extension-mention";
 
@@ -18,13 +22,14 @@ export type EmojiHeaderProps = {
   query?: string;
   setQuery?: Dispatch<SetStateAction<string>>;
   filteredEmojis: Emoji[];
-  onSelectEmoji?: ComponentEmojiMentionProps["onSelectEmoji"];
+  onSelectEmoji?: SelectEmojiFunc;
   onCancel?: ComponentEmojiMentionProps["onCancel"];
   onDelete?: () => void;
   closeAfterDelete?: boolean;
   onSkinListMount: () => void;
   onSkinListUnmount: () => void;
   range?: SuggestionProps<any, MentionNodeAttrs>["range"];
+  cellSize: number;
 } & HeaderUisProps;
 
 const EmojiHeader = ({
@@ -44,8 +49,9 @@ const EmojiHeader = ({
   onSkinListUnmount,
   skinToneSelect,
   range,
+  cellSize,
 }: EmojiHeaderProps) => {
-  const widthGrid = COLUMNS * CELL_HEIGHT + 12;
+  const widthGrid = COLUMNS * cellSize + 12;
 
   const stopEnterPropagation = useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {

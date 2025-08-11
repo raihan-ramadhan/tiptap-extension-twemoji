@@ -7,11 +7,13 @@ export const CUSTOM_EMOJI_CLASS_NAME = "custom-emoji";
 export const EXTENSION_NAME = "emojiExtension";
 
 export const COLUMNS = 12;
-export const CELL_HEIGHT = 32;
-export const MAX_VISIBLE_ROW = 9;
 
 export const DEFAULT_ACCEPT: DropzoneUploadProps["accept"] = { "image/*": [] };
-export const DEFAULT_MAX_SIZE = 1000 * 1000 * 10; // 10MB;
-export const DEFAULT_UPLOAD = async () => {};
-export const DEFAULT_ON_ERROR = () => {};
-export const DEFAULT_ON_SUCCESS = () => {};
+export const DEFAULT_MAX_SIZE: DropzoneUploadProps["maxSize"] =
+  1000 * 1000 * 10; // 10MB;
+export const DEFAULT_UPLOAD: DropzoneUploadProps["upload"] = async () => {};
+export const DEFAULT_ON_ERROR: DropzoneUploadProps["onError"] = () => {};
+export const DEFAULT_ON_SUCCESS: DropzoneUploadProps["onSuccess"] = () => {};
+export const DEFAULT_MIN_CELLS_TO_HIDE_NAV: number = 60;
+export const DEFAULT_VISIBLE_ROWS: number = 9;
+export const DEFAULT_CELL_SIZE: number = 32;

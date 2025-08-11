@@ -42,8 +42,8 @@ interface OnKeydownHandlersProps {
   gridRef: React.RefObject<Grid<ItemData> | null>;
   ref: React.Ref<EmojiListRef> | undefined;
   arr2d: ARRAY2D_ITEM_PROPS[];
-  MAX_VISIBLE_ROW: number;
-  CELL_HEIGHT: number;
+  visibleRows: number;
+  cellSize: number;
   COLUMNS: number;
   skinTone: SKIN_TONE_CODES_PROPS;
   range?: SuggestionProps<any, MentionNodeAttrs>["range"];
@@ -58,8 +58,8 @@ export function useOnKeydownHandlers({
   gridRef,
   setSelectedCell,
   arr2d,
-  CELL_HEIGHT,
-  MAX_VISIBLE_ROW,
+  cellSize,
+  visibleRows,
   onSelectEmoji,
   selectedCellRef,
   COLUMNS,
@@ -74,8 +74,8 @@ export function useOnKeydownHandlers({
   const sharedScrollParams = {
     gridRef,
     outerRef,
-    CELL_HEIGHT,
-    MAX_VISIBLE_ROW,
+    cellSize,
+    visibleRows,
     arr2d,
   };
 
@@ -114,14 +114,14 @@ export function useOnKeydownHandlers({
         checkIfScrollingUp({
           gridRef,
           targetRow: targetCell.row,
-          CELL_HEIGHT,
+          cellSize,
           outerRef,
         })
       ) {
         rowsToScroll = getNumberOfRowsToScrollUp({
           gridRef,
           targetRow: targetCell.row,
-          CELL_HEIGHT,
+          cellSize,
           outerRef,
         });
       }
@@ -154,14 +154,14 @@ export function useOnKeydownHandlers({
         checkIfScrollingDown({
           gridRef,
           targetRow: targetCell.row,
-          CELL_HEIGHT,
+          cellSize,
           outerRef,
         })
       ) {
         rowsToScroll = getNumberOfRowsToScrollDown({
           gridRef,
           targetRow: targetCell.row,
-          CELL_HEIGHT,
+          cellSize,
           outerRef,
         });
       }

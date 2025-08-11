@@ -69,6 +69,19 @@ export type ExtensionCustomEmojiOptions = {
   maxSize?: DropzoneUploadProps["maxSize"];
 };
 
+export type ExtensionNavOptions = {
+  /**
+   * Minimal quantity of cell or emojis to hide nav from EmojiGrid
+   * @default
+   */
+  minCellsToHideNav?: number;
+};
+
+export type ExtensionGridOptions = {
+  visibleRows?: number;
+  cellSize?: number;
+};
+
 export type SelectedCellElementRef = RefObject<HTMLButtonElement | null>;
 
 export type CustomEmoji = { label: string; url: string; id: string };
@@ -110,6 +123,9 @@ export type ComponentEmojiMentionProps = DropzoneUploadProps &
     focusImmediately?: boolean;
     onDelete?: () => void;
     closeAfterDelete?: boolean;
+    minCellsToHideNav: number;
+    visibleRows: number;
+    cellSize: number;
   };
 
 export type GroupTitle = { groupTitle: string };
@@ -151,4 +167,5 @@ export type ItemData = DropzoneUploadProps & {
   enableEmojiCellsNavigation: () => void;
   deactivateTrap: () => void;
   activateTrap: () => void;
+  cellSize: number;
 };

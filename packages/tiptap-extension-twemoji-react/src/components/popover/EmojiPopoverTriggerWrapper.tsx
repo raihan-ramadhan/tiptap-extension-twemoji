@@ -14,16 +14,21 @@ import {
   HeaderUisProps,
   ExtensionHeaderOptions,
   ExtensionCustomEmojiOptions,
+  ExtensionNavOptions,
+  ExtensionGridOptions,
 } from "@/types";
 
 // Hooks
 import { useEmojiGridState } from "@/hooks/useEmojiGridState";
 import {
   DEFAULT_ACCEPT,
+  DEFAULT_CELL_SIZE,
   DEFAULT_MAX_SIZE,
+  DEFAULT_MIN_CELLS_TO_HIDE_NAV,
   DEFAULT_ON_ERROR,
   DEFAULT_ON_SUCCESS,
   DEFAULT_UPLOAD,
+  DEFAULT_VISIBLE_ROWS,
 } from "@/constants";
 
 type EmojiPopoverTriggerWrapperProps = {
@@ -70,6 +75,8 @@ type EmojiPopoverTriggerWrapperProps = {
     removeButton?: HeaderUisProps["removeButton"];
   } & ExtensionHeaderOptions;
   customEmojiOptions?: ExtensionCustomEmojiOptions;
+  navOptions?: ExtensionNavOptions;
+  gridOptions?: ExtensionGridOptions;
 };
 
 export function EmojiPopoverTriggerWrapper({
@@ -81,6 +88,8 @@ export function EmojiPopoverTriggerWrapper({
   customEmojis,
   headerOptions,
   customEmojiOptions,
+  navOptions,
+  gridOptions,
 }: EmojiPopoverTriggerWrapperProps) {
   const {
     isEmpty,
@@ -93,6 +102,9 @@ export function EmojiPopoverTriggerWrapper({
     closeAfterSelectRandom = true,
   } = headerOptions ?? {};
 
+  const { minCellsToHideNav = DEFAULT_MIN_CELLS_TO_HIDE_NAV } =
+    navOptions ?? {};
+
   const {
     upload = DEFAULT_UPLOAD,
     onError = DEFAULT_ON_ERROR,
@@ -100,6 +112,9 @@ export function EmojiPopoverTriggerWrapper({
     accept = DEFAULT_ACCEPT,
     maxSize = DEFAULT_MAX_SIZE,
   } = customEmojiOptions ?? {};
+
+  const { cellSize = DEFAULT_CELL_SIZE, visibleRows = DEFAULT_VISIBLE_ROWS } =
+    gridOptions ?? {};
 
   const child = Children.only(children);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -154,6 +169,9 @@ export function EmojiPopoverTriggerWrapper({
       trigger={trigger}
     >
       <EmojiGrid
+        cellSize={cellSize}
+        visibleRows={visibleRows}
+        minCellsToHideNav={minCellsToHideNav}
         maxSize={maxSize}
         accept={accept}
         focusImmediately

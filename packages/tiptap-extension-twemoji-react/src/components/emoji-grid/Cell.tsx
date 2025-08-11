@@ -2,7 +2,6 @@ import { GridChildComponentProps } from "react-window";
 import { ItemData } from "@/types";
 import { HTMLAttributes, memo, useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { CELL_HEIGHT } from "@/constants";
 import {
   isActionBtn,
   isCustomEmoji,
@@ -43,8 +42,11 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     deactivateTrap,
     accept,
     maxSize,
+    cellSize,
   } = data;
   const emojiData = arr2d[rowIndex][columnIndex];
+
+  const cellPadding = 8;
 
   if (!emojiData) return null;
 
@@ -60,7 +62,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     style: style,
     className: cn(
       "flex justify-center items-center twemoji-button !p-1",
-      `size-[${CELL_HEIGHT}px]`,
+      `size-[${cellSize}px]`,
       isSelected && "bg-(--twemoji-secondary-color)"
     ),
     onMouseMoveCapture: () => {
@@ -113,7 +115,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     const htmlAttr = useMemo(() => {
       return getAttributes({
         data: finalEmoji,
-        styleOption: { type: "object", sizeInpixel: 24 },
+        styleOption: { type: "object", sizeInpixel: cellSize - cellPadding },
       });
     }, [finalEmoji]);
 
@@ -148,8 +150,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         src={url}
         draggable={false}
         style={{
-          width: 24,
-          height: 24,
+          width: cellSize - cellPadding,
+          height: cellSize - cellPadding,
           display: "inline-block",
           margin: "0 0.1em",
           verticalAlign: "-0.1em",
@@ -173,10 +175,10 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     const content = (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width={cellSize - cellPadding}
+        height={cellSize - cellPadding}
         fill="none"
-        viewBox="0 0 24 24"
+        viewBox={`0 0 ${cellSize - cellPadding} ${cellSize - cellPadding}`}
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"

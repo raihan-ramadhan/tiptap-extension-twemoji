@@ -29,9 +29,10 @@ import type {
   SelectEmojiFunc,
   EmojiListRef,
   StoredEmoji,
-  DropzoneUploadProps,
   ExtensionHeaderOptions,
   ExtensionCustomEmojiOptions,
+  ExtensionNavOptions,
+  ExtensionGridOptions,
 } from "@/types";
 
 // TIPTAP
@@ -54,10 +55,13 @@ import EmojiGrid from "@/components/emoji-grid/EmojiGrid";
 import {
   CUSTOM_EMOJI_CLASS_NAME,
   DEFAULT_ACCEPT,
+  DEFAULT_CELL_SIZE,
   DEFAULT_MAX_SIZE,
+  DEFAULT_MIN_CELLS_TO_HIDE_NAV,
   DEFAULT_ON_ERROR,
   DEFAULT_ON_SUCCESS,
   DEFAULT_UPLOAD,
+  DEFAULT_VISIBLE_ROWS,
   EMOJI_CLASS_NAME,
   EXTENSION_NAME,
   LOCAL_STORAGE_RECENT_EMOJIS_KEY,
@@ -86,9 +90,12 @@ export interface EmojiExtensionStorage {
   query: string;
 }
 
-let component: ReactRenderer<EmojiListRef, ComponentEmojiMentionProps> | null =
-  null;
+type COMPONENT_PROPS = Omit<
+  ComponentEmojiMentionProps,
+  "focusImmediately" | "closeAfterDelete" | "onDelete" | "query" | "setQuery"
+>;
 
+let component: ReactRenderer<EmojiListRef, COMPONENT_PROPS> | null = null;
 let lastItems: SuggestionItems[] = [];
 
 type TwemojiExtensionProps = {
@@ -99,6 +106,8 @@ type TwemojiExtensionProps = {
   spriteUrl?: string;
   headerOptions?: ExtensionHeaderOptions;
   customEmojiOptions?: ExtensionCustomEmojiOptions;
+  navOptions?: ExtensionNavOptions;
+  gridOptions?: ExtensionGridOptions;
 };
 
 const TwemojiExtension = Mention.extend<
@@ -158,6 +167,14 @@ const TwemojiExtension = Mention.extend<
         onError: undefined,
         onSuccess: undefined,
         upload: undefined,
+      },
+      navOptions: {
+        minCellsToHideNav: undefined,
+      },
+      spriteUrl: undefined,
+      gridOptions: {
+        cellSize: undefined,
+        visibleRows: undefined,
       },
     };
   },
@@ -476,8 +493,15 @@ const TwemojiExtension = Mention.extend<
                 this.options.headerOptions?.randomButton ?? true;
               const skinToneSelect =
                 this.options.headerOptions?.skinToneSelect ?? true;
+              const minCellsToHideNav =
+                this.options.navOptions?.minCellsToHideNav ??
+                DEFAULT_MIN_CELLS_TO_HIDE_NAV;
+              const visibleRows =
+                this.options.gridOptions?.visibleRows ?? DEFAULT_VISIBLE_ROWS;
+              const cellSize =
+                this.options.gridOptions?.cellSize ?? DEFAULT_CELL_SIZE;
 
-              const componentProps: ComponentEmojiMentionProps = {
+              const componentProps: COMPONENT_PROPS = {
                 onSelectEmoji,
                 onCancel,
                 maxSize,
@@ -493,6 +517,9 @@ const TwemojiExtension = Mention.extend<
                 skinToneSelect,
                 headerInput: false,
                 removeButton: false,
+                minCellsToHideNav,
+                visibleRows,
+                cellSize,
               };
 
               lastItems = items;

@@ -10,13 +10,13 @@ export const transformData = ({
   COLUMNS,
   recent,
   filteredEmojis,
-  MINIMUM_CELL_SHOW_GROUPS,
+  minCellsToHideNav,
   filteredCustomEmojis,
 }: {
   COLUMNS: number;
   recent: SuggestionItems["recent"];
   filteredEmojis: Emoji[];
-  MINIMUM_CELL_SHOW_GROUPS: number;
+  minCellsToHideNav: number;
   filteredCustomEmojis: CustomEmoji[] | undefined;
 }) => {
   const new2dArr: ARRAY2D_ITEM_PROPS[] = [];
@@ -62,7 +62,7 @@ export const transformData = ({
   const itemsSuggestion =
     filteredEmojis.length + (filteredCustomEmojis?.length ?? 0);
 
-  if (itemsSuggestion > 0 && itemsSuggestion <= MINIMUM_CELL_SHOW_GROUPS) {
+  if (itemsSuggestion > 0 && itemsSuggestion <= minCellsToHideNav) {
     new2dArr.push(...temp2dArrRecent);
 
     new2dArr.push([titleEmojiMockup(EMOJI_GROUPS[11])]);

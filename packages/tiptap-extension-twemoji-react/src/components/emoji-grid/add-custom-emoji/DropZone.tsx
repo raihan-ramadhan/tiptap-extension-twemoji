@@ -9,11 +9,9 @@ import {
   useState,
 } from "react";
 import { DropzoneState, FileRejection, useDropzone } from "react-dropzone";
-import { ExtensionOptions } from "@/types";
+import { DropzoneUploadProps } from "@/types";
 
 export const MAX_FILES = 1;
-export const MAX_FILE_SIZE = 1000 * 1000 * 10; // 10MB
-export const ALLOWED_MIME_TYPES = ["image/*"];
 
 export const formatBytes = (
   bytes: number,
@@ -45,15 +43,15 @@ type DropzoneContextProps = Omit<
   emojiNameError: string | null;
   loading: boolean;
   onUpload: ({ callback }: { callback?: () => void }) => Promise<void>;
-  onError: ExtensionOptions["onError"];
-  onSuccess: ExtensionOptions["onSuccess"];
+  onError: DropzoneUploadProps["onError"];
+  onSuccess: DropzoneUploadProps["onSuccess"];
 };
 
 const DropzoneContext = createContext<DropzoneContextProps | undefined>(
   undefined
 );
 
-type DropzoneProps = ExtensionOptions & {
+type DropzoneProps = DropzoneUploadProps & {
   className?: string;
 };
 
@@ -67,6 +65,8 @@ const Dropzone = ({
   upload: uploadCallback,
   onError,
   onSuccess,
+  accept,
+  maxSize,
   ...restProps
 }: PropsWithChildren<DropzoneProps>) => {
   const [files, setFiles] = useState<FileWithPreview | null>(null);
@@ -130,7 +130,7 @@ const Dropzone = ({
             if (error.message.startsWith("File is larger than")) {
               if (onError)
                 onError(
-                  `File is larger than ${formatBytes(MAX_FILE_SIZE, 2)} (Size: ${formatBytes(file.size, 2)})`
+                  `File is larger than ${formatBytes(maxSize, 2)} (Size: ${formatBytes(file.size, 2)})`
                 );
             } else {
               if (onError) onError(error.message);
@@ -169,11 +169,8 @@ const Dropzone = ({
   const { getInputProps, getRootProps, ...dropzoneProps } = useDropzone({
     onDrop,
     noClick: true,
-    accept: ALLOWED_MIME_TYPES.reduce(
-      (acc, type) => ({ ...acc, [type]: [] }),
-      {}
-    ),
-    maxSize: MAX_FILE_SIZE,
+    accept,
+    maxSize,
     multiple: true,
   });
 
@@ -324,8 +321,8 @@ const DropzoneEmptyState = ({ className }: { className?: string }) => {
         onClick={() => inputRef.current?.click()}
         className={cn(
           "twemoji-button bg-(--twemoji-accent-color) transition-colors duration-200 w-full flex items-center gap-1 justify-center !py-3",
-          isDragActive && "bg-blue-400/20",
-          isInvalid && "bg-red-400/20 hover:bg-red-400/20"
+          isDragActive && "!bg-blue-400/20",
+          isInvalid && "!bg-red-400/20 hover:!bg-red-400/20"
         )}
       >
         <Image size={15} />

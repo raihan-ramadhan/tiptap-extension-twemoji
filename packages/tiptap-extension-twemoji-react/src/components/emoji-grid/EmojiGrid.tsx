@@ -45,7 +45,6 @@ export default function ({
   query,
   setQuery,
   headerInput,
-  callback,
   randomButton,
   removeButton,
   focusImmediately,
@@ -55,6 +54,9 @@ export default function ({
   editor,
   onDelete,
   closeAfterDelete,
+  accept,
+  maxSize,
+  skinToneSelect,
 }: ComponentEmojiMentionProps) {
   const { recent, filteredEmojis, filteredCustomEmojis } = items[0];
 
@@ -294,22 +296,26 @@ export default function ({
         trapRef.current = node;
       }}
     >
-      <EmojiHeader
-        onSkinListMount={disableEmojiCellsNavigation}
-        onSkinListUnmount={enableEmojiCellsNavigation}
-        onCancel={onCancel}
-        callback={callback}
-        filteredEmojis={items[0].filteredEmojis}
-        headerInput={headerInput}
-        setSkinTone={setSkinTone}
-        skinTone={skinTone}
-        query={query}
-        setQuery={setQuery}
-        randomButton={randomButton}
-        removeButton={removeButton}
-        onDelete={onDelete}
-        closeAfterDelete={closeAfterDelete}
-      />
+      {randomButton || headerInput || removeButton || skinToneSelect ? (
+        <EmojiHeader
+          onSkinListUnmount={enableEmojiCellsNavigation}
+          onSkinListMount={disableEmojiCellsNavigation}
+          filteredEmojis={items[0].filteredEmojis}
+          onCancel={onCancel}
+          setSkinTone={setSkinTone}
+          skinTone={skinTone}
+          query={query}
+          setQuery={setQuery}
+          headerInput={headerInput}
+          randomButton={randomButton}
+          removeButton={removeButton}
+          onDelete={onDelete}
+          closeAfterDelete={closeAfterDelete}
+          skinToneSelect={skinToneSelect}
+          onSelectEmoji={onSelectEmoji}
+          range={range}
+        />
+      ) : null}
       {filteredEmojis.length +
         (recent?.length ?? 0) +
         (filteredCustomEmojis?.length ?? 0) >
@@ -327,26 +333,30 @@ export default function ({
             rowCount={arr2d.length}
             columnWidth={CELL_HEIGHT}
             itemData={{
-              range,
-              skinTone,
-              arr2d,
-              onSelectEmoji,
-              selectedCell,
-              selectedCellElementRef,
               disableEmojiCellsNavigation,
               enableEmojiCellsNavigation,
-              cellRefs,
-              handleHover,
-              onError,
-              onSuccess,
-              upload,
+              selectedCellElementRef,
               deactivateTrap,
+              onSelectEmoji,
+              selectedCell,
               activateTrap,
+              handleHover,
+              onSuccess,
+              skinTone,
+              cellRefs,
+              onError,
+              maxSize,
+              upload,
+              accept,
+              range,
+              arr2d,
             }}
           >
             {Cell}
           </Grid>
           <Nav
+            maxSize={maxSize}
+            accept={accept}
             onSuccess={onSuccess}
             onError={onError}
             upload={upload}
@@ -380,6 +390,7 @@ export default function ({
           <span className="block py-2">No Result</span>
           <div>
             <AddCustomEmoji
+              accept={accept}
               className="twemoji-button w-fit twemoji-border relative inline-flex items-center justify-center !py-1 !px-2"
               onSubPopoverMount={() => {
                 deactivateTrap();
@@ -394,6 +405,7 @@ export default function ({
               onErrorUpload={onError}
               onSuccess={onSuccess}
               upload={upload}
+              maxSize={maxSize}
             >
               <span className="flex items-center gap-0.5 text-xs">
                 <Plus className="size-4 aspect-square stroke-(length:--twemoji-icon-stroke-width)" />

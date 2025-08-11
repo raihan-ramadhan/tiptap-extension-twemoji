@@ -9,47 +9,101 @@ import { Popover } from "./Popover";
 
 // TYPES
 import { Emoji } from "@/data/emoji-sprite-map";
-import { CustomEmoji, ExtensionOptions } from "@/types";
+import {
+  CustomEmoji,
+  HeaderUisProps,
+  ExtensionHeaderOptions,
+  ExtensionCustomEmojiOptions,
+} from "@/types";
 
 // Hooks
 import { useEmojiGridState } from "@/hooks/useEmojiGridState";
+import {
+  DEFAULT_ACCEPT,
+  DEFAULT_MAX_SIZE,
+  DEFAULT_ON_ERROR,
+  DEFAULT_ON_SUCCESS,
+  DEFAULT_UPLOAD,
+} from "@/constants";
 
-export function EmojiPopoverTriggerWrapper({
-  setRandomEmojiOnEmpty = false,
-  isEmpty,
-  children,
-  selectEmojiHandler,
-  headerInput = true,
-  randomButton = true,
-  removeButton = true,
-  defaultOpen = false,
-  isOpen: controlledOpen,
-  onOpenChange,
-  onDelete,
-  closeAfterDelete,
-  customEmojis,
-  upload,
-  onError,
-  onSuccess,
-}: ExtensionOptions & {
+type EmojiPopoverTriggerWrapperProps = {
+  selectEmojiHandler: (emoji: CustomEmoji | Emoji) => void;
   children: React.ReactElement<
     React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
   >;
-  setRandomEmojiOnEmpty?: boolean;
-  selectEmojiHandler: (emoji: CustomEmoji | Emoji) => void;
-  isEmpty?: boolean;
-  headerInput?: boolean;
-  randomButton?: boolean;
-  removeButton?: boolean;
   isOpen?: boolean;
-  defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onDelete?: () => void;
-  closeAfterDelete?: boolean;
   customEmojis?: CustomEmoji[];
-}) {
+  /**
+   * @default false
+   */
+  defaultOpen?: boolean;
+  headerOptions?: {
+    /**
+     * state for setRandomEmojiOnEmpty
+     */
+    isEmpty?: boolean;
+    /**
+     * If `true`, automatically calls the `selectEmojiHandler` prop with a random emoji
+     * when `isEmpty` is `true`.
+     * @default true
+     */
+    setRandomEmojiOnEmpty?: boolean;
+    /**
+     * callback to run when <RemoveButton/> clicked
+     */
+    onDelete?: () => void;
+    /**
+     *  dismiss popover after delete
+     * @default true
+     */
+    closeAfterSelectRandom?: boolean;
+    /**
+     *  dismiss popover after delete
+     * @default true
+     */
+    closeAfterDelete?: boolean;
+    /**
+     * Show <RemoveButton />
+     * @default true
+     */
+    removeButton?: HeaderUisProps["removeButton"];
+  } & ExtensionHeaderOptions;
+  customEmojiOptions?: ExtensionCustomEmojiOptions;
+};
+
+export function EmojiPopoverTriggerWrapper({
+  children,
+  selectEmojiHandler,
+  defaultOpen = false,
+  isOpen: controlledOpen,
+  onOpenChange,
+  customEmojis,
+  headerOptions,
+  customEmojiOptions,
+}: EmojiPopoverTriggerWrapperProps) {
+  const {
+    isEmpty,
+    onDelete,
+    randomButton = true,
+    removeButton = true,
+    skinToneSelect = true,
+    closeAfterDelete = true,
+    setRandomEmojiOnEmpty = true,
+    closeAfterSelectRandom = true,
+  } = headerOptions ?? {};
+
+  const {
+    upload = DEFAULT_UPLOAD,
+    onError = DEFAULT_ON_ERROR,
+    onSuccess = DEFAULT_ON_SUCCESS,
+    accept = DEFAULT_ACCEPT,
+    maxSize = DEFAULT_MAX_SIZE,
+  } = customEmojiOptions ?? {};
+
   const child = Children.only(children);
   const triggerRef = useRef<HTMLButtonElement>(null);
+
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
 
   const isControlled = controlledOpen !== undefined;
@@ -100,16 +154,17 @@ export function EmojiPopoverTriggerWrapper({
       trigger={trigger}
     >
       <EmojiGrid
+        maxSize={maxSize}
+        accept={accept}
         focusImmediately
-        headerInput={headerInput}
+        headerInput={true}
         randomButton={randomButton}
         removeButton={removeButton}
         query={query}
         setQuery={setQuery}
-        callback={selectEmojiHandler}
         onSelectEmoji={({ emoji }) => {
           selectEmojiHandler(emoji);
-          setIsOpen(false);
+          if (closeAfterSelectRandom) setIsOpen(false);
         }}
         onCancel={() => setIsOpen(false)}
         items={items}
@@ -118,6 +173,7 @@ export function EmojiPopoverTriggerWrapper({
         upload={upload}
         onSuccess={onSuccess}
         onError={onError}
+        skinToneSelect={skinToneSelect}
       />
     </Popover>
   );

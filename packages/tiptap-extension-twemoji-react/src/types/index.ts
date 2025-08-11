@@ -5,25 +5,69 @@ import { SuggestionProps } from "@tiptap/suggestion";
 import { MentionNodeAttrs } from "@tiptap/extension-mention";
 import { Editor } from "@tiptap/react";
 import { FileWithPreview } from "@/components/emoji-grid/add-custom-emoji/DropZone";
-import { EmojiHeaderProps } from "@/components/emoji-grid/header/Header";
 
-export type ExtensionOptions = {
-  upload?: UploadCustEmojiFunc;
-  onError?: (errorMessage: string) => void;
-  onSuccess?: (successMessage: string, callback?: () => void) => void;
+export type DropzoneUploadProps = {
+  upload: (props: {
+    emojiName: string;
+    files: FileWithPreview;
+    onSuccess: DropzoneUploadProps["onSuccess"];
+    onError: DropzoneUploadProps["onError"];
+    callback?: () => void;
+  }) => Promise<void>;
+  onError: (errorMessage: string) => void;
+  onSuccess: (successMessage: string, callback?: () => void) => void;
+  accept: {
+    [key: string]: readonly string[];
+  };
+  maxSize: number;
 };
 
-export type UploadCustEmojiProps = {
-  emojiName: string;
-  files: FileWithPreview;
-  onSuccess: ExtensionOptions["onSuccess"];
-  onError: ExtensionOptions["onError"];
-  callback?: () => void;
+export type HeaderUisProps = {
+  headerInput: boolean;
+  skinToneSelect: boolean;
+  randomButton: boolean;
+  removeButton: boolean;
 };
 
-export type UploadCustEmojiFunc = (
-  props: UploadCustEmojiProps
-) => Promise<void>;
+export type ExtensionHeaderOptions = {
+  /**
+   * Show <RandomButton />
+   * @default true
+   */
+  randomButton?: HeaderUisProps["randomButton"];
+  /**
+   * Show <SkinToneSelect />
+   * @default true
+   */
+  skinToneSelect?: HeaderUisProps["skinToneSelect"];
+};
+
+export type ExtensionCustomEmojiOptions = {
+  /**
+   * Function to handle the upload process.
+   */
+  upload?: DropzoneUploadProps["upload"];
+  /**
+   * Callback for upload errors.
+   */
+  onError?: DropzoneUploadProps["onError"];
+  /**
+   * Callback for successful uploads.
+   */
+  onSuccess?: DropzoneUploadProps["onSuccess"];
+  /**
+   * Acceptable file types for upload.
+   * @default  { "image/*": [] }
+   *
+   * See: https://react-dropzone.org/#!/Accepting%20specific%20file%20types
+   */
+  accept?: DropzoneUploadProps["accept"];
+  /**
+   * Maximum file size in bytes.
+   * @default 1000 * 1000 * 10 // 10MB
+   */
+  maxSize?: DropzoneUploadProps["maxSize"];
+};
 
 export type SelectedCellElementRef = RefObject<HTMLButtonElement | null>;
 
@@ -53,23 +97,20 @@ export type SuggestionItems = {
 
 export type Range = SuggestionProps<any, MentionNodeAttrs>["range"] | undefined;
 
-export type ComponentEmojiMentionProps = ExtensionOptions & {
-  items: SuggestionItems[];
-  ref?: Ref<EmojiListRef>;
-  onCancel?: () => void;
-  onSelectEmoji: SelectEmojiFunc;
-  range?: Range;
-  query?: string;
-  setQuery?: Dispatch<SetStateAction<string>>;
-  headerInput?: EmojiHeaderProps["headerInput"];
-  removeButton?: EmojiHeaderProps["removeButton"];
-  randomButton?: EmojiHeaderProps["randomButton"];
-  editor?: Editor;
-  callback?: (emoji: Emoji | CustomEmoji) => void;
-  focusImmediately?: boolean;
-  onDelete?: () => void;
-  closeAfterDelete?: boolean;
-};
+export type ComponentEmojiMentionProps = DropzoneUploadProps &
+  HeaderUisProps & {
+    items: SuggestionItems[];
+    ref?: Ref<EmojiListRef>;
+    onCancel?: () => void;
+    onSelectEmoji: SelectEmojiFunc;
+    range?: Range;
+    query?: string;
+    setQuery?: Dispatch<SetStateAction<string>>;
+    editor?: Editor;
+    focusImmediately?: boolean;
+    onDelete?: () => void;
+    closeAfterDelete?: boolean;
+  };
 
 export type GroupTitle = { groupTitle: string };
 export type ActionBtn = {
@@ -97,7 +138,7 @@ export type SelectedCell = {
   column: number;
 };
 
-export type ItemData = ExtensionOptions & {
+export type ItemData = DropzoneUploadProps & {
   arr2d: ARRAY2D_ITEM_PROPS[];
   selectedCell: SelectedCell;
   onSelectEmoji: SelectEmojiFunc;

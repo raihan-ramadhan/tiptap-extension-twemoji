@@ -41,6 +41,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     enableEmojiCellsNavigation,
     activateTrap,
     deactivateTrap,
+    accept,
+    maxSize,
   } = data;
   const emojiData = arr2d[rowIndex][columnIndex];
 
@@ -188,6 +190,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
 
     return (
       <AddCustomEmoji
+        maxSize={maxSize}
+        accept={accept}
         onSubPopoverMount={() => {
           deactivateTrap();
           disableEmojiCellsNavigation();

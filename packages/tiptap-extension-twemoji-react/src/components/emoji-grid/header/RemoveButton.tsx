@@ -11,7 +11,7 @@ const RemoveButton = ({
   onCancel,
   callback,
   stopEnterPropagation,
-  closeAfterDelete = true,
+  closeAfterDelete,
 }: {
   stopEnterPropagation: (event: React.KeyboardEvent<HTMLElement>) => void;
   callback?: () => void;

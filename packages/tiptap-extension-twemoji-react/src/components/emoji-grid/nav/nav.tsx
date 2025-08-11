@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { FixedSizeGrid as Grid } from "react-window";
 import { EMOJI_GROUPS_PROPS } from "@/lib/emoji-groups";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { ARRAY2D_ITEM_PROPS, ExtensionOptions, ItemData } from "@/types";
+import { ARRAY2D_ITEM_PROPS, DropzoneUploadProps, ItemData } from "@/types";
 import AddCustomEmoji from "@/components/emoji-grid/add-custom-emoji/AddCustomEmoji";
 import { debounce } from "lodash-es";
 import { Plus } from "lucide-react";
@@ -34,7 +34,9 @@ const Nav = ({
   disableEmojiCellsNavigation,
   enableEmojiCellsNavigation,
   className,
-}: NavProps & ExtensionOptions) => {
+  accept,
+  maxSize,
+}: NavProps & DropzoneUploadProps) => {
   const initialActiveNav = useMemo(() => {
     return Object.keys(groupsIndexes).find(
       (key) => groupsIndexes[key as EMOJI_GROUPS_PROPS] === 0
@@ -134,6 +136,8 @@ const Nav = ({
         })}
         <li style={{ width: navItemWidth, height: navItemWidth }}>
           <AddCustomEmoji
+            maxSize={maxSize}
+            accept={accept}
             className="aspect-square justify-items-center content-center size-full twemoji-button"
             side="top"
             align="end"

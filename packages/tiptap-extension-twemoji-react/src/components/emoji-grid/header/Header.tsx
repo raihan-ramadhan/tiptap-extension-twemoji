@@ -1,7 +1,7 @@
 import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
 import { Dispatch, memo, SetStateAction, useCallback } from "react";
 import { Emoji } from "@/data/emoji-sprite-map";
-import { ComponentEmojiMentionProps } from "@/types";
+import { ComponentEmojiMentionProps, HeaderUisProps } from "@/types";
 
 // COMPONENTS
 import SkinToneSelect from "./SkinToneSelect";
@@ -9,32 +9,32 @@ import RandomButton from "./RandomButton";
 import RemoveButton from "./RemoveButton";
 import Input from "./Input";
 import { CELL_HEIGHT, COLUMNS } from "@/constants";
+import { SuggestionProps } from "@tiptap/suggestion";
+import { MentionNodeAttrs } from "@tiptap/extension-mention";
 
 export type EmojiHeaderProps = {
-  headerInput?: boolean;
-  randomButton?: boolean;
-  removeButton?: boolean;
   skinTone: SKIN_TONE_CODES_PROPS;
   setSkinTone: Dispatch<SetStateAction<SKIN_TONE_CODES_PROPS>>;
   query?: string;
   setQuery?: Dispatch<SetStateAction<string>>;
   filteredEmojis: Emoji[];
-  callback?: ComponentEmojiMentionProps["callback"];
+  onSelectEmoji?: ComponentEmojiMentionProps["onSelectEmoji"];
   onCancel?: ComponentEmojiMentionProps["onCancel"];
   onDelete?: () => void;
   closeAfterDelete?: boolean;
   onSkinListMount: () => void;
   onSkinListUnmount: () => void;
-};
+  range?: SuggestionProps<any, MentionNodeAttrs>["range"];
+} & HeaderUisProps;
 
 const EmojiHeader = ({
   skinTone,
   setSkinTone,
   query,
   setQuery,
-  headerInput = false,
+  headerInput,
   filteredEmojis,
-  callback,
+  onSelectEmoji,
   randomButton,
   removeButton,
   onCancel,
@@ -42,6 +42,8 @@ const EmojiHeader = ({
   closeAfterDelete,
   onSkinListMount,
   onSkinListUnmount,
+  skinToneSelect,
+  range,
 }: EmojiHeaderProps) => {
   const widthGrid = COLUMNS * CELL_HEIGHT + 12;
 
@@ -72,7 +74,9 @@ const EmojiHeader = ({
         <RandomButton
           filteredEmojis={filteredEmojis}
           stopEnterPropagation={stopEnterPropagation}
-          callback={callback}
+          callback={onSelectEmoji}
+          skinTone={skinTone}
+          range={range}
         />
       ) : null}
       {removeButton ? (
@@ -83,13 +87,15 @@ const EmojiHeader = ({
           closeAfterDelete={closeAfterDelete}
         />
       ) : null}
-      <SkinToneSelect
-        stopEnterPropagation={stopEnterPropagation}
-        onSkinListUnmount={onSkinListUnmount}
-        onSkinListMount={onSkinListMount}
-        setSkinTone={setSkinTone}
-        skinTone={skinTone}
-      />
+      {skinToneSelect ? (
+        <SkinToneSelect
+          stopEnterPropagation={stopEnterPropagation}
+          onSkinListUnmount={onSkinListUnmount}
+          onSkinListMount={onSkinListMount}
+          setSkinTone={setSkinTone}
+          skinTone={skinTone}
+        />
+      ) : null}
     </div>
   );
 };

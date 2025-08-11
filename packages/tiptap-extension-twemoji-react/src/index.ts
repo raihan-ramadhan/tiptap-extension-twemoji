@@ -1,6 +1,9 @@
 import "./styles.css";
 
-export type { CustomEmoji, UploadCustEmojiProps } from "@/types";
+export type {
+  CustomEmoji,
+  DropzoneUploadProps as EmojiUploadProps,
+} from "@/types";
 export type { Emoji } from "@/data/emoji-sprite-map";
 
 export {

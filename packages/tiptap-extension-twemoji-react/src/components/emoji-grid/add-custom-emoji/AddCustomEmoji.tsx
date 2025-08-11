@@ -3,7 +3,7 @@ import { createFocusTrap } from "focus-trap";
 import Content from "./Content";
 import { Popover } from "@/components/popover/Popover";
 import { Alignment, Placement, Side } from "@floating-ui/dom";
-import { ExtensionOptions } from "@/types";
+import { DropzoneUploadProps } from "@/types";
 
 type AddCustomEmojiProps = {
   onSubPopoverMount: () => void;
@@ -16,10 +16,9 @@ type AddCustomEmojiProps = {
   children?: React.ReactElement;
   label?: string;
   navigationCellDisableOnMount?: boolean;
+  onErrorUpload: DropzoneUploadProps["onError"];
 } & React.ComponentProps<"button"> &
-  Omit<ExtensionOptions, "onError"> & {
-    onErrorUpload?: ExtensionOptions["onError"];
-  };
+  Omit<DropzoneUploadProps, "onError">;
 
 const AddCustomEmoji = ({
   onSubPopoverUnmount,
@@ -34,6 +33,8 @@ const AddCustomEmoji = ({
   align,
   label = "Add Emoji",
   side,
+  accept,
+  maxSize,
   ...props
 }: AddCustomEmojiProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -82,6 +83,8 @@ const AddCustomEmoji = ({
       tooltipForTrigger
     >
       <Content
+        maxSize={maxSize}
+        accept={accept}
         onUnmount={onSubPopoverUnmount}
         onMount={onSubPopoverMount}
         onError={onErrorUpload}

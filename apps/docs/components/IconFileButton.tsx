@@ -4,14 +4,15 @@ import { EmojiPopoverTriggerWrapper } from "@raihancodes/tiptap-extension-twemoj
 import {
   CustomEmoji,
   Emoji,
+  EmojiUploadProps,
   isEmoji,
 } from "@raihancodes/tiptap-extension-twemoji-react";
 import React, { useState } from "react";
 import Image from "next/image";
 import { getLatestCustomEmojis } from "@/store/custom-emojis-store";
-import { handleEmojiUpload } from "../lib/handleEmojiUpload";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { handleEmojiUpload } from "../lib/handleEmojiUpload";
 
 const IconFileButton = () => {
   const [iconAttrs, setIconAttrs] = useState<
@@ -72,26 +73,37 @@ const IconFileButton = () => {
   };
 
   const customEmojis = getLatestCustomEmojis();
+
   const router = useRouter();
+
+  const onError: EmojiUploadProps["onError"] = (errorMessage) => {
+    toast.error(errorMessage);
+  };
+
+  const onSuccess: EmojiUploadProps["onSuccess"] = (
+    successMessage,
+    callback
+  ) => {
+    toast.success(successMessage);
+    callback?.();
+    router.refresh();
+  };
 
   return (
     <EmojiPopoverTriggerWrapper
-      isEmpty={!iconAttrs}
-      setRandomEmojiOnEmpty
+      headerOptions={{
+        isEmpty: !iconAttrs,
+        onDelete,
+      }}
+      customEmojiOptions={{
+        upload: handleEmojiUpload,
+        onError,
+        onSuccess,
+      }}
       selectEmojiHandler={selectEmojiHandler}
       isOpen={isOpen}
       onOpenChange={setIsOpen}
-      onDelete={onDelete}
       customEmojis={customEmojis}
-      upload={handleEmojiUpload}
-      onError={(errorMessage) => {
-        toast.error(errorMessage);
-      }}
-      onSuccess={(successMessage, callback) => {
-        toast.success(successMessage);
-        callback?.();
-        router.refresh();
-      }}
     >
       <button
         type="button"

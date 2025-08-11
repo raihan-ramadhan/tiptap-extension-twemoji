@@ -1,21 +1,18 @@
 import {
   CustomEmoji,
-  UploadCustEmojiProps,
+  EmojiUploadProps,
 } from "@raihancodes/tiptap-extension-twemoji-react";
 import { createClient } from "@/lib/supabase/client";
 import { EMOJIS_BUCKET_NAME, EMOJIS_TABLE_NAME } from "@/example/constants";
-import {
-  addCustomEmoji,
-  setLatestCustomEmojis,
-} from "../store/custom-emojis-store";
+import { addCustomEmoji } from "../store/custom-emojis-store";
 
-export const handleEmojiUpload = async ({
+export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
   emojiName,
   files,
   onSuccess,
   onError,
   callback,
-}: UploadCustEmojiProps) => {
+}) => {
   /**
    * The number of seconds the asset is cached in the browser and in the Supabase CDN.
    *

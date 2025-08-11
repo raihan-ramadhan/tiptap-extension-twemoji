@@ -78,6 +78,7 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 import content from "@/components/tiptap-templates/simple/data/content.json";
 
 import {
+  EmojiUploadProps,
   TwemojiExtension,
   type CustomEmoji,
 } from "@raihancodes/tiptap-extension-twemoji-react";
@@ -207,6 +208,19 @@ export function SimpleEditor({
   >("main");
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
+  const onError: EmojiUploadProps["onError"] = (errorMessage) => {
+    toast.error(errorMessage);
+  };
+
+  const onSuccess: EmojiUploadProps["onSuccess"] = (
+    successMessage,
+    callback
+  ) => {
+    toast.success(successMessage);
+    callback?.();
+    router.refresh();
+  };
+
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
@@ -244,14 +258,10 @@ export function SimpleEditor({
         onError: (error) => console.error("Upload failed:", error),
       }),
       TwemojiExtension.configure({
-        upload: handleEmojiUpload,
-        onError: (errorMessage) => {
-          toast.error(errorMessage);
-        },
-        onSuccess: (successMessage, callback) => {
-          toast.success(successMessage);
-          callback?.();
-          router.refresh();
+        customEmojiOptions: {
+          upload: handleEmojiUpload,
+          onSuccess,
+          onError,
         },
       }),
     ],

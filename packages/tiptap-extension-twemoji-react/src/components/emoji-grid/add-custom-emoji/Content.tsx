@@ -1,4 +1,4 @@
-import { ExtensionOptions, UploadCustEmojiFunc } from "@/types";
+import { DropzoneUploadProps } from "@/types";
 import {
   CancelOrSaveBtns,
   Dropzone,
@@ -15,11 +15,13 @@ const Content = ({
   onError,
   onSuccess,
   upload,
+  accept,
+  maxSize,
 }: {
   onMount: () => void;
   onUnmount: () => void;
   setIsOpen: (open: boolean) => void;
-} & ExtensionOptions) => {
+} & DropzoneUploadProps) => {
   const dismiss = () => setIsOpen(false);
 
   useEffect(() => {
@@ -30,7 +32,13 @@ const Content = ({
   }, []);
 
   return (
-    <Dropzone onError={onError} onSuccess={onSuccess} upload={upload}>
+    <Dropzone
+      onError={onError}
+      onSuccess={onSuccess}
+      upload={upload}
+      accept={accept}
+      maxSize={maxSize}
+    >
       <div>
         <h3 className={"font-medium text-base"}>Add Custom Emoji</h3>
         <p className={"text-xs text-neutral-500"}>

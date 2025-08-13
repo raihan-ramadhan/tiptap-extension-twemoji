@@ -193,7 +193,7 @@ export const eventsHooks = ({
     update: updateHandler,
   });
 
-  // ✅ cleanup everything later
+  // cleanup everything
   return () => {
     cleanupFloating();
     cleanupClick();

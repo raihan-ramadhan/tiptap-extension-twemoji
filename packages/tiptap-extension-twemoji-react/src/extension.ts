@@ -418,9 +418,13 @@ const TwemojiExtension = Mention.extend<
 
           let cleanup: (() => void) | null = null;
 
-          const onCancel = () => {
+          const executeCleanup = () => {
             cleanup?.();
             cleanup = null;
+          };
+
+          const onCancel = () => {
+            executeCleanup();
             destroyVirtualElement(component);
           };
 
@@ -543,6 +547,8 @@ const TwemojiExtension = Mention.extend<
 
               const virtualElement: VirtualElement = getVirtualElement(editor);
 
+              executeCleanup();
+
               cleanup = eventsHooks({
                 popoverComponent,
                 virtualElement,
@@ -567,14 +573,27 @@ const TwemojiExtension = Mention.extend<
 
               if (!props.clientRect || !component) return;
 
+              const popoverComponent = component.element as HTMLDivElement;
+
               const virtualElement: VirtualElement = getVirtualElement(
                 props.editor
               );
 
-              document.body.appendChild(component.element);
+              document.body.appendChild(popoverComponent);
+
+              executeCleanup();
+
+              cleanup = eventsHooks({
+                popoverComponent,
+                virtualElement,
+                onCancel,
+                editor: props.editor,
+                wrapper,
+              });
+
               updatePosition(
                 virtualElement,
-                component.element as HTMLDivElement,
+                popoverComponent,
                 onCancel,
                 wrapper
               );

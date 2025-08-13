@@ -104,6 +104,11 @@ type TwemojiExtensionProps = {
    * @default /assets/emoji-sprite6102d4c8eb22eb1a.webp
    */
   spriteUrl?: string;
+  /**
+   * Editor wrapper class, attaches a scroll event listener to track the visibility of the suggestion trigger and update its position.
+   * @default .simple-editor-wrapper
+   */
+  wrapperClassName?: string;
   headerOptions?: ExtensionHeaderOptions;
   customEmojiOptions?: ExtensionCustomEmojiOptions;
   navOptions?: ExtensionNavOptions;
@@ -176,6 +181,7 @@ const TwemojiExtension = Mention.extend<
         cellSize: undefined,
         visibleRows: undefined,
       },
+      wrapperClassName: undefined,
     };
   },
 
@@ -418,7 +424,8 @@ const TwemojiExtension = Mention.extend<
             destroyVirtualElement(component);
           };
 
-          const wrapper = document.querySelector(".content-wrapper"); // our editor
+          const wrapperClassName =
+            this.options.wrapperClassName ?? "simple-editor-wrapper";
 
           return {
             onStart: ({
@@ -426,6 +433,8 @@ const TwemojiExtension = Mention.extend<
               items,
               range,
             }: SuggestionProps<SuggestionItems, MentionNodeAttrs>) => {
+              const wrapper = document.querySelector(`.${wrapperClassName}`); // our editor wrapper
+
               const onSelectEmoji: SelectEmojiFunc = ({
                 baseHexcode,
                 emoji,
@@ -534,14 +543,13 @@ const TwemojiExtension = Mention.extend<
 
               const virtualElement: VirtualElement = getVirtualElement(editor);
 
-              cleanup =
-                eventsHooks({
-                  popoverComponent,
-                  virtualElement,
-                  onCancel,
-                  editor,
-                  wrapper,
-                }) ?? null;
+              cleanup = eventsHooks({
+                popoverComponent,
+                virtualElement,
+                onCancel,
+                editor,
+                wrapper,
+              });
 
               updatePosition(
                 virtualElement,
@@ -551,6 +559,8 @@ const TwemojiExtension = Mention.extend<
               );
             },
             onUpdate(props) {
+              const wrapper = document.querySelector(`.${wrapperClassName}`); // our editor wrapper
+
               lastItems = props.items;
 
               component?.updateProps(props);

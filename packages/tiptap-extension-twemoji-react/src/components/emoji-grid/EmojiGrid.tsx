@@ -316,7 +316,7 @@ export default function ({
       0 ? (
         <>
           <Grid
-            className="ml-[4px] scrollbar-thin scrollbar-thumb-[#eeeef6] dark:scrollbar-thumb-[#25272d] !overflow-x-hidden scrollbar-track-transparent"
+            className="emoji-grid"
             ref={gridRef}
             width={widthGrid}
             height={heightList}

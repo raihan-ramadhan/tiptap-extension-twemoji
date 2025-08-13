@@ -50,3 +50,34 @@
 .twemoji-input {
   @apply rounded-(--twemoji-rounded) bg-(--twemoji-accent-color) outline-1 outline-(--twemoji-border-color) focus-visible:outline-2 focus-visible:outline-(--twemoji-highlight-color) focus-visible:-outline-offset-[2px];
 }
+
+.emoji-grid {
+  margin-left: 4px !important;
+  overflow-x: hidden !important;
+
+  /* Firefox scrollbar */
+  scrollbar-width: thin !important;
+  scrollbar-color: #eeeef6 transparent;
+}
+
+/* Firefox dark mode */
+.dark .emoji-grid {
+  scrollbar-color: #25272d transparent;
+}
+
+/* Chrome, Edge, Safari scrollbar */
+.emoji-grid::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+.emoji-grid::-webkit-scrollbar-thumb {
+  background-color: #eeeef6;
+}
+.emoji-grid::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Chrome, Edge, Safari dark mode scrollbar */
+.dark .emoji-grid::-webkit-scrollbar-thumb {
+  background-color: #25272d;
+}

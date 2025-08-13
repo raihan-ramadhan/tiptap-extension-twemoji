@@ -289,41 +289,37 @@ export function SimpleEditor({
   }, [isMobile, mobileView]);
 
   return (
-    <EditorContext.Provider value={{ editor }}>
-      <Toolbar
-        ref={toolbarRef}
-        style={
-          isMobile
-            ? {
-                bottom: `calc(100% - ${windowSize.height - bodyRect.y}px)`,
-              }
-            : {}
-        }
-      >
-        {mobileView === "main" ? (
-          <MainToolbarContent
-            onHighlighterClick={() => setMobileView("highlighter")}
-            onLinkClick={() => setMobileView("link")}
-            isMobile={isMobile}
-          />
-        ) : (
-          <MobileToolbarContent
-            type={mobileView === "highlighter" ? "highlighter" : "link"}
-            onBack={() => setMobileView("main")}
-          />
-        )}
-      </Toolbar>
+    <div className="simple-editor-wrapper">
+      <EditorContext.Provider value={{ editor }}>
+        <Toolbar
+          ref={toolbarRef}
+          style={
+            isMobile
+              ? {
+                  bottom: `calc(100% - ${windowSize.height - bodyRect.y}px)`,
+                }
+              : {}
+          }
+        >
+          {mobileView === "main" ? (
+            <MainToolbarContent
+              onHighlighterClick={() => setMobileView("highlighter")}
+              onLinkClick={() => setMobileView("link")}
+              isMobile={isMobile}
+            />
+          ) : (
+            <MobileToolbarContent
+              type={mobileView === "highlighter" ? "highlighter" : "link"}
+              onBack={() => setMobileView("main")}
+            />
+          )}
+        </Toolbar>
 
-      <div className="content-wrapper">
-        <div className="simple-editor-content py-4 px-6">
+        <div className="simple-editor-content">
           <IconFileButton />
+          <EditorContent editor={editor} role="presentation" />
         </div>
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
-      </div>
-    </EditorContext.Provider>
+      </EditorContext.Provider>
+    </div>
   );
 }

@@ -146,15 +146,15 @@ export const updatePosition = (
   onCancel: () => void,
   wrapper: Element | null
 ) => {
-  if (!wrapper) return;
-
   const referenceElementRect: DOMRect = virtualElement.getBoundingClientRect();
 
-  const isVisible = watchPopoverVisibility(referenceElementRect, wrapper);
+  if (wrapper) {
+    const isVisible = watchPopoverVisibility(referenceElementRect, wrapper);
 
-  if (!isVisible) {
-    onCancel(); // ❌ Hide the component if not visible
-    return;
+    if (!isVisible) {
+      onCancel(); // Hide the emoji grid if the trigger not visible in wrapper after scrolling
+      return;
+    }
   }
 
   customComputePosition(virtualElement, element, {
@@ -176,13 +176,11 @@ export const eventsHooks = ({
   editor: Editor;
   wrapper: Element | null;
 }) => {
-  if (!wrapper) return;
-
   const updateHandler = () => {
     updatePosition(virtualElement, popoverComponent, onCancel, wrapper);
   };
 
-  wrapper.addEventListener("scroll", updateHandler);
+  wrapper?.addEventListener("scroll", updateHandler);
 
   const cleanupClick = setupDismissListeners({
     safeElements: [popoverComponent, editor.view.dom],
@@ -199,7 +197,7 @@ export const eventsHooks = ({
   return () => {
     cleanupFloating();
     cleanupClick();
-    wrapper.removeEventListener("scroll", updateHandler);
+    wrapper?.removeEventListener("scroll", updateHandler);
   };
 };
 

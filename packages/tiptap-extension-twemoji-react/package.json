@@ -1,6 +1,6 @@
 {
   "name": "@raihancodes/tiptap-extension-twemoji-react",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "description": "Advanced Tiptap emoji extension built with React - supports Twemoji, emoticon, shortcodes, and cross-platform consistency with modern editor UX",
   "scripts": {

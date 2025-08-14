@@ -136,15 +136,17 @@ const TwemojiExtension = Mention.extend<
       vertical-align: -0.1em !important;
       object-fit: contain !important;
       cursor: text;
+      pointer-events: none;
       }
-      .${CUSTOM_EMOJI_CLASS_NAME} {
-        background-repeat: no-repeat !important;
-        display: inline-block !important;
-        vertical-align: -0.1em !important;
-        object-fit: contain !important;
-        width: 1em;
-        height: 1em;
-        cursor: text;
+    .${CUSTOM_EMOJI_CLASS_NAME} {
+      background-repeat: no-repeat !important;
+      display: inline-block !important;
+      vertical-align: -0.1em !important;
+      object-fit: contain !important;
+      width: 1em;
+      height: 1em;
+      cursor: text;
+      pointer-events: none;
     }
   `;
 

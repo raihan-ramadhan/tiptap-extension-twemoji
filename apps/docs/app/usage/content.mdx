@@ -1,0 +1,56 @@
+# Usage Guide
+
+Welcome to the **Usage Guide**!  
+This page will walk you through installation and basic usage.
+
+---
+
+## 📦 Installation
+
+Install the package with your preferred package manager:
+
+```bash
+pnpm add @raihancodes/tiptap-extension-twemoji-react
+```
+
+or
+
+```bash
+npm install @raihancodes/tiptap-extension-twemoji-react
+```
+
+---
+
+## ⚡ Basic Example
+
+Import the extension and add it to your editor:
+
+```tsx
+import { useEditor } from "@tiptap/react";
+import { TwemojiExtension } from "@raihancodes/tiptap-extension-twemoji-react";
+
+export default function Editor() {
+  const editor = useEditor({
+    extensions: [TwemojiExtension],
+  });
+
+  return <EditorContent editor={editor} />;
+}
+```
+
+---
+
+## 🎯 Key Features
+
+- Emoji rendering with **Twemoji**
+- Works seamlessly with **TipTap + React**
+- Supports **custom emojis**
+- Optimized for **performance**
+
+---
+
+## 🚀 Next Steps
+
+👉 Check out the [Deep Dive](/deep-dive) section to learn about advanced configuration and custom emoji support.
+
+👉 Check out the [Custom Emoji](/custom-emojis) section to learn about how to upload and insert Custom Emojis.

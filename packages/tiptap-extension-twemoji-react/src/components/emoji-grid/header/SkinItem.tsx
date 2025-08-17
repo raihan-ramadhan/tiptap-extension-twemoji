@@ -43,9 +43,9 @@ const SkinItem = ({
             }
           }}
           className={cn(
-            "twemoji-header__skintone__list__item twemoji-button twemoji-border",
+            "twemoji-button twemoji-border twemoji-header__skintone__list__item",
             code === skinTone &&
-              "twemoji-header__skintone__list__item__selected"
+              "twemoji-header__skintone__list__item--selected"
           )}
           autoFocus={code === skinTone}
           draggable={false}

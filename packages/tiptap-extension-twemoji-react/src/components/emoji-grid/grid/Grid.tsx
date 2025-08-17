@@ -248,16 +248,6 @@ export default function ({
     const key = `${row}-${col}`;
     if (key === prevKey) return;
 
-    const prevEl = cellRefs.current.get(prevKey);
-    if (prevEl) {
-      prevEl.classList.remove("hovered-cell-button");
-    }
-
-    const currentEl = cellRefs.current.get(key);
-    if (currentEl) {
-      currentEl.classList.add("hovered-cell-button");
-    }
-
     prevKey = key;
     debouncedSetSelectedCell.cancel();
     debouncedSetSelectedCell(row, col);

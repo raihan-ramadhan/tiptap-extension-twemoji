@@ -212,8 +212,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         side="top"
         {...buttonAttrs}
         className={cn(
-          "twemoji-custom-emoji-cell twemoji-button",
-          isSelected && "--selected"
+          "twemoji-button twemoji-custom-emoji-cell",
+          isSelected && "twemoji-custom-emoji-cell--selected"
         )}
       >
         {content}

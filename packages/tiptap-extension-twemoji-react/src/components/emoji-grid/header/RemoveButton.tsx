@@ -26,7 +26,7 @@ const RemoveButton = ({
   return (
     <Tooltip delay={200}>
       <TooltipTrigger
-        className="twemoji-header__button twemoji-button twemoji-border"
+        className="twemoji-button twemoji-border twemoji-header__button"
         onClick={handleRemoveClick}
         onKeyDown={stopEnterPropagation}
       >

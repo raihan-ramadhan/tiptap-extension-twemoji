@@ -137,7 +137,7 @@ const Nav = ({
           <AddCustomEmoji
             maxSize={maxSize}
             accept={accept}
-            className="twemoji-nav__add-custom-emoji twemoji-button"
+            className="twemoji-button twemoji-nav__add-custom-emoji"
             side="top"
             align="end"
             onSubPopoverMount={disableEmojiCellsNavigation}

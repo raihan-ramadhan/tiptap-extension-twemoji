@@ -47,7 +47,7 @@ const SkinToneSelect = ({
         <Tooltip delay={200}>
           <TooltipTrigger
             ref={toneTriggerRef}
-            className="twemoji-header__button twemoji-button twemoji-border"
+            className="twemoji-button twemoji-border twemoji-header__button"
             onClick={() => setOpen((prev) => !prev)}
             onKeyDown={stopEnterPropagation}
           >

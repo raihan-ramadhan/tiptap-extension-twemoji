@@ -45,6 +45,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
   }
 
   .twemoji-header__skintone__select {
@@ -82,9 +83,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+    background-color: transparent;
 
-  .twemoji-header__skintone__list__item__selected {
-    background-color: var(--twemoji-secondary-color);
+    &--selected {
+      background-color: var(--twemoji-secondary-color);
+    }
   }
 }

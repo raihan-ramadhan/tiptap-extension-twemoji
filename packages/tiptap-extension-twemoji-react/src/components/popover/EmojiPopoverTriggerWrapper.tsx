@@ -165,7 +165,6 @@ export function EmojiPopoverTriggerWrapper({
       open={isOpen}
       onOpenChange={setIsOpen}
       align="center"
-      fallback={[]}
       trigger={trigger}
     >
       <EmojiGrid

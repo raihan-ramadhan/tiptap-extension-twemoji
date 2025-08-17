@@ -198,7 +198,7 @@ const MobileToolbarContent = ({
 export function SimpleEditor({
   customEmojis,
 }: {
-  customEmojis: CustomEmoji[];
+  customEmojis?: CustomEmoji[];
 }) {
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -270,10 +270,12 @@ export function SimpleEditor({
 
   // Very important, initialization customEmojis storage and for reactivity items on EmojiGrid
   React.useEffect(() => {
-    setLatestCustomEmojis(customEmojis);
+    if (customEmojis) {
+      setLatestCustomEmojis(customEmojis);
 
-    if (editor) {
-      editor.commands.updateCustomEmojis(customEmojis);
+      if (editor) {
+        editor.commands.updateCustomEmojis(customEmojis);
+      }
     }
   }, [editor, customEmojis]);
 
@@ -287,6 +289,8 @@ export function SimpleEditor({
       setMobileView("main");
     }
   }, [isMobile, mobileView]);
+
+  // console.log(editor?.getJSON());
 
   return (
     <div className="simple-editor-wrapper">

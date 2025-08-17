@@ -13,6 +13,9 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { headers } from "next/headers";
+import { SimpleEditor1 } from "../components/tiptap-templates/simple/simple-editor-1";
+import { Alert, AlertTitle } from "../components/ui/alert";
+import { Badge } from "../components/ui/badge";
 
 export default async function Page() {
   const headerList = await headers();
@@ -21,7 +24,7 @@ export default async function Page() {
   return (
     <SidebarProvider>
       <AppSidebar pathname={pathname} />
-      <SidebarInset>
+      <SidebarInset className="!flex-1 !flex !overflow-hidden !h-screen">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator
@@ -30,24 +33,31 @@ export default async function Page() {
           />
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">TEST</BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>TEST</BreadcrumbPage>
+                <BreadcrumbPage>Home</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <p>
-            lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+        <div className="flex flex-col p-4 flex-1 m-1.5 gap-3 overflow-hidden">
+          <h1 className="text-4xl font-bold my-4">
+            tiptap-extension-twemoji (React)
+          </h1>
+          <Alert className="flex gap-2 items-center">
+            <div className="inline-block w-fit">
+              <Badge variant="outline">Tip</Badge>
+            </div>
+            <AlertTitle>
+              <p>
+                Click the <b>“Add Emoji”</b> button, or type{" "}
+                <code className="inline-block bg-gray-100 rounded border border-border">
+                  &nbsp;:smile
+                </code>{" "}
+                (starting with a space) in the editor.
+              </p>
+            </AlertTitle>
+          </Alert>
+          <SimpleEditor1 />
         </div>
       </SidebarInset>
     </SidebarProvider>

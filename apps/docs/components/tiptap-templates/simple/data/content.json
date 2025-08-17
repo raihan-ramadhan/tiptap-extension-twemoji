@@ -5,39 +5,12 @@
       "type": "heading",
       "attrs": {
         "textAlign": null,
-        "level": 3
+        "level": 1
       },
       "content": [
         {
           "type": "text",
-          "marks": [
-            {
-              "type": "bold"
-            }
-          ],
           "text": "@raihancodes/tiptap-extension-twemoji-react"
-        },
-        {
-          "type": "text",
-          "text": " Features"
-        }
-      ]
-    },
-    {
-      "type": "heading",
-      "attrs": {
-        "textAlign": null,
-        "level": 2
-      },
-      "content": [
-        {
-          "type": "text",
-          "marks": [
-            {
-              "type": "bold"
-            }
-          ],
-          "text": "Editor Emoji Picker"
         }
       ]
     },
@@ -45,6 +18,198 @@
       "type": "paragraph",
       "attrs": {
         "textAlign": null
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "A "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "bold"
+            }
+          ],
+          "text": "TipTap React extension"
+        },
+        {
+          "type": "text",
+          "text": " that brings full "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "link",
+              "attrs": {
+                "href": "https://github.com/twitter/twemoji",
+                "target": "_blank",
+                "class": null
+              }
+            }
+          ],
+          "text": "Twemoji"
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "bold"
+            }
+          ],
+          "text": " support"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🎨",
+            "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -28.77777777777778em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": ", an optimized "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "bold"
+            }
+          ],
+          "text": "virtualized emoji list"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "📑",
+            "style": "width: 1em; height: 1em; background-position: -57.55555555555556em -50.361111111111114em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": ", and a custom "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "bold"
+            }
+          ],
+          "text": "emoji picker UI"
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "💬",
+            "style": "width: 1em; height: 1em; background-position: -7.194444444444445em -13.36111111111111em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": " — designed for speed "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🚀",
+            "style": "width: 1em; height: 1em; background-position: -29.805555555555557em -54.47222222222222em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": ", accessibility "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🔑",
+            "style": "width: 1em; height: 1em; background-position: -54.47222222222222em -57.55555555555556em; background-size: 63.69em 63.69em; cursor: text;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        },
+        {
+          "type": "text",
+          "text": ", and modern workflows "
+        },
+        {
+          "type": "emojiExtension",
+          "attrs": {
+            "id": null,
+            "label": null,
+            "mentionSuggestionChar": "@",
+            "data-type": "emoji",
+            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+            "alt": "🛠️",
+            "style": "width: 1em; height: 1em; background-position: -58.583333333333336em -2.0555555555555554em; background-size: 63.69em 63.69em;",
+            "draggable": false,
+            "contenteditable": false,
+            "class": "twemoji"
+          }
+        }
+      ]
+    },
+    {
+      "type": "horizontalRule"
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "textAlign": null,
+        "level": 2
       },
       "content": [
         {
@@ -64,362 +229,733 @@
         },
         {
           "type": "text",
-          "text": " Suggested items displayed in a picker grid UI  "
+          "text": " Key Features"
         }
       ]
     },
     {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
+      "type": "bulletList",
       "content": [
         {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "⬆️",
-            "style": "width: 1em; height: 1em; background-position: -43.166666666666664em -58.583333333333336em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " "
-        },
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "⬇️",
-            "style": "width: 1em; height: 1em; background-position: -47.27777777777778em -58.583333333333336em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " Arrow key, Tab navigation  "
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "🎨",
-            "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -28.77777777777778em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " Skin tone select  "
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "🆕",
-            "style": "width: 1em; height: 1em; background-position: -60.638888888888886em -6.166666666666667em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " Custom emoji support (reactive updates)  "
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "📋️",
-            "style": "width: 1em; height: 1em; background-position: -39.05555555555556em -57.55555555555556em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " Copy & paste functionality (convert from normal emoji to twemoji, vice versa) "
-        },
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "🥰",
-            "style": "width: 1em; height: 1em; background-position: -6.166666666666667em -4.111111111111111em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " "
-        },
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "😄",
-            "style": "width: 1em; height: 1em; background-position: -5.138888888888889em -3.0833333333333335em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " "
-        },
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "❤️",
-            "style": "width: 1em; height: 1em; background-position: -13.36111111111111em -0em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "🐦️",
-            "style": "width: 1em; height: 1em; background-position: -51.388888888888886em -38.02777777777778em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " Twemoji support (cross-platform consistency) "
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "🔤",
-            "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -59.611111111111114em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " Shortcodes support (e.g., "
-        },
-        {
-          "type": "text",
-          "marks": [
+          "type": "listItem",
+          "content": [
             {
-              "type": "code"
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "✨️",
+                    "style": "width: 1em; height: 1em; background-position: -8.222222222222221em -55.5em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Suggested items displayed in a picker grid UI"
+                }
+              ]
             }
-          ],
-          "text": ":hug:"
+          ]
         },
         {
-          "type": "text",
-          "text": ", "
-        },
-        {
-          "type": "text",
-          "marks": [
+          "type": "listItem",
+          "content": [
             {
-              "type": "code"
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "⬆️",
+                    "style": "width: 1em; height: 1em; background-position: -43.166666666666664em -58.583333333333336em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "⬇️",
+                    "style": "width: 1em; height: 1em; background-position: -47.27777777777778em -58.583333333333336em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Arrow key & Tab navigation"
+                },
+                {
+                  "type": "text",
+                  "text": " for fast selection"
+                }
+              ]
             }
-          ],
-          "text": ":heart:"
+          ]
         },
         {
-          "type": "text",
-          "text": ")  "
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🎨",
+                    "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -28.77777777777778em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Skin tone selector"
+                },
+                {
+                  "type": "text",
+                  "text": " for diverse emoji usage"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🆕",
+                    "style": "width: 1em; height: 1em; background-position: -60.638888888888886em -6.166666666666667em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Custom emoji support"
+                },
+                {
+                  "type": "text",
+                  "text": " with reactive updates"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "📋️",
+                    "style": "width: 1em; height: 1em; background-position: -39.05555555555556em -57.55555555555556em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Copy & paste functionality"
+                },
+                {
+                  "type": "text",
+                  "text": " — convert between normal emoji and Twemoji (both ways)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🐦️",
+                    "style": "width: 1em; height: 1em; background-position: -51.388888888888886em -38.02777777777778em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Twemoji rendering"
+                },
+                {
+                  "type": "text",
+                  "text": " for cross-platform consistency"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🔤",
+                    "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -59.611111111111114em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Shortcodes support"
+                },
+                {
+                  "type": "text",
+                  "text": " (e.g., "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ],
+                  "text": ":hug:"
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ],
+                  "text": ":heart:"
+                },
+                {
+                  "type": "text",
+                  "text": ")"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "😄",
+                    "style": "width: 1em; height: 1em; background-position: -5.138888888888889em -3.0833333333333335em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Emoticon support"
+                },
+                {
+                  "type": "text",
+                  "text": " (e.g., "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ],
+                  "text": ":)"
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ],
+                  "text": "XD"
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ],
+                  "text": ":P"
+                },
+                {
+                  "type": "text",
+                  "text": ")"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🌙",
+                    "style": "width: 1em; height: 1em; background-position: -55.5em -18.5em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Dark Mode support"
+                },
+                {
+                  "type": "text",
+                  "text": " (for Tailwind)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "📑",
+                    "style": "width: 1em; height: 1em; background-position: -57.55555555555556em -50.361111111111114em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Virtualised emoji list"
+                },
+                {
+                  "type": "text",
+                  "text": " — powered by "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ],
+                  "text": "react-window"
+                },
+                {
+                  "type": "text",
+                  "text": ", handles "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "2000+ emojis"
+                },
+                {
+                  "type": "text",
+                  "text": " efficiently"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🖼️",
+                    "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -27.75em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Grid Layout"
+                },
+                {
+                  "type": "text",
+                  "text": " — 12-column grid with group titles "
+                },
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "📂",
+                    "style": "width: 1em; height: 1em; background-position: -28.77777777777778em -57.55555555555556em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " and tooltips "
+                },
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🏷️",
+                    "style": "width: 1em; height: 1em; background-position: -57.55555555555556em -52.416666666666664em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "attrs": {
+                    "textAlign": null
+                  },
+                  "content": [
+                    {
+                      "type": "emojiExtension",
+                      "attrs": {
+                        "id": null,
+                        "label": null,
+                        "mentionSuggestionChar": "@",
+                        "data-type": "emoji",
+                        "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                        "alt": "🧩",
+                        "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -13.36111111111111em; background-size: 63.69em 63.69em;",
+                        "draggable": false,
+                        "contenteditable": false,
+                        "class": "twemoji"
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ],
+                      "text": "Components"
+                    },
+                    {
+                      "type": "text",
+                      "text": " — ready-to-use UI building blocks (e.g., "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "/soon/components",
+                            "target": "_self",
+                            "class": null
+                          }
+                        }
+                      ],
+                      "text": "EmojiDrawer"
+                    },
+                    {
+                      "type": "text",
+                      "text": ", "
+                    },
+                    {
+                      "type": "text",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "/components/emoji-popover-trigger-wrapper",
+                            "target": "_self",
+                            "class": null
+                          }
+                        }
+                      ],
+                      "text": "EmojiPopoverTriggerWrapper"
+                    },
+                    {
+                      "type": "text",
+                      "text": ")"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
     },
     {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "😄",
-            "style": "width: 1em; height: 1em; background-position: -5.138888888888889em -3.0833333333333335em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " Emoticon support (e.g., "
-        },
-        {
-          "type": "text",
-          "marks": [
-            {
-              "type": "code"
-            }
-          ],
-          "text": ":)"
-        },
-        {
-          "type": "text",
-          "text": ", "
-        },
-        {
-          "type": "text",
-          "marks": [
-            {
-              "type": "code"
-            }
-          ],
-          "text": "XD"
-        },
-        {
-          "type": "text",
-          "text": ", "
-        },
-        {
-          "type": "text",
-          "marks": [
-            {
-              "type": "code"
-            }
-          ],
-          "text": ":P"
-        },
-        {
-          "type": "text",
-          "text": ")  "
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
-          "type": "emojiExtension",
-          "attrs": {
-            "id": null,
-            "label": null,
-            "mentionSuggestionChar": "@",
-            "data-type": "emoji",
-            "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "🌙",
-            "style": "width: 1em; height: 1em; background-position: -55.5em -18.5em; background-size: 63.69em 63.69em;",
-            "draggable": false,
-            "contenteditable": false,
-            "class": "twemoji"
-          }
-        },
-        {
-          "type": "text",
-          "text": " Dark Mode "
-        }
-      ]
+      "type": "horizontalRule"
     },
     {
       "type": "heading",
@@ -429,23 +965,6 @@
       },
       "content": [
         {
-          "type": "text",
-          "marks": [
-            {
-              "type": "bold"
-            }
-          ],
-          "text": "Components"
-        }
-      ]
-    },
-    {
-      "type": "paragraph",
-      "attrs": {
-        "textAlign": null
-      },
-      "content": [
-        {
           "type": "emojiExtension",
           "attrs": {
             "id": null,
@@ -453,8 +972,8 @@
             "mentionSuggestionChar": "@",
             "data-type": "emoji",
             "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-            "alt": "🔧",
-            "style": "width: 1em; height: 1em; background-position: -58.583333333333336em -10.277777777777779em; background-size: 63.69em 63.69em;",
+            "alt": "👉️",
+            "style": "width: 1em; height: 1em; background-position: -15.416666666666666em -17.47222222222222em; background-size: 63.69em 63.69em;",
             "draggable": false,
             "contenteditable": false,
             "class": "twemoji"
@@ -462,16 +981,104 @@
         },
         {
           "type": "text",
-          "text": " "
+          "text": " Next Steps"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "📘",
+                    "style": "width: 1em; height: 1em; background-position: -57.55555555555556em -40.083333333333336em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " Basic Usage → "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "link",
+                      "attrs": {
+                        "href": "/usage",
+                        "target": "_self",
+                        "class": null
+                      }
+                    }
+                  ],
+                  "text": "Basic Usage"
+                }
+              ]
+            }
+          ]
         },
         {
-          "type": "text",
-          "marks": [
+          "type": "listItem",
+          "content": [
             {
-              "type": "code"
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🎨",
+                    "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -28.77777777777778em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " Custom Emojis → "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "link",
+                      "attrs": {
+                        "href": "/custom-emojis",
+                        "target": "_self",
+                        "class": null
+                      }
+                    }
+                  ],
+                  "text": "Custom Emojis"
+                }
+              ]
             }
-          ],
-          "text": "<EmojiPopoverTriggerWrapper />"
+          ]
         }
       ]
     },

@@ -13,6 +13,8 @@ import { getLatestCustomEmojis } from "@/store/custom-emojis-store";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { handleEmojiUpload } from "../lib/handleEmojiUpload";
+import { cn } from "../lib/utils";
+import { Smile } from "lucide-react";
 
 const IconFileButton = () => {
   const [iconAttrs, setIconAttrs] = useState<
@@ -107,7 +109,10 @@ const IconFileButton = () => {
     >
       <button
         type="button"
-        className="dark:bg-white/5 bg-black/5 p-1 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer w-fit"
+        className={cn(
+          "dark:bg-white/5 bg-black/5 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer w-fit flex gap-1 items-center",
+          iconAttrs ? "p-1" : "py-1 px-2"
+        )}
       >
         {iconAttrs ? (
           <Image
@@ -122,7 +127,10 @@ const IconFileButton = () => {
             className="aspect-square"
           />
         ) : (
-          "Add Emoji"
+          <>
+            <Smile className="size-5" />
+            Add Emoji
+          </>
         )}
       </button>
     </EmojiPopoverTriggerWrapper>

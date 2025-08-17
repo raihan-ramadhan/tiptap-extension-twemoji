@@ -89,3 +89,12 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes progressAnim {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 90%;
+  }
+}

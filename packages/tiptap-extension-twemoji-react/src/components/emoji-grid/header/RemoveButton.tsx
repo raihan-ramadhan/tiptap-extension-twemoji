@@ -26,11 +26,11 @@ const RemoveButton = ({
   return (
     <Tooltip delay={200}>
       <TooltipTrigger
-        className="aspect-square size-7 flex justify-center items-center twemoji-button twemoji-border"
+        className="twemoji-header__button twemoji-button twemoji-border"
         onClick={handleRemoveClick}
         onKeyDown={stopEnterPropagation}
       >
-        <Trash className="stroke-(length:--twemoji-icon-stroke-width)" />
+        <Trash className="twemoji-icon" />
       </TooltipTrigger>
       <TooltipContent>
         <span>Remove</span>

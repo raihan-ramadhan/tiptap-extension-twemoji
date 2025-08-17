@@ -1,3 +1,5 @@
+import "./add-emoji-popover.scss";
+
 import { DropzoneUploadProps } from "@/types";
 import {
   CancelOrSaveBtns,
@@ -40,8 +42,8 @@ const Content = ({
       maxSize={maxSize}
     >
       <div>
-        <h3 className={"font-medium text-base"}>Add Custom Emoji</h3>
-        <p className={"text-xs text-neutral-500"}>
+        <h3 className="content__title">Add Custom Emoji</h3>
+        <p className={"content__description"}>
           Custom emoji can be used by anyone in your workspace
         </p>
       </div>

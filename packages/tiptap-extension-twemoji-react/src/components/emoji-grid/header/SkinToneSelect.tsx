@@ -33,7 +33,7 @@ const SkinToneSelect = ({
   });
 
   return (
-    <div className="h-full flex items-center justify-center mr-1" ref={ref}>
+    <div className="twemoji-header__skintone__select" ref={ref}>
       {open ? (
         <SkinList
           setOpen={setOpen}
@@ -47,12 +47,12 @@ const SkinToneSelect = ({
         <Tooltip delay={200}>
           <TooltipTrigger
             ref={toneTriggerRef}
-            className="size-7 aspect-square flex justify-center items-center twemoji-button twemoji-border"
+            className="twemoji-header__button twemoji-button twemoji-border"
             onClick={() => setOpen((prev) => !prev)}
             onKeyDown={stopEnterPropagation}
           >
             <span
-              className="inline-block size-full rounded-[4px]"
+              className="twemoji-header__skintone__color_span"
               style={{
                 backgroundColor: SKIN_TONE_MAP[skinTone].color,
               }}

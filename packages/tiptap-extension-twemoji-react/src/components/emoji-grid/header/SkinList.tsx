@@ -51,7 +51,7 @@ const SkinList = ({
     <ul
       ref={listRef}
       tabIndex={-1}
-      className="flex h-full outline-none gap-1.5"
+      className="twemoji-header__skintone__list"
       onKeyDownCapture={(e) => {
         if (e.key === "Escape") {
           e.preventDefault();

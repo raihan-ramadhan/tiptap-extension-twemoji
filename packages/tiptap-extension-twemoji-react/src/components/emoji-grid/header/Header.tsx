@@ -1,3 +1,5 @@
+import "./header.scss";
+
 import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
 import { Dispatch, memo, SetStateAction, useCallback } from "react";
 import { Emoji } from "@/data/emoji-sprite-map";
@@ -64,7 +66,7 @@ const EmojiHeader = ({
 
   return (
     <div
-      className="flex gap-1.5 justify-end h-fit border-(--twemoji-border-color) border-b p-1 transition duration-500"
+      className="twemoji-header"
       style={{
         width: widthGrid,
       }}

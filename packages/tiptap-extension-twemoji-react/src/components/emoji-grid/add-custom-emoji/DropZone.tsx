@@ -192,7 +192,7 @@ const Dropzone = ({
     <DropzoneContext.Provider value={value}>
       <div
         {...getRootProps({
-          className: cn("p-4 flex flex-col gap-5 w-72", className),
+          className: cn("content", className),
         })}
         tabIndex={-1}
       >
@@ -208,9 +208,9 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
     useDropzoneContext();
 
   return (
-    <div className="w-full flex justify-between">
+    <div className="content__cancel-or-save">
       <button
-        className="twemoji-button !py-1 !px-2 text-sm"
+        className="twemoji-button content__cancel-or-save__cancel"
         type="button"
         onClick={() => {
           setFiles(null);
@@ -226,7 +226,7 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
           if (files) onUpload({ callback: dismiss });
         }}
         disabled={!files || loading}
-        className="twemoji-submit-button flex items-center gap-1 !py-1 !px-2 text-sm disabled:opacity-50"
+        className="twemoji-submit-button content__cancel-or-save__save"
       >
         {loading ? (
           <>
@@ -244,11 +244,8 @@ const LabelInput = () => {
   const { emojiName, setEmojiName, emojiNameError } = useDropzoneContext();
 
   return (
-    <div className="flex flex-col w-full gap-2">
-      <label
-        htmlFor="emoji-name"
-        className="text-xs text-neutral-500 font-medium"
-      >
+    <div className="content__label-input">
+      <label htmlFor="emoji-name" className="content__label">
         Emoji Name
       </label>
       <input
@@ -259,10 +256,10 @@ const LabelInput = () => {
         id="emoji-name"
         placeholder="have-fun-with-it"
         value={emojiName}
-        className="w-full py-2 px-3 text-sm twemoji-input"
+        className="twemoji-input content__input"
       />
       {emojiNameError ? (
-        <p className="text-(--twemoji-error-color) text-xs">{emojiNameError}</p>
+        <p className="content__error-label">{emojiNameError}</p>
       ) : null}
     </div>
   );
@@ -277,24 +274,16 @@ const DropzonePreview = () => {
 
   return (
     <div>
-      <div className="bg-(--twemoji-accent-color) pt-4 pb-2 rounded flex flex-col gap-2 text-center">
-        <p className="text-xs">Preview</p>
-        <div className="flex w-full justify-center gap-2">
-          <img
-            src={files.preview}
-            alt={files.name}
-            className="p-1 object-contain h-12 w-12 rounded-(--twemoji-rounded) overflow-hidden shrink-0 flex items-center justify-center bg-black"
-          />
-          <img
-            src={files.preview}
-            alt={files.name}
-            className="p-1 object-contain h-12 w-12 rounded-(--twemoji-rounded) overflow-hidden shrink-0 flex items-center justify-center bg-white"
-          />
+      <div className="content__dropzone-preview">
+        <p>Preview</p>
+        <div className="content__dropzone-preview__images-wrapper">
+          <img src={files.preview} alt={files.name} className="dark-preview" />
+          <img src={files.preview} alt={files.name} className="light-preview" />
         </div>
-        <div className="text-xs inline-flex justify-center items-center w-full">
+        <div className="content__dropzone-preview__replace-wrapper">
           <button
             autoFocus
-            className="flex justify-center items-center gap-1 py-2 px-3 twemoji-button"
+            className="twemoji-button content__dropzone-preview__replace-button"
             onClick={() => inputRef.current?.click()}
           >
             <RefreshCcw size={12} /> Replace
@@ -315,18 +304,18 @@ const DropzoneEmptyState = ({ className }: { className?: string }) => {
   const isInvalid = isDragActive && isDragReject;
 
   return (
-    <div className={cn("flex flex-col items-center gap-y-2", className)}>
+    <div className={cn("content__empty-state", className)}>
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
         className={cn(
-          "twemoji-button bg-(--twemoji-accent-color) transition-colors duration-200 w-full flex items-center gap-1 justify-center !py-3",
-          isDragActive && "!bg-blue-400/20",
-          isInvalid && "!bg-red-400/20 hover:!bg-red-400/20"
+          "twemoji-button content__empty-state__button",
+          isDragActive && "content__empty-state__button--active",
+          isInvalid && "content__empty-state__button--invalid"
         )}
       >
         <Image size={15} />
-        <span className="text-sm">Upload an image</span>
+        <span>Upload an image</span>
       </button>
     </div>
   );

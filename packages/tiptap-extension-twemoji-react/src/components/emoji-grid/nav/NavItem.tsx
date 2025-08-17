@@ -5,7 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/tiptap-ui-primitive/tooltip";
-import { cn } from "../../../lib/utils";
+import { cn } from "@/lib/utils";
 
 const NavItem = ({
   item,
@@ -26,8 +26,11 @@ const NavItem = ({
   return (
     <Tooltip delay={200}>
       <li
-        style={{ width: navItemWidth, height: navItemWidth }}
-        className="overflow-hidden"
+        style={{
+          width: navItemWidth,
+          height: navItemWidth,
+          overflow: "hidden",
+        }}
       >
         <TooltipTrigger
           tabIndex={isGroupExist ? 0 : -1}
@@ -35,15 +38,13 @@ const NavItem = ({
           onClick={handleClick}
           onKeyDown={stopEnterKey}
           className={cn(
-            `justify-items-center content-center size-full twemoji-button`,
-            !isGroupExist && "cursor-auto opacity-25",
-            isGroupExist && "hover:bg-(--twemoji-secondary-color)",
-            isActive && "bg-(--twemoji-secondary-color)"
+            "twemoji-button twemoji-nav__item",
+            !isGroupExist && "twemoji-nav__item--disabled",
+            isGroupExist && "twemoji-nav__item--group-exist",
+            isActive && "twemoji-nav__item--active"
           )}
         >
-          {
-            <item.icon className="stroke-(length:--twemoji-icon-stroke-width) size-full" />
-          }
+          {<item.icon className="twemoji-nav__item__icon" />}
         </TooltipTrigger>
       </li>
       <TooltipContent>

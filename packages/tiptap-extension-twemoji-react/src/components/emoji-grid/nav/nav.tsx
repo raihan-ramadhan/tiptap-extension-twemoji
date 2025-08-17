@@ -1,4 +1,5 @@
-import { cn } from "@/lib/utils";
+import "./nav.scss";
+
 import { FixedSizeGrid as Grid } from "react-window";
 import { EMOJI_GROUPS_PROPS } from "@/lib/emoji-groups";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -8,6 +9,7 @@ import { debounce } from "lodash-es";
 import { Plus } from "lucide-react";
 import NavItem from "./NavItem";
 import { navIcons } from "./nav-icon";
+import { cn } from "../../../lib/utils";
 
 interface NavProps {
   navItemWidth: number;
@@ -100,12 +102,9 @@ const Nav = ({
   return (
     <div
       style={{ width: `${width}px` }}
-      className={cn(
-        "bottom-0 bg-(--twemoji-background) h-fit border-(--twemoji-border-color) border-t text-(--twemoji-foreground)",
-        className
-      )}
+      className={cn("twemoji-nav", className)}
     >
-      <ul className="w-full p-1 pr-2 grid grid-cols-12">
+      <ul className="twemoji-nav__list">
         {navIcons.map((item, index) => {
           const isGroupExist = typeof groupsIndexes[item.title] !== "undefined";
           const isActive = activeNav === item.title;
@@ -138,7 +137,7 @@ const Nav = ({
           <AddCustomEmoji
             maxSize={maxSize}
             accept={accept}
-            className="aspect-square justify-items-center content-center size-full twemoji-button"
+            className="twemoji-nav__add-custom-emoji twemoji-button"
             side="top"
             align="end"
             onSubPopoverMount={disableEmojiCellsNavigation}
@@ -148,7 +147,7 @@ const Nav = ({
             upload={upload}
             onKeyDown={stopEnterKey}
           >
-            <Plus className="rounded-full text-(--twemoji-background) font-bold p-0.5 size-full stroke-(length:--twemoji-icon-stroke-width) bg-(--twemoji-icon-color)" />
+            <Plus className="twemoji-nav__add-custom-emoji__icon" />
           </AddCustomEmoji>
         </li>
       </ul>

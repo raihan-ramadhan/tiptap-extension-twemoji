@@ -43,14 +43,15 @@ const SkinItem = ({
             }
           }}
           className={cn(
-            "size-7 aspect-square flex justify-center items-center twemoji-button twemoji-border",
-            code === skinTone && "bg-(--twemoji-secondary-color)"
+            "twemoji-header__skintone__list__item twemoji-button twemoji-border",
+            code === skinTone &&
+              "twemoji-header__skintone__list__item__selected"
           )}
           autoFocus={code === skinTone}
           draggable={false}
         >
           <span
-            className="inline-block size-full rounded-[4px]"
+            className="twemoji-header__skintone__color_span"
             style={{
               backgroundColor: SKIN_TONE_MAP[code].color,
             }}

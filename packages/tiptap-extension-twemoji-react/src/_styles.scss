@@ -1,0 +1,93 @@
+:root {
+  --twemoji-rounded-parent: 10px;
+  --twemoji-rounded: 6px;
+  --twemoji-icon-stroke-width: 1.5;
+
+  --twemoji-background: white;
+  --twemoji-foreground: black;
+
+  --twemoji-highlight-color: oklch(70.7% 0.165 254.624);
+  --twemoji-accent-color: oklch(98.5% 0.002 247.839); /* tailwind gray 50 */
+  --twemoji-secondary-color: oklch(96.7% 0.003 264.542); /* tailwind gray 100 */
+  --twemoji-error-color: oklch(70.4% 0.191 22.216); /* tailwind red 400 */
+
+  --twemoji-border-color: oklch(87.2% 0.01 258.338); /* tailwind gray 300 */
+
+  --twemoji-icon-color: oklch(44.6% 0.03 256.802); /* tailwind gray 600 */
+}
+
+.dark {
+  --twemoji-background: black;
+  --twemoji-foreground: white;
+
+  --twemoji-highlight-color: oklch(62.3% 0.214 259.815);
+  --twemoji-accent-color: oklch(13% 0.028 261.692); /* tailwind gray 950 */
+  --twemoji-secondary-color: oklch(21% 0.034 264.665); /* tailwind gray 900 */
+  --twemoji-error-color: oklch(50.5% 0.213 27.518); /* tailwind red 700 */
+
+  --twemoji-border-color: oklch(37.3% 0.034 259.733); /* tailwind gray 700 */
+
+  --twemoji-icon-color: oklch(70.7% 0.022 261.325); /* tailwind gray 400 */
+}
+
+.twemoji-button {
+  cursor: pointer;
+  background-color: var(--twemoji-secondary-color);
+  border-radius: var(--twemoji-rounded);
+  padding: 0.375rem;
+  color: var(--twemoji-icon-color);
+}
+
+.twemoji-icon {
+  stroke-width: var(--twemoji-icon-stroke-width);
+}
+
+.twemoji-button:hover {
+  background-color: var(--twemoji-secondary-color);
+}
+
+.twemoji-button:focus-visible {
+  outline-width: 2px;
+  outline-color: var(--twemoji-highlight-color);
+  outline-offset: -2px;
+  background-color: var(--twemoji-secondary-color);
+}
+
+.twemoji-submit-button {
+  cursor: pointer;
+  background-color: var(--twemoji-highlight-color);
+  color: white;
+  border-radius: var(--twemoji-rounded);
+  padding: 0.375rem; /* p-1.5 */
+}
+
+.twemoji-submit-button:hover {
+  background-color: #8ec5ff;
+}
+
+.twemoji-submit-button:focus-visible {
+  outline-width: 2px;
+  outline-color: var(--twemoji-highlight-color);
+  outline-offset: 2px;
+  background-color: var(--twemoji-highlight-color);
+}
+
+.twemoji-border {
+  outline-width: 1px;
+  outline-color: var(--twemoji-border-color);
+  outline-style: solid;
+}
+
+.twemoji-input {
+  border-radius: var(--twemoji-rounded);
+  background-color: var(--twemoji-accent-color);
+  outline-width: 1px;
+  outline-color: var(--twemoji-border-color);
+  outline-style: solid;
+}
+
+.twemoji-input:focus-visible {
+  outline-width: 2px;
+  outline-color: var(--twemoji-highlight-color);
+  outline-offset: -2px;
+}

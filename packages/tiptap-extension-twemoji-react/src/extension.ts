@@ -49,7 +49,7 @@ import {
   updatePosition,
   eventsHooks,
 } from "@/components/popover/config";
-import EmojiGrid from "@/components/emoji-grid/EmojiGrid";
+import EmojiGrid from "@/components/emoji-grid/grid/Grid";
 
 // CONSTANTS
 import {

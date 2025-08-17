@@ -1,10 +1,6 @@
 import { memo, useCallback } from "react";
 import { Shuffle } from "lucide-react";
-import {
-  getRandomCellByItemCount,
-  isCustomEmoji,
-  isEmoji,
-} from "@/lib/emoji-grid-utils";
+import { getRandomCellByItemCount } from "@/lib/emoji-grid-utils";
 import {
   Tooltip,
   TooltipContent,
@@ -12,7 +8,7 @@ import {
 } from "@/components/tiptap-ui-primitive/tooltip";
 import { Emoji } from "@/data/emoji-sprite-map";
 import { SelectEmojiFunc } from "@/types";
-import { SKIN_TONE_CODES_PROPS, SKIN_TONE_MAP } from "../../../lib/emoji-utils";
+import { SKIN_TONE_CODES_PROPS, SKIN_TONE_MAP } from "@/lib/emoji-utils";
 import { MentionNodeAttrs } from "@tiptap/extension-mention";
 import { SuggestionProps } from "@tiptap/suggestion";
 
@@ -52,11 +48,11 @@ const RandomButton = ({
   return (
     <Tooltip delay={200}>
       <TooltipTrigger
-        className="aspect-square size-7 flex justify-center items-center twemoji-button twemoji-border"
+        className="twemoji-header__button twemoji-button twemoji-border"
         onClick={handleRandomClick}
         onKeyDown={stopEnterPropagation}
       >
-        <Shuffle className="stroke-(length:--twemoji-icon-stroke-width)" />
+        <Shuffle className="twemoji-icon" />
       </TooltipTrigger>
       <TooltipContent>
         <span>Random</span>

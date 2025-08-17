@@ -4,7 +4,7 @@ import { Children, cloneElement, useCallback, useRef, useState } from "react";
 import { getRandomCellByItemCount } from "@/lib/emoji-grid-utils";
 
 // Components
-import EmojiGrid from "@/components/emoji-grid/EmojiGrid";
+import EmojiGrid from "@/components/emoji-grid/grid/Grid";
 import { Popover } from "./Popover";
 
 // TYPES

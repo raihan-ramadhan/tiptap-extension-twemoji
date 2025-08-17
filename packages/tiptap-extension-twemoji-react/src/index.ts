@@ -1,4 +1,4 @@
-import "./styles.css";
+import "./_styles.scss";
 
 export type {
   CustomEmoji,

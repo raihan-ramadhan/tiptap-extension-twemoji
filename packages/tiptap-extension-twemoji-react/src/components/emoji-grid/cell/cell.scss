@@ -1,0 +1,40 @@
+.twemoji-button.twemoji-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem !important;
+  background-color: transparent;
+
+  &--selected {
+    background-color: var(--twemoji-secondary-color);
+  }
+}
+
+.twemoji-custom-emoji-cell {
+  position: relative;
+  transform: translate(0.125rem, 0.125rem);
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px !important;
+  box-shadow: inset 0 0 0 1px var(--twemoji-border-color);
+  background-color: transparent;
+
+  &--selected {
+    background-color: var(--twemoji-secondary-color);
+  }
+}
+
+.twemoji-group-title-cell {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+}
+
+.twemoji-svg-cell {
+  color: var(--twemoji-border-color);
+}

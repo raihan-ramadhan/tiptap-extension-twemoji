@@ -1,3 +1,5 @@
+import "./grid.scss";
+
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { FixedSizeGrid as Grid } from "react-window";
 import { createFocusTrap } from "focus-trap";
@@ -28,7 +30,7 @@ import { COLUMNS, LOCAL_STORAGE_SKIN_TONE_KEY } from "@/constants";
 // COMPONENTS
 import AddCustomEmoji from "@/components/emoji-grid/add-custom-emoji/AddCustomEmoji";
 import EmojiHeader from "@/components/emoji-grid/header/Header";
-import Cell from "@/components/emoji-grid/Cell";
+import Cell from "@/components/emoji-grid/cell/Cell";
 import Nav from "@/components/emoji-grid/nav/Nav";
 
 export default function ({
@@ -248,14 +250,12 @@ export default function ({
 
     const prevEl = cellRefs.current.get(prevKey);
     if (prevEl) {
-      prevEl.classList.remove("dark:bg-neutral-800");
-      prevEl.classList.remove("bg-neutral-200");
+      prevEl.classList.remove("hovered-cell-button");
     }
 
     const currentEl = cellRefs.current.get(key);
     if (currentEl) {
-      currentEl.classList.add("dark:bg-neutral-800");
-      currentEl.classList.add("bg-neutral-200");
+      currentEl.classList.add("hovered-cell-button");
     }
 
     prevKey = key;
@@ -372,21 +372,18 @@ export default function ({
             className={
               filteredEmojis.length + (filteredCustomEmojis?.length ?? 0) >
               minCellsToHideNav
-                ? "sticky"
-                : "hidden"
+                ? ""
+                : "twemoji-nav--hidden"
             }
           />
         </>
       ) : (
-        <div
-          className="text-nowrap text-xs font-medium p-1"
-          style={{ width: widthGrid }}
-        >
-          <span className="block py-2">No Result</span>
+        <div className="no-result" style={{ width: widthGrid }}>
+          <span className="no-result__span">No Result</span>
           <div>
             <AddCustomEmoji
               accept={accept}
-              className="twemoji-button w-fit twemoji-border relative inline-flex items-center justify-center !py-1 !px-2"
+              className="twemoji-button twemoji-border no-result__custom-emoji"
               onSubPopoverMount={() => {
                 deactivateTrap();
                 disableEmojiCellsNavigation();
@@ -402,8 +399,8 @@ export default function ({
               upload={upload}
               maxSize={maxSize}
             >
-              <span className="flex items-center gap-0.5 text-xs">
-                <Plus className="size-4 aspect-square stroke-(length:--twemoji-icon-stroke-width)" />
+              <span className="no-result__custom-emoji__span">
+                <Plus className="no-result__custom-emoji__icon" />
                 <span> Add Emoji</span>
               </span>
             </AddCustomEmoji>

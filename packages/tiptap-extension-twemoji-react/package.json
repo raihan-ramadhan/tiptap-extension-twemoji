@@ -1,6 +1,6 @@
 {
   "name": "@raihancodes/tiptap-extension-twemoji-react",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "description": "Advanced Tiptap emoji extension built with React - supports Twemoji, emoticon, shortcodes, and cross-platform consistency with modern editor UX",
   "scripts": {
@@ -41,15 +41,15 @@
     "**/*.scss"
   ],
   "peerDependencies": {
+    "@floating-ui/dom": "^1.7.3",
+    "@floating-ui/react": "^0.27.13",
     "@tiptap/core": "^3.0.7",
     "@tiptap/extension-mention": "^3.0.7",
     "@tiptap/pm": "^3.0.7",
     "@tiptap/react": "^3.0.7",
     "@tiptap/suggestion": "^3.0.7",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "@floating-ui/dom": "^1.7.3",
-    "@floating-ui/react": "^0.27.13"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@floating-ui/dom": "^1.7.3",
@@ -60,7 +60,6 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-url": "^8.0.2",
-    "@tailwindcss/postcss": "^4.1.11",
     "@tiptap/core": "^3.0.7",
     "@tiptap/extension-mention": "^3.0.7",
     "@tiptap/pm": "^3.0.7",
@@ -82,8 +81,6 @@
     "rollup-plugin-tsconfig-paths": "^1.5.2",
     "rollup-plugin-visualizer": "^6.0.3",
     "sass": "^1.89.2",
-    "tailwind-scrollbar": "^4.0.2",
-    "tailwindcss": "^4.1.11",
     "typescript": "^5.0.4"
   },
   "dependencies": {
@@ -94,7 +91,6 @@
     "lucide-react": "^0.475.0",
     "react-dropzone": "^14.3.8",
     "react-window": "^1.8.11",
-    "tailwind-merge": "^3.0.1",
     "tslib": "^2.8.1"
   },
   "keywords": [

@@ -1,3 +1,5 @@
+import "./cell.scss";
+
 import { GridChildComponentProps } from "react-window";
 import { ItemData } from "@/types";
 import { HTMLAttributes, memo, useMemo } from "react";
@@ -59,16 +61,15 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
   };
 
   const buttonAttrs: ButtonAttrs = {
-    style: style,
+    style: { ...style, height: cellSize, width: cellSize },
     className: cn(
-      "flex justify-center items-center twemoji-button !p-1",
-      `size-[${cellSize}px]`,
-      isSelected && "bg-(--twemoji-secondary-color)"
+      "twemoji-button twemoji-cell",
+      isSelected && "twemoji-cell--selected"
     ),
     onMouseMoveCapture: () => {
       handleHover(rowIndex, columnIndex);
     },
-    ["data-selected-cell"]: true,
+    ["data-selected-cell"]: isSelected,
     ref: (node: HTMLButtonElement) => {
       if (isSelected) {
         selectedCellElementRef.current = node;
@@ -183,7 +184,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-(--twemoji-border-color)"
+        className="twemoji-svg-cell"
       >
         <path d="M5 12h14" />
         <path d="M12 5v14" />
@@ -211,8 +212,8 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         side="top"
         {...buttonAttrs}
         className={cn(
-          "relative translate-x-[2px] translate-y-[2px] !size-7 flex items-center !rounded-full justify-center twemoji-button ring-inset ring-[1px] ring-(--twemoji-border-color)",
-          isSelected && "bg-(--twemoji-secondary-color)"
+          "twemoji-custom-emoji-cell twemoji-button",
+          isSelected && "--selected"
         )}
       >
         {content}
@@ -222,10 +223,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
 
   if (isGroupTitle(emojiData)) {
     return (
-      <div
-        style={style}
-        className="text-nowrap text-xs font-medium inline-flex items-center "
-      >
+      <div style={style} className="twemoji-group-title-cell ">
         {emojiData.groupTitle}
       </div>
     );

@@ -20,7 +20,10 @@ export type DropzoneUploadProps = {
     [key: string]: readonly string[];
   };
   maxSize: number;
-  interceptAddCustomEmojiClick: (() => boolean) | boolean;
+  interceptAddCustomEmojiClick:
+    | (() => boolean)
+    | (() => Promise<boolean>)
+    | boolean;
   disabledAddCustomEmoji: boolean;
 };
 

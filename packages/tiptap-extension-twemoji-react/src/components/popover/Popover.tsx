@@ -60,8 +60,8 @@ export function Popover({
   const sharedProps = {
     ...trigger.props,
     ref: mergeRefs(referenceRef, trigger.props.ref),
-    onClick: () => {
-      const shouldContinue = trigger.props.onClick?.();
+    onClick: async () => {
+      const shouldContinue = await trigger.props.onClick?.();
       // if the onClick returns true, stop the rest
       if (shouldContinue === true) return;
 

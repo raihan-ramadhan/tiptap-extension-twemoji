@@ -63,12 +63,16 @@ const AddCustomEmoji = ({
       trigger={
         <button
           {...props}
-          onClick={() => {
-            if (interceptAddCustomEmojiClick) {
-              return typeof interceptAddCustomEmojiClick == "function"
-                ? interceptAddCustomEmojiClick()
-                : interceptAddCustomEmojiClick;
+          onClick={async () => {
+            if (typeof interceptAddCustomEmojiClick === "boolean") {
+              return interceptAddCustomEmojiClick;
             }
+
+            if (typeof interceptAddCustomEmojiClick === "function") {
+              return await interceptAddCustomEmojiClick();
+            }
+
+            return false; // fallback
           }}
           disabled={disabledAddCustomEmoji}
         >

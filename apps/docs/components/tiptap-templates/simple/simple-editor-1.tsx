@@ -14,7 +14,10 @@ import { Highlight } from "@tiptap/extension-highlight";
 import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
 import { Selection } from "@tiptap/extensions";
-import { TwemojiExtension } from "@raihancodes/tiptap-extension-twemoji-react";
+import {
+  CustomEmoji,
+  TwemojiExtension,
+} from "@raihancodes/tiptap-extension-twemoji-react";
 
 // --- Tiptap Node ---
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension";
@@ -39,10 +42,32 @@ import content from "@/components/tiptap-templates/simple/data/content.json";
 // --- Components ---
 import IconFileButton from "@/components/IconFileButton";
 import EditorLoading from "@/components/EditorLoading";
+import {
+  handleEmojiOnError,
+  handleEmojiOnSuccess,
+  handleEmojiUpload,
+  handleInterceptAddCustomEmoji,
+} from "@/lib/handleEmoji";
 
-export function SimpleEditor1() {
+import { setLatestCustomEmojis } from "@/store/custom-emojis-store";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "../../ui/dialog";
+import { LoginForm } from "../../login-form";
+
+export function SimpleEditor1({
+  customEmojis,
+}: {
+  customEmojis: CustomEmoji[];
+}) {
   const router = useRouter();
+
   const loadingBarRef = React.useRef<HTMLDivElement>(null);
+
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -94,32 +119,63 @@ export function SimpleEditor1() {
         upload: handleImageUpload,
         onError: (error) => console.error("Upload failed:", error),
       }),
-      TwemojiExtension,
+      TwemojiExtension.configure({
+        customEmojiOptions: {
+          upload: (props) => handleEmojiUpload(props),
+          onSuccess: (successMessage, callback) =>
+            handleEmojiOnSuccess(successMessage, callback, router),
+          onError: (errorMessage) => handleEmojiOnError(errorMessage),
+          interceptAddCustomEmojiClick: (dismiss) =>
+            handleInterceptAddCustomEmoji(() => {
+              dismiss?.();
+              setIsOpen(true);
+            }),
+        },
+      }),
     ],
     content,
     onBeforeCreate: () => {
       if (loadingBarRef.current) {
         const bar = loadingBarRef.current;
         bar.style.transition = "width 0.3s ease-in-out";
-        bar.style.width = "100%"; // jump to 100%
+        bar.style.width = "100%";
       }
     },
   });
+
+  React.useEffect(() => {
+    setLatestCustomEmojis(customEmojis);
+
+    if (editor) {
+      editor.commands.updateCustomEmojis(customEmojis);
+    }
+  }, [editor, customEmojis]);
 
   if (!editor) {
     return <EditorLoading barRef={loadingBarRef} />;
   }
 
   return (
-    <div className="simple-editor-wrapper">
-      <EditorContext.Provider value={{ editor }}>
-        <div className="simple-editor-content ">
-          <div className="mt-2 mb-4">
-            <IconFileButton />
+    <>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="w-full max-w-sm">
+          <DialogTitle className="text-2xl">Welcome!</DialogTitle>
+          <DialogDescription>
+            Sign in to your account to upload emoji
+          </DialogDescription>
+          <LoginForm />
+        </DialogContent>
+      </Dialog>
+      <div className="simple-editor-wrapper">
+        <EditorContext.Provider value={{ editor }}>
+          <div className="simple-editor-content ">
+            <div className="mt-2 mb-4">
+              <IconFileButton setIsOpen={setIsOpen} />
+            </div>
+            <EditorContent editor={editor} role="presentation" />
           </div>
-          <EditorContent editor={editor} role="presentation" />
-        </div>
-      </EditorContext.Provider>
-    </div>
+        </EditorContext.Provider>
+      </div>
+    </>
   );
 }

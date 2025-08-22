@@ -83,9 +83,12 @@ import {
   type CustomEmoji,
 } from "@raihancodes/tiptap-extension-twemoji-react";
 
-import IconFileButton from "../../IconFileButton";
 import { setLatestCustomEmojis } from "@/store/custom-emojis-store";
-import { handleEmojiUpload } from "../../../lib/handleEmojiUpload";
+import {
+  handleEmojiOnError,
+  handleEmojiOnSuccess,
+  handleEmojiUpload,
+} from "../../../lib/handleEmoji";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -198,7 +201,7 @@ const MobileToolbarContent = ({
 export function SimpleEditor({
   customEmojis,
 }: {
-  customEmojis?: CustomEmoji[];
+  customEmojis: CustomEmoji[];
 }) {
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -259,9 +262,10 @@ export function SimpleEditor({
       }),
       TwemojiExtension.configure({
         customEmojiOptions: {
-          upload: handleEmojiUpload,
-          onSuccess,
-          onError,
+          upload: (props) => handleEmojiUpload(props),
+          onSuccess: (successMessage, callback) =>
+            handleEmojiOnSuccess(successMessage, callback, router),
+          onError: (errorMessage) => handleEmojiOnError(errorMessage),
         },
       }),
     ],
@@ -270,12 +274,10 @@ export function SimpleEditor({
 
   // Very important, initialization customEmojis storage and for reactivity items on EmojiGrid
   React.useEffect(() => {
-    if (customEmojis) {
-      setLatestCustomEmojis(customEmojis);
+    setLatestCustomEmojis(customEmojis);
 
-      if (editor) {
-        editor.commands.updateCustomEmojis(customEmojis);
-      }
+    if (editor) {
+      editor.commands.updateCustomEmojis(customEmojis);
     }
   }, [editor, customEmojis]);
 
@@ -289,8 +291,6 @@ export function SimpleEditor({
       setMobileView("main");
     }
   }, [isMobile, mobileView]);
-
-  // console.log(editor?.getJSON());
 
   return (
     <div className="simple-editor-wrapper">
@@ -320,7 +320,6 @@ export function SimpleEditor({
         </Toolbar>
 
         <div className="simple-editor-content">
-          <IconFileButton />
           <EditorContent editor={editor} role="presentation" />
         </div>
       </EditorContext.Provider>

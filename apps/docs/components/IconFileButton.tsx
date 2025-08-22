@@ -4,19 +4,27 @@ import { EmojiPopoverTriggerWrapper } from "@raihancodes/tiptap-extension-twemoj
 import {
   CustomEmoji,
   Emoji,
-  EmojiUploadProps,
   isEmoji,
 } from "@raihancodes/tiptap-extension-twemoji-react";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import { getLatestCustomEmojis } from "@/store/custom-emojis-store";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { handleEmojiUpload } from "../lib/handleEmojiUpload";
-import { cn } from "../lib/utils";
+import {
+  handleEmojiOnError,
+  handleEmojiOnSuccess,
+  handleEmojiUpload,
+  handleInterceptAddCustomEmoji,
+} from "@/lib/handleEmoji";
+import { cn } from "@/lib/utils";
 import { Smile } from "lucide-react";
 
-const IconFileButton = () => {
+const IconFileButton = ({
+  setIsOpen: setIsOpenDialog,
+}: {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [iconAttrs, setIconAttrs] = useState<
     | {
         [x: string]: string | boolean | React.CSSProperties;
@@ -78,19 +86,6 @@ const IconFileButton = () => {
 
   const router = useRouter();
 
-  const onError: EmojiUploadProps["onError"] = (errorMessage) => {
-    toast.error(errorMessage);
-  };
-
-  const onSuccess: EmojiUploadProps["onSuccess"] = (
-    successMessage,
-    callback
-  ) => {
-    toast.success(successMessage);
-    callback?.();
-    router.refresh();
-  };
-
   return (
     <EmojiPopoverTriggerWrapper
       headerOptions={{
@@ -98,9 +93,15 @@ const IconFileButton = () => {
         onDelete,
       }}
       customEmojiOptions={{
-        upload: handleEmojiUpload,
-        onError,
-        onSuccess,
+        upload: (props) => handleEmojiUpload(props),
+        onSuccess: (successMessage, callback) =>
+          handleEmojiOnSuccess(successMessage, callback, router),
+        onError: (errorMessage) => handleEmojiOnError(errorMessage),
+        interceptAddCustomEmojiClick: (dismiss) =>
+          handleInterceptAddCustomEmoji(() => {
+            dismiss?.();
+            setIsOpenDialog(true);
+          }),
       }}
       selectEmojiHandler={selectEmojiHandler}
       isOpen={isOpen}

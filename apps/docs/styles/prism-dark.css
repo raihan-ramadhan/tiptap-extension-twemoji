@@ -1,0 +1,77 @@
+/* Dark mode override using Prism Tomorrow */
+.dark pre[class*="language-"],
+.dark code[class*="language-"] {
+  /* Reset the light theme background so dark can apply */
+  background: transparent;
+}
+
+/* copy-pasted from prism-tomorrow.css, wrapped inside .dark */
+.dark code[class*="language-"],
+.dark pre[class*="language-"] {
+  color: #ccc;
+  text-shadow: none;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-size: 1em;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.5;
+  tab-size: 4;
+  hyphens: none;
+}
+
+/* tokens */
+.dark .token.comment,
+.dark .token.prolog,
+.dark .token.doctype,
+.dark .token.cdata {
+  color: #999;
+}
+
+.dark .token.punctuation {
+  color: #ccc;
+}
+
+.dark .token.property,
+.dark .token.tag,
+.dark .token.boolean,
+.dark .token.number,
+.dark .token.constant,
+.dark .token.symbol,
+.dark .token.deleted {
+  color: #f2777a;
+}
+
+.dark .token.selector,
+.dark .token.attr-name,
+.dark .token.string,
+.dark .token.char,
+.dark .token.builtin,
+.dark .token.inserted {
+  color: #99cc99;
+}
+
+.dark .token.operator,
+.dark .token.entity,
+.dark .token.url {
+  color: #67cdcc;
+  background-color: transparent;
+}
+
+.dark .token.atrule,
+.dark .token.attr-value,
+.dark .token.keyword {
+  color: #cc99cd;
+}
+
+.dark .token.function,
+.dark .token.class-name {
+  color: #ffcc66;
+}
+
+.dark .token.regex,
+.dark .token.important,
+.dark .token.variable {
+  color: #f99157;
+}

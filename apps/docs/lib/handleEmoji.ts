@@ -5,14 +5,18 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { EMOJIS_BUCKET_NAME, EMOJIS_TABLE_NAME } from "@/example/constants";
 import { addCustomEmoji } from "../store/custom-emojis-store";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { toast } from "sonner";
 
 export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
   emojiName,
   files,
   onSuccess,
   onError,
-  callback,
+  dismiss,
 }) => {
+  const supabase = createClient();
+
   /**
    * The number of seconds the asset is cached in the browser and in the Supabase CDN.
    *
@@ -20,7 +24,6 @@ export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
    */
   const cacheControl = 3600;
 
-  const supabase = createClient();
   const randomSuffix = `${Date.now()}-${Math.floor(Math.random() * 1_000_000)}`;
 
   const baseName = `${emojiName}-${randomSuffix}`;
@@ -55,9 +58,42 @@ export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
     return onError?.(insertError.message);
   }
 
-  onSuccess?.(`${emojiName} has added your workspace`, callback);
+  onSuccess?.(`${emojiName} has added your workspace`, dismiss);
 
   addCustomEmoji(data[0] as CustomEmoji);
 
   return;
+};
+
+export const handleEmojiOnSuccess = (
+  successMessage: Parameters<EmojiUploadProps["onSuccess"]>[0],
+  dismiss: Parameters<EmojiUploadProps["onSuccess"]>[1],
+  router: AppRouterInstance
+) => {
+  toast.success(successMessage);
+  dismiss?.();
+  router.refresh();
+};
+
+export const handleEmojiOnError = (
+  errorMessage: Parameters<EmojiUploadProps["onError"]>[0]
+) => {
+  toast.error(errorMessage);
+};
+
+export const handleInterceptAddCustomEmoji = async (
+  openLoginDialog: () => void
+) => {
+  const supabase = createClient();
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    openLoginDialog();
+    return true;
+  }
+
+  return false;
 };

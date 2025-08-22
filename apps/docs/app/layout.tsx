@@ -3,6 +3,10 @@ import { Toaster } from "@/components/ui/sonner";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
+// --- STYLES ---
+import "prismjs/themes/prism-solarizedlight.css";
+import "../styles/prism-dark.css";
 import "./globals.css";
 
 const geistSans = Geist({

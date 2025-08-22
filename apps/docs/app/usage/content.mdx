@@ -5,7 +5,12 @@ This page will walk you through installation and basic usage.
 
 ---
 
-## 📦 Installation
+<H2
+  iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4e6.svg"
+  iconAlt="📦"
+>
+  Installation
+</H2>
 
 Install the package with your preferred package manager:
 
@@ -21,36 +26,55 @@ npm install @raihancodes/tiptap-extension-twemoji-react
 
 ---
 
-## ⚡ Basic Example
+<H2
+  iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a1.svg"
+  iconAlt="⚡"
+>
+  Basic Example
+</H2>
 
 Import the extension and add it to your editor:
 
 ```tsx
 import { useEditor } from "@tiptap/react";
+import { StarterKit } from "@tiptap/starter-kit";
 import { TwemojiExtension } from "@raihancodes/tiptap-extension-twemoji-react";
 
 export default function Editor() {
   const editor = useEditor({
-    extensions: [TwemojiExtension],
+    extensions: [StarterKit, TwemojiExtension],
   });
 
   return <EditorContent editor={editor} />;
 }
 ```
 
+<H2
+  iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5bc.svg"
+  iconAlt="🖼️"
+>
+  Move the Twemoji sprite sheet to public/assets/
+</H2>
+
+Download the image from [here](https://github.com/raihan-ramadhan/tiptap-extension-twemoji/tree/master/packages/tiptap-extension-twemoji-react/dist/assets) then move it to your `public/assets/` folder. The image location can be anywhere in your public or on CDN, see [here](/deep-dive#spriteUrl) to adjust `spriteUrl`
+
+<H2
+  iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f389.svg"
+  iconAlt="🎉"
+>
+  Congratulations! Twemoji is now working in your editor.
+</H2>
+
+You can start typing :smile , :hug: , XD , or paste any emoji, and see it rendered instantly.
+
 ---
 
-## 🎯 Key Features
+<H2
+  iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f680.svg"
+  iconAlt="🚀"
+>
+  Next Steps
+</H2>
 
-- Emoji rendering with **Twemoji**
-- Works seamlessly with **TipTap + React**
-- Supports **custom emojis**
-- Optimized for **performance**
-
----
-
-## 🚀 Next Steps
-
-👉 Check out the [Deep Dive](/deep-dive) section to learn about advanced configuration and custom emoji support.
-
-👉 Check out the [Custom Emoji](/custom-emojis) section to learn about how to upload and insert Custom Emojis.
+- 👉 Check out the [Custom Emojis](/custom-emojis) section to learn about how to add or upload Custom Emojis.
+- 👉 Check out the [Deep Dive](/deep-dive) section to learn how to customize the extension—header, navigation, cell size, custom emojis, etc.

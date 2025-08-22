@@ -1,5 +1,14 @@
 import type { MDXComponents } from "mdx/types";
 import Link from "next/link";
+import CodeBlock from "./components/mdx-ui/CodeBlock";
+import { cn } from "./lib/utils";
+
+function extractText(children: any): string {
+  if (typeof children === "string") return children;
+  if (Array.isArray(children)) return children.map(extractText).join("");
+  if (children?.props?.children) return extractText(children.props.children);
+  return "";
+}
 
 const components: MDXComponents = {
   // Headings
@@ -21,7 +30,10 @@ const components: MDXComponents = {
 
   // Paragraphs
   p: ({ children, ...props }) => (
-    <p className="leading-7 mb-4 text-gray-700 dark:text-gray-300" {...props}>
+    <p
+      className="leading-7 mb-4 mt-2 text-gray-700 dark:text-gray-300"
+      {...props}
+    >
       {children}
     </p>
   ),
@@ -29,7 +41,7 @@ const components: MDXComponents = {
   // Inline code
   code: ({ children, ...props }) => (
     <code
-      className="rounded bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-sm text-pink-600"
+      className="rounded bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-[0.85em]"
       {...props}
     >
       {children}
@@ -37,14 +49,7 @@ const components: MDXComponents = {
   ),
 
   // Code blocks
-  pre: ({ children, ...props }) => (
-    <pre
-      className="rounded-lg bg-gray-900 text-gray-100 p-4 overflow-x-auto text-sm"
-      {...props}
-    >
-      {children}
-    </pre>
-  ),
+  pre: (props: any) => <CodeBlock>{props.children}</CodeBlock>,
 
   // Lists
   ul: ({ children, ...props }) => (
@@ -65,10 +70,44 @@ const components: MDXComponents = {
 
   // Links
   a: ({ children, ...props }) => (
-    <Link className="text-blue-600 hover:underline" {...props}>
+    <Link className="underline" {...props}>
       {children}
     </Link>
   ),
+
+  // hr
+  hr: (props) => (
+    <hr
+      className="border-t border-gray-200 dark:border-gray-700 my-8"
+      {...props}
+    />
+  ),
+  H2: ({ children, iconUrl, iconAlt, className, iconClassName, ...props }) => {
+    const text = extractText(children);
+
+    return (
+      <h2
+        className={cn(
+          `flex items-center gap-2 text-2xl font-semibold mt-6 mb-3`,
+          className
+        )}
+        {...props}
+      >
+        {iconUrl && (
+          <img
+            src={iconUrl}
+            alt={iconAlt}
+            className={cn(
+              "inline-block h-[1em] aspect-square bg-cover cursor-text",
+              iconClassName
+            )}
+            draggable="false"
+          />
+        )}
+        <span className="w-full inline-flex"> {text}</span>
+      </h2>
+    );
+  },
 };
 
 export function useMDXComponents(): MDXComponents {

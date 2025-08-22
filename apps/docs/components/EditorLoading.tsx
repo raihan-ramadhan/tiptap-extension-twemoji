@@ -35,7 +35,7 @@ const EditorLoading: React.FC<EditorLoadingProps> = ({ barRef }) => {
         {randomTip}
       </div>
 
-      <div className="w-full max-w-md h-6 bg-gray-300 rounded overflow-hidden relative">
+      <div className="w-full max-w-md h-6 bg-muted rounded overflow-hidden relative">
         <div
           ref={barRef}
           className="h-6 bg-primary absolute left-0 top-0"

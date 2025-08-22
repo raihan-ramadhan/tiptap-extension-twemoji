@@ -14,15 +14,20 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarRail,
 } from "@/components/ui/sidebar";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
-import { Minus, Plus } from "lucide-react";
+import { ArrowUpRight, Minus, Plus } from "lucide-react";
 import Link from "next/link";
+import { ThemeDropdown } from "./dark-mode/theme-dropdown";
+import MainRepoIcon from "./MainRepoIcon";
+import { cn } from "../lib/utils";
+import { NavUser } from "./nav-user";
+import { createClient } from "../lib/supabase/server";
+import { Button } from "./ui/button";
 
 const ContributingIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -48,7 +53,7 @@ const data = {
       url: "",
       items: [
         {
-          title: "Basic Usage",
+          title: "Usage Guide",
           url: "usage",
           icon: null,
         },
@@ -62,20 +67,12 @@ const data = {
           url: "deep-dive",
           icon: null,
         },
-        { title: "Live Playground", url: "playground", icon: null },
       ],
     },
     {
-      title: "API & Features",
-      url: "api-features",
-      items: [
-        { title: "Commands", url: "commands", icon: null },
-        {
-          title: "Emoticons & Shortcodes",
-          url: "emoticons-shortcodes",
-          icon: null,
-        },
-      ],
+      title: "API",
+      url: "",
+      items: [{ title: "Commands", url: "commands", icon: null }],
     },
     {
       title: "Components",
@@ -96,7 +93,25 @@ const data = {
       ],
     },
   ],
-  navSecondary: [
+  navExamples: [
+    {
+      title: "Resources",
+      url: "",
+      items: [
+        {
+          title: "Example repo",
+          url: "https://github.com/raihan-ramadhan/tiptap-extension-twemoji/tree/master/apps/example",
+          icon: null,
+        },
+        {
+          title: "Playground",
+          url: "#",
+          icon: null,
+        },
+      ],
+    },
+  ],
+  navSoon: [
     {
       title: "Soon",
       url: "soon",
@@ -139,6 +154,12 @@ export async function AppSidebar({
     return pathname === expectedPath;
   };
 
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -167,6 +188,7 @@ export async function AppSidebar({
                     <SidebarMenuButton
                       asChild
                       isActive={isActiveLink(item.url, subItem.url)}
+                      className={cn(subItem.icon && "pr-1")}
                     >
                       <Link
                         href={buildUrl(item.url, subItem.url)}
@@ -187,10 +209,36 @@ export async function AppSidebar({
           </SidebarGroup>
         ))}
 
+        {/* Externa links */}
+        {data.navExamples.map((item) => (
+          <SidebarGroup key={item.title}>
+            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {item.items.map((subItem) => (
+                  <SidebarMenuItem key={subItem.title}>
+                    <SidebarMenuButton asChild>
+                      <Link
+                        target="_blank"
+                        href={subItem.url}
+                        className="flex justify-between"
+                        rel="noopener noreferrer"
+                      >
+                        {subItem.title}
+                        <ArrowUpRight className="mr-0.5" />
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
+
         {/* Secondary navigation with collapsible sections */}
         <SidebarGroup>
           <SidebarMenu>
-            {data.navSecondary.map((item) => (
+            {data.navSoon.map((item) => (
               <Collapsible
                 key={item.title}
                 className="group/collapsible"
@@ -200,8 +248,8 @@ export async function AppSidebar({
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton>
                       {item.title}{" "}
-                      <Plus className="ml-auto group-data-[state=open]/collapsible:hidden mr-1.5" />
-                      <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden mr-1.5" />
+                      <Plus className="ml-auto group-data-[state=open]/collapsible:hidden mr-0.5" />
+                      <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden mr-0.5" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   {item.items?.length ? (
@@ -229,7 +277,25 @@ export async function AppSidebar({
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarRail />
+      <SidebarFooter className="h-min gap-1">
+        <div className="flex w-full gap-1">
+          {user ? (
+            <NavUser
+              user={{
+                avatar: user.user_metadata?.avatar_url ?? "None",
+                email: user.email ?? "None",
+                name: user.user_metadata?.name ?? "None",
+              }}
+            />
+          ) : (
+            <ThemeDropdown />
+          )}
+
+          <Button variant={"secondary"} asChild>
+            <MainRepoIcon className="!p-1.5 size-8" />
+          </Button>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 }

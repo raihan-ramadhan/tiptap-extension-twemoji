@@ -40,11 +40,12 @@
         {
           "type": "text",
           "marks": [
-            {
+            {   
               "type": "link",
               "attrs": {
                 "href": "https://github.com/twitter/twemoji",
                 "target": "_blank",
+                "rel": "noopener noreferrer",
                 "class": null
               }
             }
@@ -1014,7 +1015,7 @@
                 },
                 {
                   "type": "text",
-                  "text": " Basic Usage → "
+                  "text": " Check out the "
                 },
                 {
                   "type": "text",
@@ -1028,53 +1029,11 @@
                       }
                     }
                   ],
-                  "text": "Basic Usage"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "listItem",
-          "content": [
-            {
-              "type": "paragraph",
-              "attrs": {
-                "textAlign": null
-              },
-              "content": [
-                {
-                  "type": "emojiExtension",
-                  "attrs": {
-                    "id": null,
-                    "label": null,
-                    "mentionSuggestionChar": "@",
-                    "data-type": "emoji",
-                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-                    "alt": "🎨",
-                    "style": "width: 1em; height: 1em; background-position: -56.52777777777778em -28.77777777777778em; background-size: 63.69em 63.69em;",
-                    "draggable": false,
-                    "contenteditable": false,
-                    "class": "twemoji"
-                  }
+                  "text": "Usage Guide"
                 },
                 {
                   "type": "text",
-                  "text": " Custom Emojis → "
-                },
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "link",
-                      "attrs": {
-                        "href": "/custom-emojis",
-                        "target": "_self",
-                        "class": null
-                      }
-                    }
-                  ],
-                  "text": "Custom Emojis"
+                  "text": " section to learn about installation and usage basic example."
                 }
               ]
             }

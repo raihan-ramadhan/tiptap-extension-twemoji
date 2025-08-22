@@ -17,6 +17,7 @@ type AddCustomEmojiProps = {
   label?: string;
   navigationCellDisableOnMount?: boolean;
   onErrorUpload: DropzoneUploadProps["onError"];
+  onCancel?: () => void;
 } & React.ComponentProps<"button"> &
   Omit<DropzoneUploadProps, "onError">;
 
@@ -37,6 +38,7 @@ const AddCustomEmoji = ({
   maxSize,
   interceptAddCustomEmojiClick,
   disabledAddCustomEmoji,
+  onCancel,
   ...props
 }: AddCustomEmojiProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -69,7 +71,7 @@ const AddCustomEmoji = ({
             }
 
             if (typeof interceptAddCustomEmojiClick === "function") {
-              return await interceptAddCustomEmojiClick();
+              return await interceptAddCustomEmojiClick(onCancel);
             }
 
             return false; // fallback

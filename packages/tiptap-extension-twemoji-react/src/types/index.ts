@@ -12,7 +12,7 @@ export type DropzoneUploadProps = {
     files: FileWithPreview;
     onSuccess: DropzoneUploadProps["onSuccess"];
     onError: DropzoneUploadProps["onError"];
-    callback?: () => void;
+    dismiss?: () => void;
   }) => Promise<void>;
   onError: (errorMessage: string) => void;
   onSuccess: (successMessage: string, callback?: () => void) => void;
@@ -21,8 +21,8 @@ export type DropzoneUploadProps = {
   };
   maxSize: number;
   interceptAddCustomEmojiClick:
-    | (() => boolean)
-    | (() => Promise<boolean>)
+    | ((dismiss?: () => void) => boolean)
+    | ((dismiss?: () => void) => Promise<boolean>)
     | boolean;
   disabledAddCustomEmoji: boolean;
 };
@@ -182,4 +182,5 @@ export type ItemData = DropzoneUploadProps & {
   deactivateTrap: () => void;
   activateTrap: () => void;
   cellSize: number;
+  onCancel?: () => void;
 };

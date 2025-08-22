@@ -21,6 +21,7 @@ interface NavProps {
   disableEmojiCellsNavigation: () => void;
   enableEmojiCellsNavigation: () => void;
   className?: string;
+  onCancel?: () => void;
 }
 
 const Nav = ({
@@ -40,6 +41,7 @@ const Nav = ({
   maxSize,
   interceptAddCustomEmojiClick,
   disabledAddCustomEmoji,
+  onCancel,
 }: NavProps & DropzoneUploadProps) => {
   const initialActiveNav = useMemo(() => {
     return Object.keys(groupsIndexes).find(
@@ -137,6 +139,7 @@ const Nav = ({
         })}
         <li style={{ width: navItemWidth, height: navItemWidth }}>
           <AddCustomEmoji
+            onCancel={onCancel}
             maxSize={maxSize}
             accept={accept}
             side="top"

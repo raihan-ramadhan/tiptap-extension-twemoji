@@ -334,6 +334,7 @@ export default function ({
               skinTone,
               cellRefs,
               cellSize,
+              onCancel,
               onError,
               maxSize,
               upload,
@@ -372,6 +373,7 @@ export default function ({
             }
             interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
             disabledAddCustomEmoji={disabledAddCustomEmoji}
+            onCancel={onCancel}
           />
         </>
       ) : (
@@ -379,6 +381,7 @@ export default function ({
           <span className="no-result__span">No Result</span>
           {disabledAddCustomEmoji ? null : (
             <AddCustomEmoji
+              onCancel={onCancel}
               accept={accept}
               className="twemoji-button twemoji-border no-result__custom-emoji"
               onSubPopoverMount={() => {

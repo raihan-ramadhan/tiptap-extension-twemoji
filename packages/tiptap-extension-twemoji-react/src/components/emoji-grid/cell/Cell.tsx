@@ -47,6 +47,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     cellSize,
     interceptAddCustomEmojiClick,
     disabledAddCustomEmoji,
+    onCancel,
   } = data;
   const emojiData = arr2d[rowIndex][columnIndex];
 
@@ -195,6 +196,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
 
     return (
       <AddCustomEmoji
+        onCancel={onCancel}
         maxSize={maxSize}
         accept={accept}
         onSubPopoverMount={() => {

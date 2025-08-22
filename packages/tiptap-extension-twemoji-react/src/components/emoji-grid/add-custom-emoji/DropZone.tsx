@@ -42,7 +42,7 @@ type DropzoneContextProps = Omit<
   setEmojiName: React.Dispatch<React.SetStateAction<string>>;
   emojiNameError: string | null;
   loading: boolean;
-  onUpload: ({ callback }: { callback?: () => void }) => Promise<void>;
+  onUpload: ({ dismiss }: { dismiss?: () => void }) => Promise<void>;
   onError: DropzoneUploadProps["onError"];
   onSuccess: DropzoneUploadProps["onSuccess"];
 };
@@ -146,7 +146,7 @@ const Dropzone = ({
   );
 
   const onUpload: DropzoneContextProps["onUpload"] = useCallback(
-    async ({ callback }) => {
+    async ({ dismiss }) => {
       setLoading(true);
       if (emojiNameError || !files) return setLoading(false);
 
@@ -156,7 +156,7 @@ const Dropzone = ({
           files,
           onError,
           onSuccess,
-          callback,
+          dismiss,
         });
       } else {
         console.error(
@@ -226,7 +226,7 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
       <button
         type="button"
         onClick={() => {
-          if (files) onUpload({ callback: dismiss });
+          if (files) onUpload({ dismiss });
         }}
         disabled={!files || loading}
         className="twemoji-submit-button content__cancel-or-save__save"

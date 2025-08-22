@@ -51,7 +51,10 @@ const DropzoneContext = createContext<DropzoneContextProps | undefined>(
   undefined
 );
 
-type DropzoneProps = DropzoneUploadProps & {
+type DropzoneProps = Omit<
+  DropzoneUploadProps,
+  "interceptAddCustomEmojiClick" | "disabledAddCustomEmoji"
+> & {
   className?: string;
 };
 

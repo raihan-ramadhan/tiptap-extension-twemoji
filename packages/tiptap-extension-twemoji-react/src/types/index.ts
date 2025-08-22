@@ -20,6 +20,8 @@ export type DropzoneUploadProps = {
     [key: string]: readonly string[];
   };
   maxSize: number;
+  interceptAddCustomEmojiClick: (() => boolean) | boolean;
+  disabledAddCustomEmoji: boolean;
 };
 
 export type HeaderUisProps = {
@@ -67,6 +69,14 @@ export type ExtensionCustomEmojiOptions = {
    * @default 1000 * 1000 * 10 // 10MB
    */
   maxSize?: DropzoneUploadProps["maxSize"];
+  /**
+   * return true or give value true to intercept and stop click event in add custom emoji
+   */
+  interceptAddCustomEmojiClick?: DropzoneUploadProps["interceptAddCustomEmojiClick"];
+  /**
+   * disabled nav add custom emoji button and remove "Add Emoji" cell in grid
+   */
+  disabledAddCustomEmoji?: DropzoneUploadProps["disabledAddCustomEmoji"];
 };
 
 export type ExtensionNavOptions = {
@@ -126,6 +136,7 @@ export type ComponentEmojiMentionProps = DropzoneUploadProps &
     minCellsToHideNav: number;
     visibleRows: number;
     cellSize: number;
+    triggerRef?: React.RefObject<HTMLButtonElement | null>;
   };
 
 export type GroupTitle = { groupTitle: string };

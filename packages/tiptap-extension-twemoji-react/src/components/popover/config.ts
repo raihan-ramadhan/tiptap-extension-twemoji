@@ -1,9 +1,5 @@
 import { CSSProperties } from "react";
 
-export type VirtualElement = {
-  getBoundingClientRect: () => DOMRect;
-};
-
 import {
   offset,
   flip,
@@ -16,7 +12,7 @@ import {
   autoUpdate,
   Boundary,
 } from "@floating-ui/dom";
-import { Editor, posToDOMRect, ReactRenderer } from "@tiptap/react";
+import { ReactRenderer } from "@tiptap/react";
 
 // Define a reusable type for inline style objects
 interface StyleMap extends Partial<CSSProperties> {
@@ -51,7 +47,7 @@ export const floatingStyles: {
   },
 };
 
-export const destroyVirtualElement = (
+export const destroyPopoverComponent = (
   component: ReactRenderer<unknown, object> | null
 ) => {
   // close the tooltip menu emoji list
@@ -90,37 +86,18 @@ function buildPlacement(side: Side, align?: Alignment | "center"): Placement {
   return `${side}-${align}` as Placement;
 }
 
-export const watchPopoverVisibility = (rect: DOMRect, element: Element) => {
-  const wrapperRect = element.getBoundingClientRect();
-  return (
-    rect.top >= wrapperRect.top &&
-    rect.bottom <= wrapperRect.bottom &&
-    rect.left >= wrapperRect.left &&
-    rect.right <= wrapperRect.right
-  );
-};
-
-export const getVirtualElement = (editor: Editor) => {
-  return {
-    getBoundingClientRect: () =>
-      posToDOMRect(
-        editor.view,
-        editor.state.selection.from,
-        editor.state.selection.to
-      ),
-  };
-};
-
-export const customComputePosition = (
-  reference: HTMLElement | VirtualElement,
-  element: HTMLDivElement,
+export function attachAutoUpdate(
+  triggerEl: Element | null,
+  popoverEl: HTMLDivElement,
   options: {
     side?: Side;
     align?: Alignment | "center";
     fallback?: Placement[];
     boundary?: Boundary | undefined;
   } = {}
-) => {
+) {
+  if (!triggerEl) return;
+
   const {
     align = "start",
     side = "bottom",
@@ -128,113 +105,46 @@ export const customComputePosition = (
     boundary = document.body,
   } = options;
 
-  computePosition(reference, element, {
-    placement: buildPlacement(side, align),
-    middleware: floatingMiddleware(fallback, boundary),
-  }).then(({ x, y, strategy }) => {
-    Object.assign(element.style, floatingStyles.base, {
-      position: strategy,
-      left: `${x}px`,
-      top: `${y}px`,
+  // cleanup fn from autoUpdate
+  const cleanup = autoUpdate(triggerEl, popoverEl, () => {
+    computePosition(triggerEl, popoverEl, {
+      placement: buildPlacement(side, align),
+      middleware: floatingMiddleware(fallback, boundary),
+    }).then(({ x, y, strategy }) => {
+      Object.assign(popoverEl.style, floatingStyles.base, {
+        position: strategy,
+        left: `${x}px`,
+        top: `${y}px`,
+      });
     });
   });
-};
 
-export const updatePosition = (
-  virtualElement: VirtualElement,
-  element: HTMLDivElement,
-  onCancel: () => void,
-  wrapper: Element | null
-) => {
-  const referenceElementRect: DOMRect = virtualElement.getBoundingClientRect();
-
-  if (wrapper) {
-    const isVisible = watchPopoverVisibility(referenceElementRect, wrapper);
-
-    if (!isVisible) {
-      onCancel(); // Hide the emoji grid if the trigger not visible in wrapper after scrolling
-      return;
-    }
-  }
-
-  customComputePosition(virtualElement, element, {
-    align: "start",
-    side: "bottom",
-  });
-};
-
-export const eventsHooks = ({
-  popoverComponent,
-  virtualElement,
-  onCancel,
-  wrapper,
-  editor,
-}: {
-  popoverComponent: HTMLDivElement;
-  virtualElement: VirtualElement;
-  onCancel: () => void;
-  editor: Editor;
-  wrapper: Element | null;
-}) => {
-  const updateHandler = () => {
-    updatePosition(virtualElement, popoverComponent, onCancel, wrapper);
-  };
-
-  wrapper?.addEventListener("scroll", updateHandler);
-
-  const cleanupClick = setupDismissListeners({
-    safeElements: [popoverComponent, editor.view.dom],
-    onCancel,
-  });
-
-  const cleanupFloating = sharedAutoUpdatePosition({
-    reference: virtualElement,
-    floating: popoverComponent,
-    update: updateHandler,
-  });
-
-  // cleanup everything
-  return () => {
-    cleanupFloating();
-    cleanupClick();
-    wrapper?.removeEventListener("scroll", updateHandler);
-  };
-};
-
-type OutsideClickHandlerOptions = {
-  safeElements: (HTMLElement | null | undefined)[];
-  onCancel: () => void;
-};
-
-// Escape stack to track topmost popover
-const escapeStack: (() => void)[] = [];
-
-// Make sure Escape listener is only added once
-let escapeListenerAttached = false;
-
-function attachEscapeListenerOnce() {
-  if (escapeListenerAttached) return;
-  escapeListenerAttached = true;
-
-  document.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      const top = escapeStack[escapeStack.length - 1];
-      if (top) {
-        e.preventDefault();
-        e.stopPropagation();
-        top(); // Only run the topmost onCancel
-      }
-    }
-  });
+  return cleanup; // call this when closing popover
 }
 
-export function setupDismissListeners({
-  safeElements,
-  onCancel,
-}: OutsideClickHandlerOptions): () => void {
-  attachEscapeListenerOnce(); // Attach the global Escape listener only once
-  escapeStack.push(onCancel); // Register this popover's cancel callback
+export function attachIntersectionObserver(
+  triggerEl: Element | null,
+  onCancel: () => void
+) {
+  if (!triggerEl) return;
 
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) {
+      onCancel();
+    }
+  });
+
+  observer.observe(triggerEl);
+
+  return () => {
+    observer.disconnect();
+  };
+}
+
+export function attachPointerDownListener(
+  safeElements: (HTMLElement | null | undefined)[],
+  onCancel: () => void
+) {
   // Click outside logic
   const handleClickOutside = (event: MouseEvent) => {
     const path = event.composedPath();
@@ -255,32 +165,5 @@ export function setupDismissListeners({
   // Cleanup function when popover unmounts or closes
   return () => {
     document.removeEventListener("pointerdown", handleClickOutside);
-
-    // Remove this popover's cancel from the stack
-    const index = escapeStack.lastIndexOf(onCancel);
-    if (index !== -1) {
-      escapeStack.splice(index, 1);
-    }
   };
-}
-
-type AutoUpdateOptions = {
-  reference: HTMLElement | VirtualElement | null;
-  floating: HTMLElement | null;
-  update: () => void;
-};
-
-/**
- * Shared utility to handle autoUpdate lifecycle for both real and virtual elements.
- * Cleans up automatically when no longer needed.
- */
-export function sharedAutoUpdatePosition({
-  reference,
-  floating,
-  update,
-}: AutoUpdateOptions): () => void {
-  if (!reference || !floating) return () => {};
-
-  const cleanup = autoUpdate(reference, floating, update);
-  return cleanup;
 }

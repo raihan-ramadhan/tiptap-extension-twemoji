@@ -6,10 +6,10 @@ import { Alignment, Placement, Side } from "@floating-ui/dom";
 
 // Configs
 import {
-  sharedAutoUpdatePosition,
-  setupDismissListeners,
-  customComputePosition,
   floatingStyles,
+  attachAutoUpdate,
+  attachPointerDownListener,
+  attachIntersectionObserver,
 } from "./config";
 
 import { mergeRefs } from "@/lib/emoji-grid-utils";
@@ -47,39 +47,6 @@ export function Popover({
   const referenceRef = useRef<HTMLButtonElement>(null);
   const floatingRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * gives the initial and ongoing positioning while the Popover is open
-   * removes/cleans up the auto-update logic
-   */
-  useEffect(() => {
-    if (!open || !referenceRef.current || !floatingRef.current) return;
-
-    const cleanup = sharedAutoUpdatePosition({
-      reference: referenceRef.current,
-      floating: floatingRef.current,
-      update: () => {
-        customComputePosition(referenceRef.current!, floatingRef.current!, {
-          align,
-          side,
-          fallback,
-        });
-      },
-    });
-
-    return cleanup;
-  }, [open]);
-
-  // events listener
-  useEffect(() => {
-    if (!open) return;
-    const cleanup = setupDismissListeners({
-      safeElements: [referenceRef.current, floatingRef.current],
-      onCancel: () => onOpenChange(false),
-    });
-
-    return cleanup;
-  }, [open, onOpenChange]);
-
   const content = (
     <div
       ref={mergeRefs(trapRef, floatingRef)}
@@ -90,27 +57,17 @@ export function Popover({
     </div>
   );
 
-  const prevFocusRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    // Store focus before the popover opens
-    prevFocusRef.current = document.activeElement as HTMLElement;
-
-    return () => {
-      requestAnimationFrame(() => {
-        prevFocusRef.current?.focus();
-      });
-    };
-  }, []);
-
   const sharedProps = {
     ...trigger.props,
     ref: mergeRefs(referenceRef, trigger.props.ref),
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
-      trigger.props.onClick?.(event);
+    onClick: () => {
+      const shouldContinue = trigger.props.onClick?.();
+      // if the onClick returns true, stop the rest
+      if (shouldContinue === true) return;
+
       onOpenChange(!open);
       requestAnimationFrame(() => {
-        prevFocusRef.current?.focus();
+        referenceRef.current?.focus();
       });
     },
   };
@@ -132,6 +89,46 @@ export function Popover({
     finalTrigger = cloneElement(trigger, sharedProps);
   }
 
+  /**
+   * gives the initial and ongoing positioning while the Popover is open
+   * removes/cleans up the auto-update logic
+   */
+
+  useEffect(() => {
+    if (!open || !referenceRef.current || !floatingRef.current) return;
+    const cleanup = attachAutoUpdate(
+      referenceRef.current,
+      floatingRef.current,
+      {
+        align,
+        side,
+        fallback,
+      }
+    );
+
+    return cleanup;
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const cleanup = attachPointerDownListener(
+      [referenceRef.current, floatingRef.current],
+      () => onOpenChange(false)
+    );
+
+    return cleanup;
+  }, [open, onOpenChange]);
+
+  useEffect(() => {
+    if (!referenceRef.current) return;
+
+    const cleanup = attachIntersectionObserver(referenceRef.current, () => {
+      onOpenChange(false);
+    });
+
+    return cleanup;
+  }, [referenceRef, onOpenChange]);
+
   return (
     <>
       {finalTrigger}
@@ -146,6 +143,11 @@ export function Popover({
                 onPointerDown={(e) => {
                   if (e.target === e.currentTarget) {
                     onOpenChange(false);
+                    requestAnimationFrame(() => {
+                      if (referenceRef.current) {
+                        referenceRef.current.focus();
+                      }
+                    });
                   }
                 }}
               >

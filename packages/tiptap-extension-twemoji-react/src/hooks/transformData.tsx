@@ -12,12 +12,14 @@ export const transformData = ({
   filteredEmojis,
   minCellsToHideNav,
   filteredCustomEmojis,
+  disabledAddCustomEmoji,
 }: {
   COLUMNS: number;
   recent: SuggestionItems["recent"];
   filteredEmojis: Emoji[];
   minCellsToHideNav: number;
   filteredCustomEmojis: CustomEmoji[] | undefined;
+  disabledAddCustomEmoji: boolean;
 }) => {
   const new2dArr: ARRAY2D_ITEM_PROPS[] = [];
   const titleEmojiMockup = (
@@ -92,7 +94,7 @@ export const transformData = ({
     }
 
     // ACTION BUTTON
-    tempArr.push({ buttonLabel: "Add Emoji" });
+     if (!disabledAddCustomEmoji) tempArr.push({ buttonLabel: "Add Emoji" });
 
     if (tempArr.length > 0) new2dArr.push(tempArr);
   } else if (itemsSuggestion > 0) {
@@ -140,7 +142,8 @@ export const transformData = ({
     groupsIndexes.Custom = new2dArr.length;
 
     // ACTION BUTTON
-    tempArr.push({ buttonLabel: "Add Emoji", align: "start" });
+    if (!disabledAddCustomEmoji)
+      tempArr.push({ buttonLabel: "Add Emoji", align: "start" });
 
     if (filteredCustomEmojis && filteredCustomEmojis.length > 0) {
       for (let i = 0; i < filteredCustomEmojis.length; i++) {
@@ -160,12 +163,14 @@ export const transformData = ({
     if (recent) {
       if (temp2dArrRecent[temp2dArrRecent.length - 1].length % COLUMNS) {
         // ACTION BUTTON
-        temp2dArrRecent[temp2dArrRecent.length - 1].push({
-          buttonLabel: "Add Emoji",
-        });
+        if (!disabledAddCustomEmoji)
+          temp2dArrRecent[temp2dArrRecent.length - 1].push({
+            buttonLabel: "Add Emoji",
+          });
       } else {
         // ACTION BUTTON
-        temp2dArrRecent.push([{ buttonLabel: "Add Emoji" }]);
+        if (!disabledAddCustomEmoji)
+          temp2dArrRecent.push([{ buttonLabel: "Add Emoji" }]);
       }
 
       new2dArr.push(...temp2dArrRecent);

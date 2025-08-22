@@ -18,7 +18,7 @@ import { EmojiFallbackCleanupPlugin } from "@/plugins/emoji-fallback-cleanup-plu
 import { isCustomEmoji, isEmoji } from "@/lib/emoji-grid-utils";
 
 // TYPES ONLY
-import type { CommandProps, Range } from "@tiptap/core";
+import type { CommandProps, Editor, Range } from "@tiptap/core";
 import type { SuggestionProps } from "@tiptap/suggestion";
 import type { Emoji } from "@/data/emoji-sprite-map";
 import type { MentionNodeAttrs } from "@tiptap/extension-mention";
@@ -43,11 +43,10 @@ import { mergeAttributes } from "@tiptap/core";
 
 // COMPONENTS & CONFIG
 import {
-  destroyVirtualElement,
-  getVirtualElement,
-  VirtualElement,
-  updatePosition,
-  eventsHooks,
+  destroyPopoverComponent,
+  attachAutoUpdate,
+  attachIntersectionObserver,
+  attachPointerDownListener,
 } from "@/components/popover/config";
 import EmojiGrid from "@/components/emoji-grid/grid/Grid";
 
@@ -104,11 +103,6 @@ type TwemojiExtensionProps = {
    * @default /assets/emoji-sprite6102d4c8eb22eb1a.webp
    */
   spriteUrl?: string;
-  /**
-   * Editor wrapper class, attaches a scroll event listener to track the visibility of the suggestion trigger and update its position.
-   * @default .simple-editor-wrapper
-   */
-  wrapperClassName?: string;
   headerOptions?: ExtensionHeaderOptions;
   customEmojiOptions?: ExtensionCustomEmojiOptions;
   navOptions?: ExtensionNavOptions;
@@ -183,7 +177,6 @@ const TwemojiExtension = Mention.extend<
         cellSize: undefined,
         visibleRows: undefined,
       },
-      wrapperClassName: undefined,
     };
   },
 
@@ -418,28 +411,53 @@ const TwemojiExtension = Mention.extend<
           // ref for access useImperativeHandle in EmojiList
           const ref = createRef<EmojiListRef>();
 
-          let cleanup: (() => void) | null = null;
+          let cleanupFuncArray: ((() => void) | undefined)[] = [];
 
-          const executeCleanup = () => {
-            cleanup?.();
-            cleanup = null;
+          const unsubscribePopoverEvents = () => {
+            cleanupFuncArray.map((cleanup) => cleanup?.());
+            cleanupFuncArray.length = 0; // cleanupFuncArray array to []
           };
 
           const onCancel = () => {
-            executeCleanup();
-            destroyVirtualElement(component);
+            storage.query = "";
+            lastItems.length = 0;
+
+            unsubscribePopoverEvents();
+            destroyPopoverComponent(component);
           };
 
-          const wrapperClassName =
-            this.options.wrapperClassName ?? "simple-editor-wrapper";
+          const subscribePopoverEvents = (
+            decorationNode: Element | null,
+            popoverComponent: HTMLDivElement,
+            editor: Editor
+          ) => {
+            cleanupFuncArray.push(
+              attachAutoUpdate(decorationNode, popoverComponent, {
+                align: "start",
+                side: "bottom",
+              })
+            );
+
+            cleanupFuncArray.push(
+              attachIntersectionObserver(decorationNode, onCancel)
+            );
+
+            cleanupFuncArray.push(
+              attachPointerDownListener(
+                [popoverComponent, editor.view.dom],
+                onCancel
+              )
+            );
+          };
 
           return {
             onStart: ({
               editor,
               items,
               range,
+              decorationNode,
             }: SuggestionProps<SuggestionItems, MentionNodeAttrs>) => {
-              const wrapper = document.querySelector(`.${wrapperClassName}`); // our editor wrapper
+              onCancel();
 
               const onSelectEmoji: SelectEmojiFunc = ({
                 baseHexcode,
@@ -504,13 +522,22 @@ const TwemojiExtension = Mention.extend<
               const onSuccess =
                 this.options.customEmojiOptions?.onSuccess ??
                 DEFAULT_ON_SUCCESS;
+              const interceptAddCustomEmojiClick =
+                this.options.customEmojiOptions?.interceptAddCustomEmojiClick ??
+                false;
+              const disabledAddCustomEmoji =
+                this.options.customEmojiOptions?.disabledAddCustomEmoji ??
+                false;
+
               const randomButton =
                 this.options.headerOptions?.randomButton ?? true;
               const skinToneSelect =
                 this.options.headerOptions?.skinToneSelect ?? true;
+
               const minCellsToHideNav =
                 this.options.navOptions?.minCellsToHideNav ??
                 DEFAULT_MIN_CELLS_TO_HIDE_NAV;
+
               const visibleRows =
                 this.options.gridOptions?.visibleRows ?? DEFAULT_VISIBLE_ROWS;
               const cellSize =
@@ -535,6 +562,8 @@ const TwemojiExtension = Mention.extend<
                 minCellsToHideNav,
                 visibleRows,
                 cellSize,
+                interceptAddCustomEmojiClick,
+                disabledAddCustomEmoji,
               };
 
               lastItems = items;
@@ -545,59 +574,26 @@ const TwemojiExtension = Mention.extend<
               });
 
               const popoverComponent = component.element as HTMLDivElement;
+
+              subscribePopoverEvents(decorationNode, popoverComponent, editor);
+
               document.body.appendChild(popoverComponent);
-
-              const virtualElement: VirtualElement = getVirtualElement(editor);
-
-              executeCleanup();
-
-              cleanup = eventsHooks({
-                popoverComponent,
-                virtualElement,
-                onCancel,
-                editor,
-                wrapper,
-              });
-
-              updatePosition(
-                virtualElement,
-                popoverComponent,
-                onCancel,
-                wrapper
-              );
             },
             onUpdate(props) {
-              const wrapper = document.querySelector(`.${wrapperClassName}`); // our editor wrapper
-
               lastItems = props.items;
 
-              component?.updateProps(props);
+              if (!component) return;
 
-              if (!props.clientRect || !component) return;
+              component.updateProps(props);
 
               const popoverComponent = component.element as HTMLDivElement;
 
-              const virtualElement: VirtualElement = getVirtualElement(
+              unsubscribePopoverEvents();
+
+              subscribePopoverEvents(
+                props.decorationNode,
+                popoverComponent,
                 props.editor
-              );
-
-              document.body.appendChild(popoverComponent);
-
-              executeCleanup();
-
-              cleanup = eventsHooks({
-                popoverComponent,
-                virtualElement,
-                onCancel,
-                editor: props.editor,
-                wrapper,
-              });
-
-              updatePosition(
-                virtualElement,
-                popoverComponent,
-                onCancel,
-                wrapper
               );
             },
             onKeyDown(props) {
@@ -613,10 +609,6 @@ const TwemojiExtension = Mention.extend<
               return false;
             },
             onExit() {
-              // clear stale value
-              storage.query = "";
-
-              lastItems = [];
               onCancel();
             },
           };

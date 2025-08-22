@@ -53,6 +53,7 @@ interface OnKeydownHandlersProps {
   deactivateTrap: () => void;
   activateTrap: () => void;
   trapRef: React.RefObject<HTMLDivElement | null>;
+  onCancel: () => void;
 }
 
 export function useOnKeydownHandlers({
@@ -72,6 +73,7 @@ export function useOnKeydownHandlers({
   activateTrap,
   deactivateTrap,
   trapRef,
+  onCancel,
 }: OnKeydownHandlersProps) {
   const sharedScrollParams = {
     gridRef,
@@ -366,6 +368,7 @@ export function useOnKeydownHandlers({
         ArrowRight: rightHandler,
         Tab: tabHandler,
         Enter: () => enterHandler(event, skinTone),
+        Escape: () => onCancel(),
       };
 
       const handler = keyMap[event.key];

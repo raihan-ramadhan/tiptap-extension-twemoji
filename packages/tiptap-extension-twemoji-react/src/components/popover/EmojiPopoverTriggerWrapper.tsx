@@ -111,6 +111,8 @@ export function EmojiPopoverTriggerWrapper({
     onSuccess = DEFAULT_ON_SUCCESS,
     accept = DEFAULT_ACCEPT,
     maxSize = DEFAULT_MAX_SIZE,
+    interceptAddCustomEmojiClick = false,
+    disabledAddCustomEmoji = false,
   } = customEmojiOptions ?? {};
 
   const { cellSize = DEFAULT_CELL_SIZE, visibleRows = DEFAULT_VISIBLE_ROWS } =
@@ -181,16 +183,31 @@ export function EmojiPopoverTriggerWrapper({
         setQuery={setQuery}
         onSelectEmoji={({ emoji }) => {
           selectEmojiHandler(emoji);
-          if (closeAfterSelectRandom) setIsOpen(false);
+          if (closeAfterSelectRandom) {
+            setIsOpen(false);
+            requestAnimationFrame(() => {
+              triggerRef.current?.focus();
+            });
+          }
         }}
         onCancel={() => setIsOpen(false)}
         items={items}
-        onDelete={onDelete}
+        onDelete={() => {
+          onDelete?.();
+          if (closeAfterDelete) {
+            requestAnimationFrame(() => {
+              triggerRef.current?.focus();
+            });
+          }
+        }}
         closeAfterDelete={closeAfterDelete}
         upload={upload}
         onSuccess={onSuccess}
         onError={onError}
         skinToneSelect={skinToneSelect}
+        interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+        disabledAddCustomEmoji={disabledAddCustomEmoji}
+        triggerRef={triggerRef}
       />
     </Popover>
   );

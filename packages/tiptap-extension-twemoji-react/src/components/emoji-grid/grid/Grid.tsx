@@ -57,6 +57,9 @@ export default function ({
   minCellsToHideNav,
   cellSize,
   visibleRows,
+  interceptAddCustomEmojiClick,
+  disabledAddCustomEmoji,
+  triggerRef,
 }: ComponentEmojiMentionProps) {
   const { recent, filteredEmojis, filteredCustomEmojis } = items[0];
 
@@ -99,8 +102,9 @@ export default function ({
       recent,
       filteredEmojis,
       minCellsToHideNav,
+      disabledAddCustomEmoji,
     });
-  }, [recent, filteredEmojis, filteredCustomEmojis]);
+  }, [recent, filteredEmojis, filteredCustomEmojis, disabledAddCustomEmoji]);
 
   // max height between the total height of the grid and the max visible row
   // the purpose to have dynamic height by setting the max height (visibleRows * cellSize)
@@ -167,27 +171,16 @@ export default function ({
 
     const trap = createFocusTrap(trapRef.current, {
       fallbackFocus: trapRef.current,
-      allowOutsideClick: () => true,
       clickOutsideDeactivates: true,
       escapeDeactivates: false,
-      returnFocusOnDeactivate: true,
+      returnFocusOnDeactivate: false,
     });
 
     focusTrap.current = trap;
     if (focusImmediately) trap.activate();
 
-    // ✅ disable trap on outside mouse click
-    const handleMouseDown = (e: MouseEvent) => {
-      if (!trapRef.current?.contains(e.target as Node)) {
-        trap.deactivate();
-      }
-    };
-
-    document.addEventListener("mousedown", handleMouseDown);
-
     return () => {
       trap.deactivate();
-      document.removeEventListener("mousedown", handleMouseDown);
     };
   }, []);
 
@@ -219,6 +212,14 @@ export default function ({
       activateTrap,
       deactivateTrap,
       trapRef,
+      onCancel: () => {
+        onCancel?.();
+        // If `triggerRef` exists, this Grid is being used inside the EmojiPopoverTriggerWrapper.
+        // If not, it's being used inside the Editor.
+        requestAnimationFrame(() => {
+          triggerRef?.current?.focus();
+        });
+      },
     });
 
   const cellRefs = useRef<Map<string, HTMLDivElement | HTMLButtonElement>>(
@@ -268,6 +269,8 @@ export default function ({
   useEffect(() => {
     return () => {
       //return the cursor at the last known position at editor
+      // If `editor` exists, this Grid is being used inside a suggestion.
+      // If not, it's being used inside the EmojiPopoverTriggerWrapper.
       editor?.commands.focus();
     };
   }, []);
@@ -317,9 +320,11 @@ export default function ({
             rowCount={arr2d.length}
             columnWidth={cellSize}
             itemData={{
+              interceptAddCustomEmojiClick,
               disableEmojiCellsNavigation,
               enableEmojiCellsNavigation,
               selectedCellElementRef,
+              disabledAddCustomEmoji,
               deactivateTrap,
               onSelectEmoji,
               selectedCell,
@@ -365,12 +370,14 @@ export default function ({
                 ? ""
                 : "twemoji-nav--hidden"
             }
+            interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+            disabledAddCustomEmoji={disabledAddCustomEmoji}
           />
         </>
       ) : (
         <div className="no-result" style={{ width: widthGrid }}>
           <span className="no-result__span">No Result</span>
-          <div>
+          {disabledAddCustomEmoji ? null : (
             <AddCustomEmoji
               accept={accept}
               className="twemoji-button twemoji-border no-result__custom-emoji"
@@ -388,13 +395,16 @@ export default function ({
               onSuccess={onSuccess}
               upload={upload}
               maxSize={maxSize}
+              interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+              disabledAddCustomEmoji={disabledAddCustomEmoji}
             >
               <span className="no-result__custom-emoji__span">
                 <Plus className="no-result__custom-emoji__icon" />
                 <span> Add Emoji</span>
               </span>
             </AddCustomEmoji>
-          </div>
+          )}
+          <div></div>
         </div>
       )}
     </div>

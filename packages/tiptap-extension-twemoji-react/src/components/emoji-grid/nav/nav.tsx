@@ -38,6 +38,8 @@ const Nav = ({
   className,
   accept,
   maxSize,
+  interceptAddCustomEmojiClick,
+  disabledAddCustomEmoji,
 }: NavProps & DropzoneUploadProps) => {
   const initialActiveNav = useMemo(() => {
     return Object.keys(groupsIndexes).find(
@@ -137,7 +139,6 @@ const Nav = ({
           <AddCustomEmoji
             maxSize={maxSize}
             accept={accept}
-            className="twemoji-button twemoji-nav__add-custom-emoji"
             side="top"
             align="end"
             onSubPopoverMount={disableEmojiCellsNavigation}
@@ -146,6 +147,12 @@ const Nav = ({
             onSuccess={onSuccess}
             upload={upload}
             onKeyDown={stopEnterKey}
+            interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+            disabledAddCustomEmoji={disabledAddCustomEmoji}
+            className={cn(
+              "twemoji-button twemoji-nav__add-custom-emoji",
+              disabledAddCustomEmoji && "twemoji-nav__item--disabled"
+            )}
           >
             <Plus className="twemoji-nav__add-custom-emoji__icon" />
           </AddCustomEmoji>

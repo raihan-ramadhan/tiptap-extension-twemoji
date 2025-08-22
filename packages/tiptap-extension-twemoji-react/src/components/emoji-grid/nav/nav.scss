@@ -31,8 +31,8 @@
       background-color: transparent;
 
       &--disabled {
-        cursor: auto;
-        opacity: 0.25;
+        cursor: default !important;
+        opacity: 0.25 !important;
       }
 
       &--group-exist {
@@ -45,7 +45,7 @@
         background: var(--twemoji-secondary-color);
       }
 
-      .twemoji-nav__item__icon {
+      &__icon {
         stroke-width: var(--twemoji-icon-stroke-width);
         width: 100%;
         height: 100%;
@@ -61,7 +61,7 @@
     height: 100%;
     background-color: transparent;
 
-    .twemoji-nav__add-custom-emoji__icon {
+    &__icon {
       border-radius: 9999px;
       color: var(--twemoji-background);
       font-weight: 700;

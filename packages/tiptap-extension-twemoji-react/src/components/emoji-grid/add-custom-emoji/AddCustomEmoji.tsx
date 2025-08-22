@@ -35,31 +35,14 @@ const AddCustomEmoji = ({
   side,
   accept,
   maxSize,
+  interceptAddCustomEmojiClick,
+  disabledAddCustomEmoji,
   ...props
 }: AddCustomEmojiProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const subTrapRef = useRef<HTMLDivElement | null>(null);
   const focusTrap = useRef<ReturnType<typeof createFocusTrap> | null>(null);
-
-  useEffect(() => {
-    if (isOpen && subTrapRef.current) {
-      focusTrap.current = createFocusTrap(subTrapRef.current, {
-        escapeDeactivates: false,
-
-        clickOutsideDeactivates: true,
-        returnFocusOnDeactivate: true,
-      });
-
-      // Immediately activate trap
-      focusTrap.current.activate();
-    }
-
-    return () => {
-      focusTrap.current?.deactivate();
-      focusTrap.current = null;
-    };
-  }, [isOpen]);
 
   useEffect(() => {
     if (onMount) onMount();
@@ -77,12 +60,28 @@ const AddCustomEmoji = ({
       side={side}
       overlay
       fallback={fallback}
-      trigger={<button {...props}>{children}</button>}
+      trigger={
+        <button
+          {...props}
+          onClick={() => {
+            if (interceptAddCustomEmojiClick) {
+              return typeof interceptAddCustomEmojiClick == "function"
+                ? interceptAddCustomEmojiClick()
+                : interceptAddCustomEmojiClick;
+            }
+          }}
+          disabled={disabledAddCustomEmoji}
+        >
+          {children}
+        </button>
+      }
       trapRef={subTrapRef}
       triggerLabel={label}
       tooltipForTrigger
     >
       <Content
+        focusTrap={focusTrap}
+        subTrapRef={subTrapRef}
         maxSize={maxSize}
         accept={accept}
         onUnmount={onSubPopoverUnmount}

@@ -31,7 +31,7 @@ import { COLUMNS, LOCAL_STORAGE_SKIN_TONE_KEY } from "@/constants";
 import AddCustomEmoji from "@/components/emoji-grid/add-custom-emoji/AddCustomEmoji";
 import EmojiHeader from "@/components/emoji-grid/header/Header";
 import Cell from "@/components/emoji-grid/cell/Cell";
-import Nav from "@/components/emoji-grid/nav/Nav";
+import Nav from "@/components/emoji-grid/nav/nav";
 
 export default function ({
   ref,

@@ -9,7 +9,7 @@ import { debounce } from "lodash-es";
 import { Plus } from "lucide-react";
 import NavItem from "./NavItem";
 import { navIcons } from "./nav-icon";
-import { cn } from "../../../lib/utils";
+import { cn } from "@/lib/utils";
 
 interface NavProps {
   navItemWidth: number;

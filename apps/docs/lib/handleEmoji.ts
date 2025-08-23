@@ -41,15 +41,11 @@ export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
   }
 
   const objectPath = uploadData.path;
-  const { data: urlData } = supabase.storage
-    .from(EMOJIS_BUCKET_NAME)
-    .getPublicUrl(objectPath);
-  const imageUrl = urlData.publicUrl;
 
   const { error: insertError, data } = await supabase
     .from(EMOJIS_TABLE_NAME)
     .insert({
-      url: imageUrl,
+      url: objectPath,
       label: emojiName,
     })
     .select("*");

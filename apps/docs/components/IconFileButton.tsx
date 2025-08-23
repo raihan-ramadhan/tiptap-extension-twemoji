@@ -19,6 +19,7 @@ import {
 } from "@/lib/handleEmoji";
 import { cn } from "@/lib/utils";
 import { Smile } from "lucide-react";
+import { useIsMobile } from "../hooks/use-mobile";
 
 const IconFileButton = ({
   setIsOpen: setIsOpenDialog,
@@ -86,8 +87,13 @@ const IconFileButton = ({
 
   const router = useRouter();
 
+  const isMobile = useIsMobile();
+
   return (
     <EmojiPopoverTriggerWrapper
+      gridOptions={{
+        cellSize: isMobile ? 24 : undefined,
+      }}
       headerOptions={{
         isEmpty: !iconAttrs,
         onDelete,

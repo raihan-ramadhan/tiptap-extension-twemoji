@@ -51,7 +51,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
   } = data;
   const emojiData = arr2d[rowIndex][columnIndex];
 
-  const cellPadding = 8;
+  const cellPadding = cellSize * 0.25;
 
   if (!emojiData) return null;
 
@@ -179,10 +179,10 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     const content = (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={cellSize - cellPadding}
-        height={cellSize - cellPadding}
+        width={(cellSize - cellPadding) / 2}
+        height={(cellSize - cellPadding) / 2}
         fill="none"
-        viewBox={`0 0 ${cellSize - cellPadding} ${cellSize - cellPadding}`}
+        viewBox="0 0 24 24"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -215,6 +215,14 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         align={align}
         side="top"
         {...buttonAttrs}
+        style={{
+          ...style,
+          height: cellSize - 8,
+          width: cellSize - 8,
+          marginTop: 4,
+          marginLeft: 4,
+          padding: 0,
+        }}
         className={cn(
           "twemoji-button twemoji-custom-emoji-cell",
           isSelected && "twemoji-custom-emoji-cell--selected"

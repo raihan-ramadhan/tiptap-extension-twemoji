@@ -12,7 +12,13 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "ofqhpepsytodemxfrhrc.supabase.co",
-        pathname: "/storage/v1/object/public/emojis/**",
+        pathname: "/storage/v1/object/sign/emojis/**",
+      },
+      {
+        protocol: "https",
+        hostname: "ofqhpepsytodemxfrhrc.supabase.co",
+        pathname:
+          "/storage/v1/object/public/tiptap-extension-twemoji-assets/**",
       },
       {
         protocol: "https",
@@ -22,7 +28,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.jsdelivr.net",
-        pathname: "/gh/primer/octicons@16.1.1/icons/**",
+        pathname: "/gh/primer/octicons@16.1.1/icons/**", // github icon cdn assets
       },
     ],
   },

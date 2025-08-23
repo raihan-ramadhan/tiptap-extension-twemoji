@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.25rem !important;
+  padding: 0 !important;
   background-color: transparent;
 
   &--selected {
@@ -12,9 +12,6 @@
 
 .twemoji-button.twemoji-custom-emoji-cell {
   position: relative;
-  transform: translate(0.125rem, 0.125rem);
-  width: 1.75rem !important;
-  height: 1.75rem !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,4 +34,5 @@
 
 .twemoji-svg-cell {
   color: var(--twemoji-border-color);
+  display: inline-block;
 }

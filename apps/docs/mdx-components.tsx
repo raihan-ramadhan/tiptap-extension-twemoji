@@ -13,7 +13,7 @@ function extractText(children: any): string {
 const components: MDXComponents = {
   // Headings
   h1: ({ children, ...props }) => (
-    <h1 className="text-4xl font-bold mt-8 mb-4" {...props}>
+    <h1 className="text-4xl font-bold mt-8 mb-4 max-[767px]:mt-3" {...props}>
       {children}
     </h1>
   ),
@@ -88,21 +88,23 @@ const components: MDXComponents = {
     return (
       <h2
         className={cn(
-          `flex items-center gap-2 text-2xl font-semibold mt-6 mb-3`,
+          `flex items-start gap-2 text-2xl font-semibold mt-6 mb-3`,
           className
         )}
         {...props}
       >
         {iconUrl && (
-          <img
-            src={iconUrl}
-            alt={iconAlt}
-            className={cn(
-              "inline-block h-[1em] aspect-square bg-cover cursor-text",
-              iconClassName
-            )}
-            draggable="false"
-          />
+          <span className="flex-shrink-0 leading-none mt-0.5">
+            <img
+              src={iconUrl}
+              alt={iconAlt}
+              className={cn(
+                "inline-block h-[1em] w-[1em] align-middle cursor-text",
+                iconClassName
+              )}
+              draggable="false"
+            />
+          </span>
         )}
         <span className="w-full inline-flex"> {text}</span>
       </h2>

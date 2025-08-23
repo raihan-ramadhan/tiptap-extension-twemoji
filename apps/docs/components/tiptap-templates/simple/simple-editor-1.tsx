@@ -57,6 +57,7 @@ import {
   DialogTitle,
 } from "../../ui/dialog";
 import { LoginForm } from "../../login-form";
+import { useIsMobile } from "../../../hooks/use-mobile";
 
 export function SimpleEditor1({
   customEmojis,
@@ -69,79 +70,87 @@ export function SimpleEditor1({
 
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    shouldRerenderOnTransaction: false,
-    editorProps: {
-      attributes: {
-        autocomplete: "off",
-        autocorrect: "off",
-        autocapitalize: "off",
-        "aria-label": "Main content area, start typing to enter text.",
-      },
-      handleClickOn(view, pos, node, nodePos, event, direct) {
-        const target = event.target as HTMLElement;
-        if (target.tagName === "A") {
-          const href = target.getAttribute("href");
-          const targetAttribute = target.getAttribute("target");
+  const isMobile = useIsMobile();
 
-          if (href && targetAttribute === "_self") {
-            event.preventDefault();
-            event.stopPropagation();
-            router.push(href); // SPA navigation
-            return true; // indicate we handled it
+  const editor = useEditor(
+    {
+      immediatelyRender: false,
+      shouldRerenderOnTransaction: false,
+      editorProps: {
+        attributes: {
+          autocomplete: "off",
+          autocorrect: "off",
+          autocapitalize: "off",
+          "aria-label": "Main content area, start typing to enter text.",
+        },
+        handleClickOn(view, pos, node, nodePos, event, direct) {
+          const target = event.target as HTMLElement;
+          if (target.tagName === "A") {
+            const href = target.getAttribute("href");
+            const targetAttribute = target.getAttribute("target");
+
+            if (href && targetAttribute === "_self") {
+              event.preventDefault();
+              event.stopPropagation();
+              router.push(href); // SPA navigation
+              return true; // indicate we handled it
+            }
           }
+          return false; // let default behavior continue
+        },
+      },
+      extensions: [
+        StarterKit.configure({
+          horizontalRule: false,
+          link: {
+            enableClickSelection: true,
+          },
+        }),
+        HorizontalRule,
+        TextAlign.configure({ types: ["heading", "paragraph"] }),
+        TaskList,
+        TaskItem.configure({ nested: true }),
+        Highlight.configure({ multicolor: true }),
+        Image,
+        Typography,
+        Superscript,
+        Subscript,
+        Selection,
+        ImageUploadNode.configure({
+          accept: "image/*",
+          maxSize: MAX_FILE_SIZE,
+          limit: 3,
+          upload: handleImageUpload,
+          onError: (error) => console.error("Upload failed:", error),
+        }),
+        TwemojiExtension.configure({
+          gridOptions: {
+            cellSize: isMobile ? 24 : undefined,
+          },
+          customEmojiOptions: {
+            upload: (props) => handleEmojiUpload(props),
+            onSuccess: (successMessage, callback) =>
+              handleEmojiOnSuccess(successMessage, callback, router),
+            onError: (errorMessage) => handleEmojiOnError(errorMessage),
+            interceptAddCustomEmojiClick: (dismiss) =>
+              handleInterceptAddCustomEmoji(() => {
+                dismiss?.();
+                setIsOpen(true);
+              }),
+          },
+        }),
+      ],
+      content,
+      onBeforeCreate: () => {
+        if (loadingBarRef.current) {
+          const bar = loadingBarRef.current;
+          bar.style.transition = "width 0.3s ease-in-out";
+          bar.style.width = "100%";
         }
-        return false; // let default behavior continue
       },
     },
-    extensions: [
-      StarterKit.configure({
-        horizontalRule: false,
-        link: {
-          enableClickSelection: true,
-        },
-      }),
-      HorizontalRule,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      Highlight.configure({ multicolor: true }),
-      Image,
-      Typography,
-      Superscript,
-      Subscript,
-      Selection,
-      ImageUploadNode.configure({
-        accept: "image/*",
-        maxSize: MAX_FILE_SIZE,
-        limit: 3,
-        upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
-      }),
-      TwemojiExtension.configure({
-        customEmojiOptions: {
-          upload: (props) => handleEmojiUpload(props),
-          onSuccess: (successMessage, callback) =>
-            handleEmojiOnSuccess(successMessage, callback, router),
-          onError: (errorMessage) => handleEmojiOnError(errorMessage),
-          interceptAddCustomEmojiClick: (dismiss) =>
-            handleInterceptAddCustomEmoji(() => {
-              dismiss?.();
-              setIsOpen(true);
-            }),
-        },
-      }),
-    ],
-    content,
-    onBeforeCreate: () => {
-      if (loadingBarRef.current) {
-        const bar = loadingBarRef.current;
-        bar.style.transition = "width 0.3s ease-in-out";
-        bar.style.width = "100%";
-      }
-    },
-  });
+    [isMobile]
+  );
 
   React.useEffect(() => {
     setLatestCustomEmojis(customEmojis);

@@ -152,11 +152,11 @@ const Dropzone = ({
 
       if (uploadCallback) {
         await uploadCallback({
+          handleSuccess: onSuccess,
+          handleError: onError,
           emojiName,
-          files,
-          onError,
-          onSuccess,
           dismiss,
+          files,
         });
       } else {
         console.error(

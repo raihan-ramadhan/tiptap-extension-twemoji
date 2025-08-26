@@ -11,8 +11,8 @@ import { toast } from "sonner";
 export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
   emojiName,
   files,
-  onSuccess,
-  onError,
+  handleSuccess,
+  handleError,
   dismiss,
 }) => {
   const supabase = createClient();
@@ -37,7 +37,7 @@ export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
     });
 
   if (uploadError || !uploadData) {
-    return onError?.(uploadError.message ?? "Upload Error");
+    return handleError?.(uploadError.message ?? "Upload Error");
   }
 
   const objectPath = uploadData.path;
@@ -51,10 +51,10 @@ export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
     .select("*");
 
   if (insertError) {
-    return onError?.(insertError.message);
+    return handleError?.(insertError.message);
   }
 
-  onSuccess?.(`${emojiName} has added your workspace`, dismiss);
+  handleSuccess?.(`${emojiName} has added your workspace`, dismiss);
 
   addCustomEmoji(data[0] as CustomEmoji);
 

@@ -10,8 +10,8 @@ export type DropzoneUploadProps = {
   upload: (props: {
     emojiName: string;
     files: FileWithPreview;
-    onSuccess: DropzoneUploadProps["onSuccess"];
-    onError: DropzoneUploadProps["onError"];
+    handleSuccess: DropzoneUploadProps["onSuccess"];
+    handleError: DropzoneUploadProps["onError"];
     dismiss?: () => void;
   }) => Promise<void>;
   onError: (errorMessage: string) => void;

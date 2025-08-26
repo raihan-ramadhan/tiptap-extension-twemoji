@@ -299,7 +299,7 @@ export default function ({
           closeAfterDelete={closeAfterDelete}
           skinToneSelect={skinToneSelect}
           onSelectEmoji={onSelectEmoji}
-          cellSize={cellSize}
+          widthGrid={widthGrid}
           range={range}
         />
       ) : null}
@@ -346,6 +346,7 @@ export default function ({
             {Cell}
           </Grid>
           <Nav
+            cellSize={cellSize}
             maxSize={maxSize}
             accept={accept}
             onSuccess={onSuccess}
@@ -362,7 +363,6 @@ export default function ({
             arr2d={arr2d}
             width={widthGrid}
             outerRef={outerRef}
-            navItemWidth={cellSize}
             gridRef={gridRef}
             groupsIndexes={groupsIndexes}
             className={

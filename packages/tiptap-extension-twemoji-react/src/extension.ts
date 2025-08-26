@@ -74,17 +74,20 @@ declare module "@tiptap/core" {
         range: Range
       ) => (props: CommandProps) => boolean;
       updateCustomEmojis: (emojis: CustomEmoji[]) => ReturnType;
+      updateRecentEmojis: (emojis: StoredEmoji[]) => ReturnType;
     };
   }
   interface Storage {
     [EXTENSION_NAME]?: {
-      query: string;
-      customEmojis?: CustomEmoji[];
+      query: EmojiExtensionStorage["query"];
+      customEmojis?: EmojiExtensionStorage["customEmojis"];
+      recentEmojis?: EmojiExtensionStorage["recentEmojis"];
     };
   }
 }
 
 export interface EmojiExtensionStorage {
+  recentEmojis: StoredEmoji[];
   customEmojis: CustomEmoji[];
   query: string;
 }
@@ -115,7 +118,7 @@ const TwemojiExtension = Mention.extend<
 >({
   name: EXTENSION_NAME,
 
-  onCreate() {
+  async onCreate(props) {
     if (typeof document === "undefined") return; // for ssr
 
     if (document.getElementById("emoji-sprite-style")) return; // to avoid repeating style definitions
@@ -142,17 +145,26 @@ const TwemojiExtension = Mention.extend<
       cursor: text;
       pointer-events: none;
     }
-  `;
+    `;
 
     const sheet = document.createElement("style");
     sheet.id = "emoji-sprite-style";
     sheet.innerHTML = style;
     document.head.appendChild(sheet);
+
+    // RECENTS EMOJIS INITALIZATION
+    const KEY =
+      this.options.gridOptions?.localStorageRecentEmojisKey ??
+      LOCAL_STORAGE_RECENT_EMOJIS_KEY;
+    const storedEmojis = localStorage.getItem(KEY);
+    const parsed: StoredEmoji[] = storedEmojis ? JSON.parse(storedEmojis) : [];
+    props.editor.commands.updateRecentEmojis(parsed);
   },
   addStorage() {
     return {
       query: "",
       customEmojis: [] as CustomEmoji[],
+      recentEmojis: [] as StoredEmoji[],
     };
   },
   addOptions() {
@@ -242,6 +254,14 @@ const TwemojiExtension = Mention.extend<
           );
 
           updateEmojiGridItems(filteredCustomEmojis); // update mutable ui on EmojiGrids on editor
+          return true;
+        },
+      updateRecentEmojis:
+        (emojis: StoredEmoji[]) =>
+        ({ editor }) => {
+          if (editor.storage[EXTENSION_NAME]) {
+            editor.storage[EXTENSION_NAME].recentEmojis = emojis;
+          }
           return true;
         },
       insertEmoji:
@@ -353,6 +373,7 @@ const TwemojiExtension = Mention.extend<
             if (!lowerQuery) return [];
 
             const customEmojis = this.storage.customEmojis ?? [];
+            const storedEmojis = this.storage.recentEmojis ?? [];
 
             const filteredCustomEmojis = customEmojis.filter(({ label }) =>
               label.includes(lowerQuery)
@@ -375,16 +396,11 @@ const TwemojiExtension = Mention.extend<
 
             let recent: (Emoji | CustomEmoji)[] | null = null;
 
-            const storedEmojis = localStorage.getItem(
-              LOCAL_STORAGE_RECENT_EMOJIS_KEY
-            );
-
-            const shouldShowRecent = storedEmojis && query.length === 1;
+            const shouldShowRecent =
+              storedEmojis.length > 0 && query.length === 1;
 
             if (shouldShowRecent) {
-              const parsed: StoredEmoji[] = JSON.parse(storedEmojis);
-
-              recent = parsed.map((emojiData) => {
+              recent = storedEmojis.map((emojiData) => {
                 const { hexcode, ...rest } = emojiData;
 
                 if (hexcode) {
@@ -456,6 +472,7 @@ const TwemojiExtension = Mention.extend<
               items,
               range,
               decorationNode,
+              command,
             }: SuggestionProps<SuggestionItems, MentionNodeAttrs>) => {
               onCancel();
 
@@ -466,9 +483,7 @@ const TwemojiExtension = Mention.extend<
               }) => {
                 if (!range) return;
 
-                const storedEmojis = localStorage.getItem(
-                  LOCAL_STORAGE_RECENT_EMOJIS_KEY
-                );
+                const storedEmojis = [...(this.storage.recentEmojis ?? [])];
 
                 const selectedEmoji = isEmoji(emoji)
                   ? {
@@ -480,31 +495,29 @@ const TwemojiExtension = Mention.extend<
                       url: emoji.url,
                     };
 
-                if (storedEmojis) {
-                  const parsedStoredEmojis = JSON.parse(
-                    storedEmojis
-                  ) as StoredEmoji[];
+                const KEY =
+                  this.options.gridOptions?.localStorageRecentEmojisKey ??
+                  LOCAL_STORAGE_RECENT_EMOJIS_KEY;
 
+                if (storedEmojis.length > 0) {
                   // check if the emoji is already in the array, if yes then made it first in the array
-                  const index = parsedStoredEmojis.findIndex((e) =>
+                  const index = storedEmojis.findIndex((e) =>
                     isEmoji(emoji)
                       ? e.hexcode === baseHexcode
                       : e.id === emoji.id
                   );
 
-                  if (index !== -1) parsedStoredEmojis.splice(index, 1);
+                  if (index !== -1) storedEmojis.splice(index, 1);
 
-                  parsedStoredEmojis.unshift(selectedEmoji);
+                  storedEmojis.unshift(selectedEmoji);
 
-                  localStorage.setItem(
-                    LOCAL_STORAGE_RECENT_EMOJIS_KEY,
-                    JSON.stringify(parsedStoredEmojis.slice(0, 24))
-                  );
+                  const item = storedEmojis.slice(0, 24);
+
+                  editor.commands.updateRecentEmojis(item);
+                  localStorage.setItem(KEY, JSON.stringify(item));
                 } else {
-                  localStorage.setItem(
-                    LOCAL_STORAGE_RECENT_EMOJIS_KEY,
-                    JSON.stringify([selectedEmoji])
-                  );
+                  editor.commands.updateRecentEmojis([selectedEmoji]);
+                  localStorage.setItem(KEY, JSON.stringify([selectedEmoji]));
                 }
 
                 // call the command so that it replaces the : with the emoji

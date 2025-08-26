@@ -1,16 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { Copy, Check } from "lucide-react"; // or any icon library you like
+import { Copy, Check } from "lucide-react";
+import copy from "copy-to-clipboard";
 
 export default function CodeBlock({ children }: { children: React.ReactNode }) {
   const textRef = React.useRef<HTMLPreElement>(null);
   const [copied, setCopied] = React.useState(false);
 
-  const handleCopy = async () => {
+  const handleCopy = () => {
     if (!textRef.current) return;
     const text = textRef.current.innerText;
-    await navigator.clipboard.writeText(text);
+    copy(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -25,14 +26,16 @@ export default function CodeBlock({ children }: { children: React.ReactNode }) {
       </pre>
       <button
         onClick={handleCopy}
-        className="absolute top-2 right-2 p-2 rounded-md border border-muted-foreground text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-500 cursor-pointer"
+        className="absolute top-2 right-2 p-1 min-[768px]:p-2 rounded-md border border-muted-foreground text-muted-foreground/50 min-[768px]:opacity-0 min-[768px]:group-hover:opacity-100 transition-opacity duration-500 cursor-pointer flex gap-1 items-center"
         aria-label="Copy code"
       >
         {copied ? (
-          <Check className="h-4 w-4 text-green-400" />
+          <Check className="size-3 text-green-400 min-[768px]:size-4 " />
         ) : (
-          <Copy className="h-4 w-4" />
+          <Copy className="size-3 min-[768px]:size-4" />
         )}
+
+        <span className="min-[768px]:hidden text-xs">Copy</span>
       </button>
     </div>
   );

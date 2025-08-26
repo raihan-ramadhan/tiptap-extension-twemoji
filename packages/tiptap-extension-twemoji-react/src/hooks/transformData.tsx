@@ -94,7 +94,7 @@ export const transformData = ({
     }
 
     // ACTION BUTTON
-     if (!disabledAddCustomEmoji) tempArr.push({ buttonLabel: "Add Emoji" });
+    if (!disabledAddCustomEmoji) tempArr.push({ buttonLabel: "Add Emoji" });
 
     if (tempArr.length > 0) new2dArr.push(tempArr);
   } else if (itemsSuggestion > 0) {

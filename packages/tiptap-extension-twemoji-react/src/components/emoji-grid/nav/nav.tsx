@@ -10,9 +10,9 @@ import { Plus } from "lucide-react";
 import NavItem from "./NavItem";
 import { navIcons } from "./nav-icon";
 import { cn } from "@/lib/utils";
+import { getCellPadding } from "../../../lib/emoji-grid-utils";
 
 interface NavProps {
-  navItemWidth: number;
   groupsIndexes: Record<EMOJI_GROUPS_PROPS, number | undefined>;
   gridRef: React.ForwardedRef<Grid<ItemData>>;
   outerRef: React.RefObject<HTMLDivElement | null>;
@@ -22,10 +22,10 @@ interface NavProps {
   enableEmojiCellsNavigation: () => void;
   className?: string;
   onCancel?: () => void;
+  cellSize: number;
 }
 
 const Nav = ({
-  navItemWidth,
   gridRef,
   groupsIndexes,
   outerRef,
@@ -42,7 +42,10 @@ const Nav = ({
   interceptAddCustomEmojiClick,
   disabledAddCustomEmoji,
   onCancel,
+  cellSize,
 }: NavProps & DropzoneUploadProps) => {
+  const cellPadding = getCellPadding(cellSize);
+
   const initialActiveNav = useMemo(() => {
     return Object.keys(groupsIndexes).find(
       (key) => groupsIndexes[key as EMOJI_GROUPS_PROPS] === 0
@@ -80,7 +83,7 @@ const Nav = ({
       for (let i = 0; i < keys.length; i++) {
         const groupKey = keys[i] as EMOJI_GROUPS_PROPS;
         if (typeof groupsIndexes[groupKey] === "number") {
-          const groupOffset = groupsIndexes[groupKey] * navItemWidth;
+          const groupOffset = groupsIndexes[groupKey] * cellSize;
 
           if (currentScrollTop >= groupOffset) {
             setActiveNav(groupKey);
@@ -97,7 +100,7 @@ const Nav = ({
       outer.removeEventListener("scroll", trackScroll);
       trackScroll.cancel();
     };
-  }, [outerRef, groupsIndexes, navItemWidth]);
+  }, [outerRef, groupsIndexes, cellSize]);
 
   useEffect(() => {
     setActiveNav(initialActiveNav);
@@ -127,17 +130,22 @@ const Nav = ({
 
           return (
             <NavItem
+              cellSize={cellSize}
               key={index}
               item={item}
               isActive={isActive}
               handleClick={handleClick}
-              navItemWidth={navItemWidth}
               stopEnterKey={stopEnterKey}
               isGroupExist={isGroupExist}
             />
           );
         })}
-        <li style={{ width: navItemWidth, height: navItemWidth }}>
+        <li
+          style={{
+            width: cellSize,
+            height: cellSize,
+          }}
+        >
           <AddCustomEmoji
             onCancel={onCancel}
             maxSize={maxSize}
@@ -156,6 +164,9 @@ const Nav = ({
               "twemoji-button twemoji-nav__add-custom-emoji",
               disabledAddCustomEmoji && "twemoji-nav__item--disabled"
             )}
+            style={{
+              padding: cellPadding / 2 + 2,
+            }}
           >
             <Plus className="twemoji-nav__add-custom-emoji__icon" />
           </AddCustomEmoji>

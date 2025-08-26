@@ -1,6 +1,6 @@
 {
   "name": "@raihancodes/tiptap-extension-twemoji-react",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "type": "module",
   "description": "Advanced Tiptap emoji extension built with React - supports Twemoji, emoticon, shortcodes, and cross-platform consistency with modern editor UX",
   "scripts": {
@@ -13,10 +13,21 @@
   "contributors": [
     "Raihan Ramadhan <raihanramadhan.rn22@gmail.com> (https://github.com/raihan-ramadhan/)"
   ],
+  "homepage": "https://tiptap-extension-twemoji.vercel.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/raihan-ramadhan/tiptap-extension-twemoji.git"
   },
+  "funding": [
+    {
+      "type": "individual",
+      "url": "https://github.com/sponsors/raihan-ramadhan"
+    },
+    {
+      "type": "individual",
+      "url": "https://ko-fi.com/raihancodes"
+    }
+  ],
   "license": "MIT",
   "exports": {
     ".": {
@@ -95,12 +106,20 @@
   },
   "keywords": [
     "tiptap",
+    "tiptap-extension",
+    "tiptap-emoji",
+    "tiptap-react",
+    "emoji-picker",
+    "emoji-extension",
+    "emoji-support",
+    "prosemirror",
     "twemoji",
     "emoji",
     "react",
-    "prosemirror",
-    "emoji-picker",
-    "tiptap-extension"
+    "rich-text-editor",
+    "notion-style",
+    "tiptap-v3",
+    "open-source"
   ],
   "publishConfig": {
     "access": "public"

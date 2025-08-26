@@ -14,6 +14,8 @@ type SkinToneSelectProps = {
   onSkinListMount: () => void;
   onSkinListUnmount: () => void;
   stopEnterPropagation: (event: React.KeyboardEvent<HTMLElement>) => void;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const SkinToneSelect = ({
@@ -22,9 +24,9 @@ const SkinToneSelect = ({
   onSkinListMount,
   onSkinListUnmount,
   stopEnterPropagation,
+  open,
+  setOpen,
 }: SkinToneSelectProps) => {
-  const [open, setOpen] = useState<boolean>(false);
-
   const ref = useRef<HTMLDivElement>(null);
   const toneTriggerRef = useRef<HTMLButtonElement>(null);
 

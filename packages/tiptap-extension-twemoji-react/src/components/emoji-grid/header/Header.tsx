@@ -1,7 +1,7 @@
 import "./header.scss";
 
 import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
-import { Dispatch, memo, SetStateAction, useCallback } from "react";
+import { Dispatch, memo, SetStateAction, useCallback, useState } from "react";
 import { Emoji } from "@/data/emoji-sprite-map";
 import {
   ComponentEmojiMentionProps,
@@ -14,7 +14,6 @@ import SkinToneSelect from "./SkinToneSelect";
 import RandomButton from "./RandomButton";
 import RemoveButton from "./RemoveButton";
 import Input from "./Input";
-import { COLUMNS } from "@/constants";
 import { SuggestionProps } from "@tiptap/suggestion";
 import { MentionNodeAttrs } from "@tiptap/extension-mention";
 
@@ -31,7 +30,7 @@ export type EmojiHeaderProps = {
   onSkinListMount: () => void;
   onSkinListUnmount: () => void;
   range?: SuggestionProps<any, MentionNodeAttrs>["range"];
-  cellSize: number;
+  widthGrid: number;
 } & HeaderUisProps;
 
 const EmojiHeader = ({
@@ -51,9 +50,9 @@ const EmojiHeader = ({
   onSkinListUnmount,
   skinToneSelect,
   range,
-  cellSize,
+  widthGrid,
 }: EmojiHeaderProps) => {
-  const widthGrid = COLUMNS * cellSize + 12;
+  const [openSkinSelect, setOpenSkinSelect] = useState<boolean>(false);
 
   const stopEnterPropagation = useCallback(
     (event: React.KeyboardEvent<HTMLElement>) => {
@@ -71,32 +70,38 @@ const EmojiHeader = ({
         width: widthGrid,
       }}
     >
-      {headerInput ? (
-        <Input
-          stopEnterPropagation={stopEnterPropagation}
-          query={query}
-          setQuery={setQuery}
-        />
-      ) : null}
-      {randomButton ? (
-        <RandomButton
-          filteredEmojis={filteredEmojis}
-          stopEnterPropagation={stopEnterPropagation}
-          callback={onSelectEmoji}
-          skinTone={skinTone}
-          range={range}
-        />
-      ) : null}
-      {removeButton ? (
-        <RemoveButton
-          callback={onDelete}
-          onCancel={onCancel}
-          stopEnterPropagation={stopEnterPropagation}
-          closeAfterDelete={closeAfterDelete}
-        />
-      ) : null}
+      {openSkinSelect ? null : (
+        <>
+          {headerInput ? (
+            <Input
+              stopEnterPropagation={stopEnterPropagation}
+              query={query}
+              setQuery={setQuery}
+            />
+          ) : null}
+          {randomButton ? (
+            <RandomButton
+              filteredEmojis={filteredEmojis}
+              stopEnterPropagation={stopEnterPropagation}
+              callback={onSelectEmoji}
+              skinTone={skinTone}
+              range={range}
+            />
+          ) : null}
+          {removeButton ? (
+            <RemoveButton
+              callback={onDelete}
+              onCancel={onCancel}
+              stopEnterPropagation={stopEnterPropagation}
+              closeAfterDelete={closeAfterDelete}
+            />
+          ) : null}
+        </>
+      )}
       {skinToneSelect ? (
         <SkinToneSelect
+          open={openSkinSelect}
+          setOpen={setOpenSkinSelect}
           stopEnterPropagation={stopEnterPropagation}
           onSkinListUnmount={onSkinListUnmount}
           onSkinListMount={onSkinListMount}

@@ -93,6 +93,11 @@ export type ExtensionNavOptions = {
 export type ExtensionGridOptions = {
   visibleRows?: number;
   cellSize?: number;
+  /**
+   * local storage key for recent emojis.
+   * @default recent-tiptap-emojis
+   */
+  localStorageRecentEmojisKey?: string;
 };
 
 export type SelectedCellElementRef = RefObject<HTMLButtonElement | null>;
@@ -116,7 +121,7 @@ export type EmojiListRef = {
 };
 
 export type SuggestionItems = {
-  recent: (Emoji | CustomEmoji)[] | null;
+  recent: StoredEmoji[] | null;
   filteredEmojis: Emoji[];
   filteredCustomEmojis?: CustomEmoji[];
 };
@@ -151,6 +156,7 @@ export type ActionBtn = {
 export type CELL_TYPES =
   | Emoji
   | CustomEmoji
+  | StoredEmoji
   | ActionBtn
   | GroupTitle
   | undefined;

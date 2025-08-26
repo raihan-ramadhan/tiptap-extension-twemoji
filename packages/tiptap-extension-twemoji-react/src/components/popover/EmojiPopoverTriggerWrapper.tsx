@@ -29,6 +29,7 @@ import {
   DEFAULT_ON_SUCCESS,
   DEFAULT_UPLOAD,
   DEFAULT_VISIBLE_ROWS,
+  LOCAL_STORAGE_RECENT_EMOJIS_KEY,
 } from "@/constants";
 
 type EmojiPopoverTriggerWrapperProps = {
@@ -115,8 +116,11 @@ export function EmojiPopoverTriggerWrapper({
     disabledAddCustomEmoji = false,
   } = customEmojiOptions ?? {};
 
-  const { cellSize = DEFAULT_CELL_SIZE, visibleRows = DEFAULT_VISIBLE_ROWS } =
-    gridOptions ?? {};
+  const {
+    cellSize = DEFAULT_CELL_SIZE,
+    visibleRows = DEFAULT_VISIBLE_ROWS,
+    localStorageRecentEmojisKey = LOCAL_STORAGE_RECENT_EMOJIS_KEY,
+  } = gridOptions ?? {};
 
   const child = Children.only(children);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -133,6 +137,7 @@ export function EmojiPopoverTriggerWrapper({
 
   const { query, setQuery, items, filteredEmojis } = useEmojiGridState({
     customEmojis,
+    localStorageRecentEmojisKey,
   });
 
   const handleClick = useCallback(

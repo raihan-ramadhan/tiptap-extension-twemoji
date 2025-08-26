@@ -40,7 +40,7 @@
         {
           "type": "text",
           "marks": [
-            {   
+            {
               "type": "link",
               "attrs": {
                 "href": "https://github.com/twitter/twemoji",
@@ -237,6 +237,51 @@
     {
       "type": "bulletList",
       "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "textAlign": null
+              },
+              "content": [
+                {
+                  "type": "emojiExtension",
+                  "attrs": {
+                    "id": null,
+                    "label": null,
+                    "mentionSuggestionChar": "@",
+                    "data-type": "emoji",
+                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+                    "alt": "🐦️",
+                    "style": "width: 1em; height: 1em; background-position: -51.388888888888886em -38.02777777777778em; background-size: 63.69em 63.69em;",
+                    "draggable": false,
+                    "contenteditable": false,
+                    "class": "twemoji"
+                  }
+                },
+                {
+                  "type": "text",
+                  "text": " "
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "bold"
+                    }
+                  ],
+                  "text": "Twemoji rendering"
+                },
+                {
+                  "type": "text",
+                  "text": " for cross-platform consistency"
+                }
+              ]
+            }
+          ]
+        },
         {
           "type": "listItem",
           "content": [
@@ -472,51 +517,6 @@
                 {
                   "type": "text",
                   "text": " — convert between normal emoji and Twemoji (both ways)"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "listItem",
-          "content": [
-            {
-              "type": "paragraph",
-              "attrs": {
-                "textAlign": null
-              },
-              "content": [
-                {
-                  "type": "emojiExtension",
-                  "attrs": {
-                    "id": null,
-                    "label": null,
-                    "mentionSuggestionChar": "@",
-                    "data-type": "emoji",
-                    "src": "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
-                    "alt": "🐦️",
-                    "style": "width: 1em; height: 1em; background-position: -51.388888888888886em -38.02777777777778em; background-size: 63.69em 63.69em;",
-                    "draggable": false,
-                    "contenteditable": false,
-                    "class": "twemoji"
-                  }
-                },
-                {
-                  "type": "text",
-                  "text": " "
-                },
-                {
-                  "type": "text",
-                  "marks": [
-                    {
-                      "type": "bold"
-                    }
-                  ],
-                  "text": "Twemoji rendering"
-                },
-                {
-                  "type": "text",
-                  "text": " for cross-platform consistency"
                 }
               ]
             }

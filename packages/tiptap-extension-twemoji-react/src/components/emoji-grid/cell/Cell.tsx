@@ -5,6 +5,7 @@ import { ItemData } from "@/types";
 import { HTMLAttributes, memo, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import {
+  getCellPadding,
   isActionBtn,
   isCustomEmoji,
   isEmoji,
@@ -51,7 +52,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
   } = data;
   const emojiData = arr2d[rowIndex][columnIndex];
 
-  const cellPadding = cellSize * 0.25;
+  const cellPadding = getCellPadding(cellSize);
 
   if (!emojiData) return null;
 
@@ -217,10 +218,10 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         {...buttonAttrs}
         style={{
           ...style,
-          height: cellSize - 8,
-          width: cellSize - 8,
-          marginTop: 4,
-          marginLeft: 4,
+          height: cellSize - cellPadding,
+          width: cellSize - cellPadding,
+          marginTop: cellPadding / 2,
+          marginLeft: cellPadding / 2,
           padding: 0,
         }}
         className={cn(

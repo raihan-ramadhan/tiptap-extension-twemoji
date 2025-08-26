@@ -6,29 +6,33 @@ import {
   TooltipTrigger,
 } from "@/components/tiptap-ui-primitive/tooltip";
 import { cn } from "@/lib/utils";
+import { getCellPadding } from "@/lib/emoji-grid-utils";
 
 const NavItem = ({
   item,
-  navItemWidth,
   isGroupExist,
   isActive,
   handleClick,
   stopEnterKey,
+  cellSize,
 }: {
   handleClick: (event: React.MouseEvent) => void;
   item: (typeof navIcons)[number];
-  navItemWidth: number;
   isGroupExist: boolean;
   isActive: boolean;
   stopEnterKey: (event: React.KeyboardEvent<HTMLElement>) => void;
+  cellSize: number;
 }) => {
   const ref = useRef<HTMLLIElement | null>(null);
+
+  const cellPadding = getCellPadding(cellSize);
+
   return (
     <Tooltip delay={200}>
       <li
         style={{
-          width: navItemWidth,
-          height: navItemWidth,
+          width: cellSize,
+          height: cellSize,
           overflow: "hidden",
         }}
       >
@@ -43,6 +47,7 @@ const NavItem = ({
             isGroupExist && "twemoji-nav__item--group-exist",
             isActive && "twemoji-nav__item--active"
           )}
+          style={{ padding: cellPadding / 2 + 2 }}
         >
           {<item.icon className="twemoji-nav__item__icon" />}
         </TooltipTrigger>

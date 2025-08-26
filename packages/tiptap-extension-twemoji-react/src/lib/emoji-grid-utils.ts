@@ -496,3 +496,7 @@ export function mergeRefs<T>(
     }
   };
 }
+
+export const getCellPadding: (cellSize: number) => number = (cellSize) => {
+  return cellSize * 0.25; // return 25% percent of cellSize's width/height
+};

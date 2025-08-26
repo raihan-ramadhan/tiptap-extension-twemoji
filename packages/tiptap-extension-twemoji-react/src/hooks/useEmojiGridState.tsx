@@ -6,9 +6,6 @@ import { getEmojiSprite } from "@/lib/emoji-utils";
 // TYPES
 import { CustomEmoji, StoredEmoji, SuggestionItems } from "@/types";
 
-// CONSTANTS
-import { LOCAL_STORAGE_RECENT_EMOJIS_KEY } from "@/constants";
-
 // ASSETS & DATA
 import emojisSubstringIndexes from "@/assets/emoji-substring-index.json";
 import emojiSpriteOrder from "@/data/emoji-sprite-order";
@@ -16,8 +13,10 @@ import emojis, { Emoji } from "@/data/emoji-sprite-map";
 
 export function useEmojiGridState({
   customEmojis = [],
+  localStorageRecentEmojisKey,
 }: {
   customEmojis?: CustomEmoji[];
+  localStorageRecentEmojisKey: string;
 }) {
   const [query, setQuery] = useState<string>("");
   const lowerQuery = query.toLowerCase().trim();
@@ -38,21 +37,26 @@ export function useEmojiGridState({
     })) as Emoji[];
   }, [matchedHexcodes]);
 
-  const recentEmojis = useMemo(() => {
-    if (query.length > 0) return null;
+  function loadRecentEmojis(
+    query: string
+  ): (ReturnType<typeof getEmojiSprite> | CustomEmoji)[] | null {
+    if (query.length > 0 || typeof window === "undefined") return null;
 
-    if (typeof window === "undefined") return null;
-    const stored = localStorage.getItem(LOCAL_STORAGE_RECENT_EMOJIS_KEY);
-    if (!stored) return null;
     try {
-      const parsed = JSON.parse(stored) as StoredEmoji[];
+      const stored = localStorage.getItem(localStorageRecentEmojisKey);
+      if (!stored) return null;
+
+      const parsed: StoredEmoji[] = JSON.parse(stored);
+
       return parsed.map(({ hexcode, ...rest }) =>
         hexcode ? getEmojiSprite({ hexcode }) : (rest as CustomEmoji)
       );
     } catch {
       return null;
     }
-  }, [query]);
+  }
+
+  const recentEmojis = loadRecentEmojis(query);
 
   const items: SuggestionItems[] = [
     {

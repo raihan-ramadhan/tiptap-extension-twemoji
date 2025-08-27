@@ -92,16 +92,14 @@ export function attachAutoUpdate(
   options: {
     side?: Side;
     align?: Alignment | "center";
-    fallback?: Placement[];
     boundary?: Boundary | undefined;
   } = {}
 ) {
-  if (!triggerEl) return;
+  if (!triggerEl || typeof window === "undefined") return;
 
   const {
     align = "start",
     side = "bottom",
-    fallback = ["right-start", "bottom", "left-start", "bottom-start"],
     boundary = document.body,
   } = options;
 
@@ -109,12 +107,26 @@ export function attachAutoUpdate(
   const cleanup = autoUpdate(triggerEl, popoverEl, () => {
     computePosition(triggerEl, popoverEl, {
       placement: buildPlacement(side, align),
-      middleware: floatingMiddleware(fallback, boundary),
+      middleware: floatingMiddleware(["top", "right", "left"], boundary),
     }).then(({ x, y, strategy }) => {
+      const left =
+        x < 0
+          ? 0
+          : x + popoverEl.offsetWidth > window.innerWidth
+            ? window.innerWidth - popoverEl.offsetWidth - 1
+            : x;
+
+      const top =
+        y < 0
+          ? 0
+          : y + popoverEl.offsetHeight > window.innerHeight
+            ? window.innerHeight - popoverEl.offsetHeight - 1
+            : y;
+
       Object.assign(popoverEl.style, floatingStyles.base, {
         position: strategy,
-        left: `${x}px`,
-        top: `${y}px`,
+        left: `${left}px`,
+        top: `${top}px`,
       });
     });
   });

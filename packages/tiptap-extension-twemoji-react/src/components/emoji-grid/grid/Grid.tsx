@@ -35,7 +35,6 @@ import Nav from "@/components/emoji-grid/nav/nav";
 
 export default function ({
   ref,
-  items,
   onCancel,
   onSelectEmoji,
   range,
@@ -60,9 +59,10 @@ export default function ({
   interceptAddCustomEmojiClick,
   disabledAddCustomEmoji,
   triggerRef,
+  recent,
+  filteredCustomEmojis,
+  filteredEmojis,
 }: ComponentEmojiMentionProps) {
-  const { recent, filteredEmojis, filteredCustomEmojis } = items[0];
-
   const selectedCellElementRef: SelectedCellElementRef = useRef(null);
 
   const [selectedCell, setSelectedCell] = useState<SelectedCell>({
@@ -271,9 +271,11 @@ export default function ({
       //return the cursor at the last known position at editor
       // If `editor` exists, this Grid is being used inside a suggestion.
       // If not, it's being used inside the EmojiPopoverTriggerWrapper.
-      editor?.commands.focus();
+      if (editor?.view?.state && !editor.isDestroyed) {
+        editor.commands.focus();
+      }
     };
-  }, []);
+  }, [editor]);
 
   return (
     <div
@@ -286,7 +288,7 @@ export default function ({
         <EmojiHeader
           onSkinListUnmount={enableEmojiCellsNavigation}
           onSkinListMount={disableEmojiCellsNavigation}
-          filteredEmojis={items[0].filteredEmojis}
+          filteredEmojis={filteredEmojis}
           onCancel={onCancel}
           setSkinTone={setSkinTone}
           skinTone={skinTone}

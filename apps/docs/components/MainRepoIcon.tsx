@@ -51,7 +51,7 @@ export default async function MainRepoIcon({
         </svg>
         {starCount !== null && (
           <span
-            className="absolute -top-[1em] -right-2 bg-white text-[0.5rem] font-bold z-50
+            className="absolute -top-[1em] -right-2 bg-white text-black text-[0.5rem] font-bold z-50
                flex items-center justify-center 
                min-w-[1rem] h-[1rem] px-[0.3rem] 
                rounded-full border border-border"

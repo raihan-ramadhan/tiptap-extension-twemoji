@@ -19,13 +19,12 @@ import { isCustomEmoji, isEmoji } from "@/lib/emoji-grid-utils";
 
 // TYPES ONLY
 import type { CommandProps, Editor, Range } from "@tiptap/core";
-import type { SuggestionProps } from "@tiptap/suggestion";
+import type { SuggestionProps as BaseSuggestionProps } from "@tiptap/suggestion";
 import type { Emoji } from "@/data/emoji-sprite-map";
 import type { MentionNodeAttrs } from "@tiptap/extension-mention";
 import type {
   ComponentEmojiMentionProps,
   CustomEmoji,
-  SuggestionItems,
   SelectEmojiFunc,
   EmojiListRef,
   StoredEmoji,
@@ -33,6 +32,7 @@ import type {
   ExtensionCustomEmojiOptions,
   ExtensionNavOptions,
   ExtensionGridOptions,
+  SuggestionItems,
 } from "@/types";
 
 // TIPTAP
@@ -66,6 +66,11 @@ import {
   LOCAL_STORAGE_RECENT_EMOJIS_KEY,
 } from "@/constants";
 
+export interface MySuggestionProps<TItems = any, TSelected = any>
+  extends Omit<BaseSuggestionProps<any, TSelected>, "items"> {
+  items: TItems;
+}
+
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     [EXTENSION_NAME]: {
@@ -94,11 +99,10 @@ export interface EmojiExtensionStorage {
 
 type COMPONENT_PROPS = Omit<
   ComponentEmojiMentionProps,
-  "focusImmediately" | "closeAfterDelete" | "onDelete" | "query" | "setQuery"
+  "focusImmediately" | "closeAfterDelete" | "onDelete" | "setQuery"
 >;
 
 let component: ReactRenderer<EmojiListRef, COMPONENT_PROPS> | null = null;
-let lastItems: SuggestionItems[] = [];
 
 type TwemojiExtensionProps = {
   /**
@@ -230,30 +234,21 @@ const TwemojiExtension = Mention.extend<
       updateCustomEmojis:
         (emojis: CustomEmoji[]) =>
         ({ editor }) => {
-          function updateEmojiGridItems(newItems: CustomEmoji[]) {
-            if (component) {
-              const items: SuggestionItems[] = [
-                {
-                  ...(lastItems[0] ?? {}),
-                  filteredCustomEmojis: newItems,
-                },
-              ];
-
-              component.updateProps({ items });
-            }
-          }
-
           if (editor.storage[EXTENSION_NAME]) {
             editor.storage[EXTENSION_NAME].customEmojis = emojis;
           }
 
-          const lowerQuery = this.storage.query.toLowerCase().trim();
+          if (component) {
+            const lowerQuery =
+              component.props?.query?.toLowerCase().trim() ?? "";
 
-          const filteredCustomEmojis = emojis.filter(({ label }) =>
-            label.includes(lowerQuery)
-          );
+            const filteredCustomEmojis = emojis.filter(({ label }) =>
+              label.includes(lowerQuery)
+            );
 
-          updateEmojiGridItems(filteredCustomEmojis); // update mutable ui on EmojiGrids on editor
+            component.updateProps({ filteredCustomEmojis });
+          }
+
           return true;
         },
       updateRecentEmojis:
@@ -394,7 +389,7 @@ const TwemojiExtension = Mention.extend<
               };
             }
 
-            let recent: (Emoji | CustomEmoji)[] | null = null;
+            let recent: StoredEmoji[] = [];
 
             const shouldShowRecent =
               storedEmojis.length > 0 && query.length === 1;
@@ -411,17 +406,15 @@ const TwemojiExtension = Mention.extend<
               });
             }
 
-            const items: SuggestionItems[] = [
-              {
-                filteredEmojis,
-                filteredCustomEmojis,
-                recent,
-              },
+            const items: SuggestionItems = [
+              filteredEmojis,
+              recent,
+              filteredCustomEmojis,
             ];
 
             return items;
           }
-          return [];
+          return [[], [], []] as SuggestionItems;
         },
         render: () => {
           // ref for access useImperativeHandle in EmojiList
@@ -436,7 +429,6 @@ const TwemojiExtension = Mention.extend<
 
           const onCancel = () => {
             storage.query = "";
-            lastItems.length = 0;
 
             unsubscribePopoverEvents();
             destroyPopoverComponent(component);
@@ -472,8 +464,8 @@ const TwemojiExtension = Mention.extend<
               items,
               range,
               decorationNode,
-              command,
-            }: SuggestionProps<SuggestionItems, MentionNodeAttrs>) => {
+              query,
+            }: MySuggestionProps<SuggestionItems, MentionNodeAttrs>) => {
               onCancel();
 
               const onSelectEmoji: SelectEmojiFunc = ({
@@ -556,13 +548,18 @@ const TwemojiExtension = Mention.extend<
               const cellSize =
                 this.options.gridOptions?.cellSize ?? DEFAULT_CELL_SIZE;
 
+              const [filteredEmojis, recent, filteredCustomEmojis] = items as [
+                Emoji[],
+                StoredEmoji[],
+                CustomEmoji[],
+              ];
+
               const componentProps: COMPONENT_PROPS = {
                 onSelectEmoji,
                 onCancel,
                 maxSize,
                 editor,
                 accept,
-                items,
                 range,
                 ref,
                 upload,
@@ -577,9 +574,11 @@ const TwemojiExtension = Mention.extend<
                 cellSize,
                 interceptAddCustomEmojiClick,
                 disabledAddCustomEmoji,
+                recent,
+                filteredEmojis,
+                filteredCustomEmojis,
+                query,
               };
-
-              lastItems = items;
 
               component = new ReactRenderer(EmojiGrid, {
                 props: componentProps,
@@ -592,12 +591,27 @@ const TwemojiExtension = Mention.extend<
 
               document.body.appendChild(popoverComponent);
             },
-            onUpdate(props) {
-              lastItems = props.items;
-
+            onUpdate({ items, ...props }) {
               if (!component) return;
 
-              component.updateProps(props);
+              const [filteredEmojis, recent, customEmojis] = items as [
+                Emoji[],
+                StoredEmoji[],
+                CustomEmoji[],
+              ];
+
+              const lowerQuery = storage.query.toLowerCase().trim();
+
+              const filteredCustomEmojis = customEmojis.filter(({ label }) =>
+                label.includes(lowerQuery)
+              );
+
+              component.updateProps({
+                ...props,
+                filteredEmojis,
+                recent,
+                filteredCustomEmojis,
+              });
 
               const popoverComponent = component.element as HTMLDivElement;
 
@@ -612,6 +626,23 @@ const TwemojiExtension = Mention.extend<
             onKeyDown(props) {
               if (props.event.key === "Escape") {
                 onCancel();
+                return true;
+              }
+
+              if (props.event.key === "Tab") {
+                const focusableEls =
+                  component?.element.querySelectorAll<HTMLElement>(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                  ) ?? [];
+
+                const focusables = Array.from(focusableEls).filter(
+                  (el) =>
+                    !el.hasAttribute("disabled") &&
+                    !el.getAttribute("aria-hidden")
+                );
+
+                focusables[0]?.focus();
+
                 return true;
               }
 

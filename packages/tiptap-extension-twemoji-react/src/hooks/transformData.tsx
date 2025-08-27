@@ -1,5 +1,5 @@
 import { EMOJI_GROUPS, EMOJI_GROUPS_PROPS, getGroup } from "@/lib/emoji-groups";
-import { ARRAY2D_ITEM_PROPS, CustomEmoji, SuggestionItems } from "@/types";
+import { ARRAY2D_ITEM_PROPS, CustomEmoji, StoredEmoji } from "@/types";
 import { Emoji } from "@/data/emoji-sprite-map";
 
 // basicaly this function is to tranfrom from [Emoji, Emoji, ...rest] to
@@ -15,10 +15,10 @@ export const transformData = ({
   disabledAddCustomEmoji,
 }: {
   COLUMNS: number;
-  recent: SuggestionItems["recent"];
+  recent?: StoredEmoji[];
   filteredEmojis: Emoji[];
   minCellsToHideNav: number;
-  filteredCustomEmojis: CustomEmoji[] | undefined;
+  filteredCustomEmojis: CustomEmoji[];
   disabledAddCustomEmoji: boolean;
 }) => {
   const new2dArr: ARRAY2D_ITEM_PROPS[] = [];
@@ -48,7 +48,7 @@ export const transformData = ({
 
   let temp2dArrRecent: ARRAY2D_ITEM_PROPS[] = [];
 
-  if (recent) {
+  if (Array.isArray(recent) && recent.length > 0) {
     new2dArr.push([titleEmojiMockup(EMOJI_GROUPS[0])]);
     groupsIndexes.Recent = 0;
 
@@ -83,7 +83,10 @@ export const transformData = ({
       }
     }
 
-    if (filteredCustomEmojis && filteredCustomEmojis.length > 0) {
+    if (
+      Array.isArray(filteredCustomEmojis) &&
+      filteredCustomEmojis.length > 0
+    ) {
       for (let i = 0; i < filteredCustomEmojis.length; i++) {
         tempArr.push(filteredCustomEmojis[i]);
         if (tempArr.length === COLUMNS) {
@@ -160,7 +163,7 @@ export const transformData = ({
 
     if (tempArr.length > 0) new2dArr.push(tempArr);
   } else {
-    if (recent) {
+    if (Array.isArray(recent) && recent.length > 0) {
       if (temp2dArrRecent[temp2dArrRecent.length - 1].length % COLUMNS) {
         // ACTION BUTTON
         if (!disabledAddCustomEmoji)

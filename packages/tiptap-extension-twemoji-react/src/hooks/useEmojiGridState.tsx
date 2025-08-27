@@ -39,12 +39,12 @@ export function useEmojiGridState({
 
   function loadRecentEmojis(
     query: string
-  ): (ReturnType<typeof getEmojiSprite> | CustomEmoji)[] | null {
-    if (query.length > 0 || typeof window === "undefined") return null;
+  ): (ReturnType<typeof getEmojiSprite> | CustomEmoji)[] {
+    if (query.length > 0 || typeof window === "undefined") return [];
 
     try {
       const stored = localStorage.getItem(localStorageRecentEmojisKey);
-      if (!stored) return null;
+      if (!stored) return [];
 
       const parsed: StoredEmoji[] = JSON.parse(stored);
 
@@ -52,24 +52,17 @@ export function useEmojiGridState({
         hexcode ? getEmojiSprite({ hexcode }) : (rest as CustomEmoji)
       );
     } catch {
-      return null;
+      return [];
     }
   }
 
-  const recentEmojis = loadRecentEmojis(query);
-
-  const items: SuggestionItems[] = [
-    {
-      filteredEmojis,
-      filteredCustomEmojis,
-      recent: recentEmojis,
-    },
-  ];
+  const recent = loadRecentEmojis(query);
 
   return {
     query,
     setQuery,
-    items,
     filteredEmojis,
+    filteredCustomEmojis,
+    recent,
   };
 }

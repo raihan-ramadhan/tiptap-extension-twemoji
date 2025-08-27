@@ -3,7 +3,6 @@ import "./_styles.scss";
 export type {
   CustomEmoji,
   DropzoneUploadProps as EmojiUploadProps,
-  StoredEmoji,
 } from "@/types";
 export type { Emoji } from "@/data/emoji-sprite-map";
 

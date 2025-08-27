@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import { createFocusTrap } from "focus-trap";
 import Content from "./Content";
 import { Popover } from "@/components/popover/Popover";
-import { Alignment, Placement, Side } from "@floating-ui/dom";
+import { Alignment, Side } from "@floating-ui/dom";
 import { DropzoneUploadProps } from "@/types";
 
 type AddCustomEmojiProps = {
@@ -12,7 +12,6 @@ type AddCustomEmojiProps = {
   onUnmount?: () => void;
   side?: Side;
   align?: Alignment | "center";
-  fallback?: Placement[];
   children?: React.ReactElement;
   label?: string;
   navigationCellDisableOnMount?: boolean;
@@ -27,7 +26,6 @@ const AddCustomEmoji = ({
   onErrorUpload,
   onSuccess,
   onUnmount,
-  fallback,
   children,
   onMount,
   upload,
@@ -61,7 +59,6 @@ const AddCustomEmoji = ({
       align={align}
       side={side}
       overlay
-      fallback={fallback}
       trigger={
         <button
           {...props}

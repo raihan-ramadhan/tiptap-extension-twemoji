@@ -56,7 +56,21 @@ export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
 
   handleSuccess?.(`${emojiName} has added your workspace`, dismiss);
 
-  addCustomEmoji(data[0] as CustomEmoji);
+  const customEmojisWithUrl = await Promise.all(
+    data.map(async (emoji) => {
+      const { data, error } = await supabase.storage
+        .from("emojis")
+        .createSignedUrl(emoji.url, 900); // 15 minutes expiration
+
+      if (error) {
+        console.error("Failed to get signed URL:", error);
+        return { ...emoji, url: "" };
+      }
+      return { ...emoji, url: data.signedUrl };
+    })
+  );
+
+  addCustomEmoji(customEmojisWithUrl[0] as CustomEmoji);
 
   return;
 };

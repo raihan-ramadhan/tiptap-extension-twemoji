@@ -120,17 +120,12 @@ export type EmojiListRef = {
   onKeyDown: ({ event }: { event: KeyboardEvent }) => boolean;
 };
 
-export type SuggestionItems = {
-  recent: StoredEmoji[] | null;
-  filteredEmojis: Emoji[];
-  filteredCustomEmojis?: CustomEmoji[];
-};
+export type SuggestionItems = (Emoji | StoredEmoji | CustomEmoji)[][];
 
 export type Range = SuggestionProps<any, MentionNodeAttrs>["range"] | undefined;
 
 export type ComponentEmojiMentionProps = DropzoneUploadProps &
   HeaderUisProps & {
-    items: SuggestionItems[];
     ref?: Ref<EmojiListRef>;
     onCancel?: () => void;
     onSelectEmoji: SelectEmojiFunc;
@@ -145,6 +140,9 @@ export type ComponentEmojiMentionProps = DropzoneUploadProps &
     visibleRows: number;
     cellSize: number;
     triggerRef?: React.RefObject<HTMLButtonElement | null>;
+    recent: StoredEmoji[];
+    filteredEmojis: Emoji[];
+    filteredCustomEmojis: CustomEmoji[];
   };
 
 export type GroupTitle = { groupTitle: string };

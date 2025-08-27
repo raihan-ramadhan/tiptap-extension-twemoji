@@ -27,7 +27,6 @@ export function Popover({
   overlay = false,
   align,
   side,
-  fallback,
   trapRef,
   tooltipForTrigger = false,
   triggerLabel,
@@ -39,7 +38,6 @@ export function Popover({
   overlay?: boolean;
   side?: Side;
   align?: Alignment | "center";
-  fallback?: Placement[];
   trapRef?: React.RefObject<HTMLDivElement | null>;
   tooltipForTrigger?: boolean;
   triggerLabel?: string;
@@ -99,11 +97,7 @@ export function Popover({
     const cleanup = attachAutoUpdate(
       referenceRef.current,
       floatingRef.current,
-      {
-        align,
-        side,
-        fallback,
-      }
+      { align, side }
     );
 
     return cleanup;

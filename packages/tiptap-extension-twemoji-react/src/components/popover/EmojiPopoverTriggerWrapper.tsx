@@ -135,10 +135,11 @@ export function EmojiPopoverTriggerWrapper({
     onOpenChange?.(open);
   };
 
-  const { query, setQuery, items, filteredEmojis } = useEmojiGridState({
-    customEmojis,
-    localStorageRecentEmojisKey,
-  });
+  const { query, setQuery, filteredCustomEmojis, filteredEmojis, recent } =
+    useEmojiGridState({
+      customEmojis,
+      localStorageRecentEmojisKey,
+    });
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -196,7 +197,6 @@ export function EmojiPopoverTriggerWrapper({
           }
         }}
         onCancel={() => setIsOpen(false)}
-        items={items}
         onDelete={() => {
           onDelete?.();
           if (closeAfterDelete) {
@@ -213,6 +213,9 @@ export function EmojiPopoverTriggerWrapper({
         interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
         disabledAddCustomEmoji={disabledAddCustomEmoji}
         triggerRef={triggerRef}
+        recent={recent}
+        filteredCustomEmojis={filteredCustomEmojis}
+        filteredEmojis={filteredEmojis}
       />
     </Popover>
   );

@@ -209,7 +209,6 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
           enableEmojiCellsNavigation();
         }}
         onErrorUpload={onError}
-        fallback={["bottom"]}
         onSuccess={onSuccess}
         label={buttonLabel}
         upload={upload}

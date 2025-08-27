@@ -103,7 +103,7 @@ const Dropzone = ({
     if (files && emojiName.length === 0) {
       const nameWithoutExt = files.name.replace(/\.[^/.]+$/, "");
       const cleanedName = cleanEmojiName(nameWithoutExt);
-      setEmojiName(cleanedName);
+      setEmojiName(cleanedName.slice(0, 49));
     }
   }, [files]);
 

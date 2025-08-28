@@ -72,16 +72,21 @@ export interface MySuggestionProps<TItems = any, TSelected = any>
 }
 
 declare module "@tiptap/core" {
-  interface Commands<ReturnType> {
+  interface Commands {
     [EXTENSION_NAME]: {
       insertEmoji: (
         emoji: Emoji | CustomEmoji,
         range: Range
       ) => (props: CommandProps) => boolean;
-      updateCustomEmojis: (emojis: CustomEmoji[]) => ReturnType;
-      updateRecentEmojis: (emojis: StoredEmoji[]) => ReturnType;
+      updateCustomEmojis: (
+        emojis: CustomEmoji[]
+      ) => (props: CommandProps) => boolean;
+      updateRecentEmojis: (
+        emojis: StoredEmoji[]
+      ) => (props: CommandProps) => boolean;
     };
   }
+
   interface Storage {
     [EXTENSION_NAME]?: {
       query: EmojiExtensionStorage["query"];
@@ -260,11 +265,8 @@ const TwemojiExtension = Mention.extend<
           return true;
         },
       insertEmoji:
-        (data, range) =>
-        ({ commands }) => {
-          const start = range.from;
-          let end = range.to;
-
+        (data, { from, to }) =>
+        ({ editor }) => {
           let attrs: {
             src: string;
             alt: string;
@@ -301,18 +303,14 @@ const TwemojiExtension = Mention.extend<
             return false;
           }
 
-          commands.deleteRange({
-            from: start,
-            to: end,
-          });
-
-          return commands.insertContent([
-            {
-              type: EXTENSION_NAME,
-              attrs,
-            },
-            { type: "text", text: " " },
-          ]);
+          return editor
+            .chain()
+            .deleteRange({ from, to })
+            .insertContent([
+              { type: EXTENSION_NAME, attrs },
+              { type: "text", text: " " },
+            ])
+            .run();
         },
     };
   },

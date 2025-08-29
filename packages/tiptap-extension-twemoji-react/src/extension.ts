@@ -303,14 +303,10 @@ const TwemojiExtension = Mention.extend<
             return false;
           }
 
-          return editor
-            .chain()
-            .deleteRange({ from, to })
-            .insertContent([
-              { type: EXTENSION_NAME, attrs },
-              { type: "text", text: " " },
-            ])
-            .run();
+          return commands.insertContentAt({ from, to }, [
+            { type: EXTENSION_NAME, attrs },
+            { type: "text", text: " " },
+          ]);
         },
     };
   },

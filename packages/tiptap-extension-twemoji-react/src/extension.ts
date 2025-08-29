@@ -1,7 +1,11 @@
 import { createRef } from "react";
 
 // UTILITIES
-import { getEmojiSprite, getAttributes } from "@/lib/emoji-utils";
+import {
+  getEmojiSprite,
+  getAttributes,
+  getEmojiDataFromUnicode,
+} from "@/lib/emoji-utils";
 
 // ASSETS
 import emojisSubstringIndexes from "@/assets/emoji-substring-index.json";
@@ -66,40 +70,11 @@ import {
   LOCAL_STORAGE_RECENT_EMOJIS_KEY,
 } from "@/constants";
 
+import { UNICODE_REGEX_PASTE } from "./assets/emoji-regexes";
+
 export interface MySuggestionProps<TItems = any, TSelected = any>
   extends Omit<BaseSuggestionProps<any, TSelected>, "items"> {
   items: TItems;
-}
-
-declare module "@tiptap/core" {
-  interface Commands {
-    [EXTENSION_NAME]: {
-      insertEmoji: (
-        emoji: Emoji | CustomEmoji,
-        range: Range
-      ) => (props: CommandProps) => boolean;
-      updateCustomEmojis: (
-        emojis: CustomEmoji[]
-      ) => (props: CommandProps) => boolean;
-      updateRecentEmojis: (
-        emojis: StoredEmoji[]
-      ) => (props: CommandProps) => boolean;
-    };
-  }
-
-  interface Storage {
-    [EXTENSION_NAME]?: {
-      query: EmojiExtensionStorage["query"];
-      customEmojis?: EmojiExtensionStorage["customEmojis"];
-      recentEmojis?: EmojiExtensionStorage["recentEmojis"];
-    };
-  }
-}
-
-export interface EmojiExtensionStorage {
-  recentEmojis: StoredEmoji[];
-  customEmojis: CustomEmoji[];
-  query: string;
 }
 
 type COMPONENT_PROPS = Omit<
@@ -120,6 +95,38 @@ type TwemojiExtensionProps = {
   navOptions?: ExtensionNavOptions;
   gridOptions?: ExtensionGridOptions;
 };
+
+interface EmojiExtensionStorage {
+  recentEmojis?: StoredEmoji[];
+  customEmojis?: CustomEmoji[];
+  query?: string;
+}
+
+declare module "@tiptap/core" {
+  interface ExtensionOptions {
+    [EXTENSION_NAME]: TwemojiExtensionProps;
+  }
+
+  interface Commands {
+    [EXTENSION_NAME]: {
+      insertEmoji: (
+        emoji: Emoji | CustomEmoji,
+        range?: Range
+      ) => (props: CommandProps) => boolean;
+      insertUnicodeEmoji: (emoji: string) => (props: CommandProps) => boolean;
+      updateCustomEmojis: (
+        emojis: CustomEmoji[]
+      ) => (props: CommandProps) => boolean;
+      updateRecentEmojis: (
+        emojis: StoredEmoji[]
+      ) => (props: CommandProps) => boolean;
+    };
+  }
+
+  interface Storage {
+    [EXTENSION_NAME]: EmojiExtensionStorage;
+  }
+}
 
 const TwemojiExtension = Mention.extend<
   TwemojiExtensionProps,
@@ -149,7 +156,7 @@ const TwemojiExtension = Mention.extend<
       display: inline-block !important;
       vertical-align: -0.1em !important;
       object-fit: contain !important;
-      width: 1em;
+      width: 1em; 
       height: 1em;
       cursor: text;
       pointer-events: none;
@@ -264,9 +271,59 @@ const TwemojiExtension = Mention.extend<
           }
           return true;
         },
+      insertUnicodeEmoji:
+        (text) =>
+        ({ commands }) => {
+          const content = [];
+
+          let match;
+          let lastIndex = 0;
+          const regex = UNICODE_REGEX_PASTE;
+
+          while ((match = regex.exec(text)) !== null) {
+            const start = match.index;
+            const end = regex.lastIndex;
+
+            // Push text before match
+            if (start > lastIndex) {
+              content.push({
+                type: "text",
+                text: text.slice(lastIndex, start),
+              });
+            }
+
+            const emoji = getEmojiDataFromUnicode(text.slice(start, end));
+
+            if (emoji) {
+              const { baseHexcode, skinTones } = emoji;
+              const data = getEmojiSprite({ hexcode: baseHexcode, skinTones });
+              const attrs = getAttributes({
+                data,
+                styleOption: { type: "string" },
+              });
+
+              content.push({ type: this.name, attrs });
+            } else {
+              content.push({
+                type: "text",
+                text: text.slice(start, end),
+              });
+            }
+
+            lastIndex = end;
+          }
+
+          if (lastIndex !== text.length)
+            content.push({
+              type: "text",
+              text: text.slice(lastIndex, text.length),
+            });
+
+          return commands.insertContent(content);
+        },
       insertEmoji:
-        (data, { from, to }) =>
-        ({ editor }) => {
+        (data, range) =>
+        ({ editor, commands }) => {
           let attrs: {
             src: string;
             alt: string;
@@ -302,6 +359,8 @@ const TwemojiExtension = Mention.extend<
           } else {
             return false;
           }
+
+          const { from, to } = range ?? editor.state.selection;
 
           return commands.insertContentAt({ from, to }, [
             { type: EXTENSION_NAME, attrs },
@@ -594,7 +653,7 @@ const TwemojiExtension = Mention.extend<
                 CustomEmoji[],
               ];
 
-              const lowerQuery = storage.query.toLowerCase().trim();
+              const lowerQuery = (storage.query ?? "").toLowerCase().trim();
 
               const filteredCustomEmojis = customEmojis.filter(({ label }) =>
                 label.includes(lowerQuery)

@@ -37,7 +37,11 @@ import {
 } from "@raihancodes/tiptap-extension-twemoji-react";
 
 export default function Editor() {
-  const editor = useEditor({ extensions: [StarterKit, TwemojiExtension] });
+  const editor = useEditor({
+    extensions: [StarterKit, TwemojiExtension],
+    content: "<p>Hello World!</p>",
+    immediatelyRender: false,
+  });
 
   const customEmojis: CustomEmoji[] = [
     {
@@ -146,6 +150,8 @@ export default function Editor({
         },
       }),
     ],
+    content: "<p>Hello World!</p>",
+    immediatelyRender: false,
   });
 
   // Applying Fetched Emojis

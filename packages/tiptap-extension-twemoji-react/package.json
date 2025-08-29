@@ -1,8 +1,8 @@
 {
   "name": "@raihancodes/tiptap-extension-twemoji-react",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "type": "module",
-  "description": "Advanced Tiptap emoji extension built with React - supports Twemoji, emoticon, shortcodes, and cross-platform consistency with modern editor UX",
+  "description": "Notion-style Tiptap emoji extension for React — supports Twemoji, emoticons, shortcodes, and cross-platform consistency with modern editor UX.",
   "scripts": {
     "build": "concurrently \"rollup -c --environment BUILD:prod\" \"rollup -c rollup.dts.config.js\" \"tsc --noEmit\"",
     "dev": "concurrently -k \"rollup -c --watch --environment BUILD:dev\" \"rollup -c rollup.dts.config.js --watch\" \"tsc --noEmit --watch\"",
@@ -117,9 +117,9 @@
     "emoji",
     "react",
     "rich-text-editor",
-    "notion-style",
     "tiptap-v3",
-    "open-source"
+    "notion",
+    "notion-style"
   ],
   "publishConfig": {
     "access": "public"

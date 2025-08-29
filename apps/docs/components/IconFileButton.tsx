@@ -17,9 +17,9 @@ import {
   handleEmojiUpload,
   handleInterceptAddCustomEmoji,
 } from "@/lib/handleEmoji";
-import { cn } from "@/lib/utils";
 import { Smile } from "lucide-react";
 import { useIsMobile } from "../hooks/use-mobile";
+import { Button } from "./ui/button";
 
 const IconFileButton = ({
   setIsOpen: setIsOpenDialog,
@@ -114,12 +114,9 @@ const IconFileButton = ({
       onOpenChange={setIsOpen}
       customEmojis={customEmojis}
     >
-      <button
-        type="button"
-        className={cn(
-          "dark:bg-white/5 bg-black/5 rounded-md dark:hover:bg-white/10 hover:bg-black/10 transition-colors cursor-pointer w-fit flex gap-1 items-center",
-          iconAttrs ? "p-1" : "py-1 px-2"
-        )}
+      <Button
+        variant={"secondary"}
+        className={iconAttrs ? "p-1 size-fit" : undefined}
       >
         {iconAttrs ? (
           <Image
@@ -139,7 +136,7 @@ const IconFileButton = ({
             Add Emoji
           </>
         )}
-      </button>
+      </Button>
     </EmojiPopoverTriggerWrapper>
   );
 };

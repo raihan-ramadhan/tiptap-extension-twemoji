@@ -1,6 +1,7 @@
-# tiptap-extension-twemoji-react
+# tiptap-extension-twemoji-react (Notion-style Emoji for Tiptap)
 
-> A Tiptap emoji extension built with React, inspired by the emoji picker in Notion.
+> Notion-style emoji extension for Tiptap, built with React.  
+> Powered by Twemoji for consistent cross-platform emoji rendering with a modern editor UX.
 
 ### If you like this project, ⭐ [give it a star](https://github.com/raihan-ramadhan/tiptap-extension-twemoji), 🎉 [become a sponsor](https://github.com/sponsors/raihan-ramadhan) or ☕ [buy me a coffee](https://ko-fi.com/raihancodes)
 
@@ -22,11 +23,11 @@
 ## Installation
 
 ```bash
-# PNPM
-pnpm add @raihancodes/tiptap-extension-twemoji-react
-
-# NPM
 npm install @raihancodes/tiptap-extension-twemoji-react
+# or
+pnpm add @raihancodes/tiptap-extension-twemoji-react
+# or
+yarn add @raihancodes/tiptap-extension-twemoji-react
 ```
 
 ## Example usage
@@ -41,6 +42,8 @@ import { TwemojiExtension } from "@raihancodes/tiptap-extension-twemoji-react";
 export default function Editor() {
   const editor = useEditor({
     extensions: [StarterKit, TwemojiExtension],
+    content: "<p>Hello World!</p>",
+    immediatelyRender: false,
   });
 
   return <EditorContent editor={editor} />;
@@ -66,7 +69,11 @@ import {
 } from "@raihancodes/tiptap-extension-twemoji-react";
 
 export default function Editor() {
-  const editor = useEditor({ extensions: [StarterKit, TwemojiExtension] });
+  const editor = useEditor({
+    extensions: [StarterKit, TwemojiExtension],
+    content: "<p>Hello World!</p>",
+    immediatelyRender: false,
+  });
 
   const customEmojis: CustomEmoji[] = [
     {
@@ -167,6 +174,8 @@ export default function Editor({
         },
       }),
     ],
+    content: "<p>Hello World!</p>",
+    immediatelyRender: false,
   });
 
   // Applying Fetched Emojis

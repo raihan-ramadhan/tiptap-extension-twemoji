@@ -58,6 +58,8 @@ import {
 } from "../../ui/dialog";
 import { LoginForm } from "../../login-form";
 import { useIsMobile } from "../../../hooks/use-mobile";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
 
 export function SimpleEditor1({
   customEmojis,
@@ -71,6 +73,8 @@ export function SimpleEditor1({
   const [isOpen, setIsOpen] = React.useState(false);
 
   const isMobile = useIsMobile();
+
+  const [input, setInput] = React.useState("😃 🥰 🤩");
 
   const editor = useEditor(
     {
@@ -178,9 +182,25 @@ export function SimpleEditor1({
       <div className="simple-editor-wrapper">
         <EditorContext.Provider value={{ editor }}>
           <div className="simple-editor-content ">
-            <div className="mt-2 mb-4">
+            <div className="mt-2 mb-4 flex justify-between w-full flex-wrap gap-2">
               <IconFileButton setIsOpen={setIsOpen} />
+              <div className="flex gap-1">
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="w-24"
+                />
+                <Button
+                  variant={"secondary"}
+                  onClick={() => {
+                    if (editor) editor.commands.insertUnicodeEmoji(input);
+                  }}
+                >
+                  <span className="text-xs">Insert</span>
+                </Button>
+              </div>
             </div>
+            <div className="mt-2 mb-4"></div>
             <EditorContent editor={editor} role="presentation" />
           </div>
         </EditorContext.Provider>

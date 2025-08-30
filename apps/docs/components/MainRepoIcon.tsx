@@ -1,34 +1,14 @@
 import Link from "next/link";
 import React from "react";
 import { cn } from "../lib/utils";
+import { getStarCount } from "../lib/github";
 
 export default async function MainRepoIcon({
   className,
 }: {
   className?: string;
 }) {
-  let starCount: number | null = null;
-
-  try {
-    const res = await fetch(
-      "https://api.github.com/repos/raihan-ramadhan/tiptap-extension-twemoji",
-      {
-        next: { revalidate: 3600 }, // revalidate every 1 hour
-        headers: {
-          Accept: "application/vnd.github+json",
-          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-        },
-      }
-    );
-
-    if (res.ok) {
-      const data = await res.json();
-      starCount = data?.stargazers_count ?? null;
-    }
-  } catch {
-    // fetch failed → leave starCount as null
-    starCount = null;
-  }
+  const starCount = await getStarCount();
 
   return (
     <Link

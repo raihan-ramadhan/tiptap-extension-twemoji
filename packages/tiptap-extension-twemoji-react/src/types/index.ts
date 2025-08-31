@@ -4,12 +4,11 @@ import { Dispatch, Ref, RefObject, SetStateAction } from "react";
 import { SuggestionProps } from "@tiptap/suggestion";
 import { MentionNodeAttrs } from "@tiptap/extension-mention";
 import { Editor } from "@tiptap/react";
-import { FileWithPreview } from "@/components/emoji-grid/add-custom-emoji/DropZone";
 
 export type DropzoneUploadProps = {
   upload: (props: {
     emojiName: string;
-    files: FileWithPreview;
+    file: File;
     handleSuccess: DropzoneUploadProps["onSuccess"];
     handleError: DropzoneUploadProps["onError"];
     dismiss?: () => void;
@@ -20,10 +19,9 @@ export type DropzoneUploadProps = {
     [key: string]: readonly string[];
   };
   maxSize: number;
-  interceptAddCustomEmojiClick:
-    | ((dismiss?: () => void) => boolean)
-    | ((dismiss?: () => void) => Promise<boolean>)
-    | boolean;
+  interceptAddEmojiClick:
+    | boolean
+    | ((dismiss?: () => void) => boolean | Promise<boolean>);
   disabledAddCustomEmoji: boolean;
 };
 
@@ -75,7 +73,7 @@ export type ExtensionCustomEmojiOptions = {
   /**
    * return true or give value true to intercept and stop click event in add custom emoji
    */
-  interceptAddCustomEmojiClick?: DropzoneUploadProps["interceptAddCustomEmojiClick"];
+  interceptAddEmojiClick?: DropzoneUploadProps["interceptAddEmojiClick"];
   /**
    * disabled nav add custom emoji button and remove "Add Emoji" cell in grid
    */

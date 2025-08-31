@@ -46,7 +46,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
     accept,
     maxSize,
     cellSize,
-    interceptAddCustomEmojiClick,
+    interceptAddEmojiClick,
     disabledAddCustomEmoji,
     onCancel,
   } = data;
@@ -227,7 +227,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
           "twemoji-button twemoji-custom-emoji-cell",
           isSelected && "twemoji-custom-emoji-cell--selected"
         )}
-        interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+        interceptAddEmojiClick={interceptAddEmojiClick}
         disabledAddCustomEmoji={disabledAddCustomEmoji}
       >
         {content}

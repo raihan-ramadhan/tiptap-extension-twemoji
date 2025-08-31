@@ -78,13 +78,11 @@ export default function Editor() {
   const customEmojis: CustomEmoji[] = [
     {
       id: "8177849e-c2c9-424a-a914-ff128ce439c5",
-      created_at: "2025-08-09T00:26:09.143473+00:00",
       label: "github-icon",
       url: "...",
     },
     {
       id: "cecf7043-80da-4e3f-b167-6a85de0e464a",
-      created_at: "2025-08-09T01:23:15.144872+00:00",
       label: "npm-icon",
       url: "...",
     },

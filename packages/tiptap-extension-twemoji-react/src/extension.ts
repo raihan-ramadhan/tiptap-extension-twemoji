@@ -580,8 +580,8 @@ const TwemojiExtension = Mention.extend<
               const onSuccess =
                 this.options.customEmojiOptions?.onSuccess ??
                 DEFAULT_ON_SUCCESS;
-              const interceptAddCustomEmojiClick =
-                this.options.customEmojiOptions?.interceptAddCustomEmojiClick ??
+              const interceptAddEmojiClick =
+                this.options.customEmojiOptions?.interceptAddEmojiClick ??
                 false;
               const disabledAddCustomEmoji =
                 this.options.customEmojiOptions?.disabledAddCustomEmoji ??
@@ -625,7 +625,7 @@ const TwemojiExtension = Mention.extend<
                 minCellsToHideNav,
                 visibleRows,
                 cellSize,
-                interceptAddCustomEmojiClick,
+                interceptAddEmojiClick,
                 disabledAddCustomEmoji,
                 recent,
                 filteredEmojis,

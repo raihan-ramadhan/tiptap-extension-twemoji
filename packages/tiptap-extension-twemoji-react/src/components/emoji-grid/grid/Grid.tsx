@@ -56,7 +56,7 @@ export default function ({
   minCellsToHideNav,
   cellSize,
   visibleRows,
-  interceptAddCustomEmojiClick,
+  interceptAddEmojiClick,
   disabledAddCustomEmoji,
   triggerRef,
   recent,
@@ -322,7 +322,7 @@ export default function ({
             rowCount={arr2d.length}
             columnWidth={cellSize}
             itemData={{
-              interceptAddCustomEmojiClick,
+              interceptAddEmojiClick,
               disableEmojiCellsNavigation,
               enableEmojiCellsNavigation,
               selectedCellElementRef,
@@ -373,7 +373,7 @@ export default function ({
                 ? ""
                 : "twemoji-nav--hidden"
             }
-            interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+            interceptAddEmojiClick={interceptAddEmojiClick}
             disabledAddCustomEmoji={disabledAddCustomEmoji}
             onCancel={onCancel}
           />
@@ -400,7 +400,7 @@ export default function ({
               onSuccess={onSuccess}
               upload={upload}
               maxSize={maxSize}
-              interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+              interceptAddEmojiClick={interceptAddEmojiClick}
               disabledAddCustomEmoji={disabledAddCustomEmoji}
             >
               <span className="no-result__custom-emoji__span">

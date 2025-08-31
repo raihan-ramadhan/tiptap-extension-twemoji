@@ -1,6 +1,6 @@
 {
   "name": "@raihancodes/tiptap-extension-twemoji-react",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "type": "module",
   "description": "Notion-style Tiptap emoji extension for React — supports Twemoji, emoticons, shortcodes, and cross-platform consistency with modern editor UX.",
   "scripts": {

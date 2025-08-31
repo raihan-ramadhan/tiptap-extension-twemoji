@@ -30,7 +30,7 @@ const Content = ({
   focusTrap: React.RefObject<FocusTrap | null>;
 } & Omit<
   DropzoneUploadProps,
-  "disabledAddCustomEmoji" | "interceptAddCustomEmojiClick"
+  "disabledAddCustomEmoji" | "interceptAddEmojiClick"
 >) => {
   const dismiss = () => setIsOpen(false);
 

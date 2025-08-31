@@ -39,7 +39,7 @@ const Nav = ({
   className,
   accept,
   maxSize,
-  interceptAddCustomEmojiClick,
+  interceptAddEmojiClick,
   disabledAddCustomEmoji,
   onCancel,
   cellSize,
@@ -158,7 +158,7 @@ const Nav = ({
             onSuccess={onSuccess}
             upload={upload}
             onKeyDown={stopEnterKey}
-            interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+            interceptAddEmojiClick={interceptAddEmojiClick}
             disabledAddCustomEmoji={disabledAddCustomEmoji}
             className={cn(
               "twemoji-button twemoji-nav__add-custom-emoji",

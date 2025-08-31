@@ -34,7 +34,7 @@ const AddCustomEmoji = ({
   side,
   accept,
   maxSize,
-  interceptAddCustomEmojiClick,
+  interceptAddEmojiClick,
   disabledAddCustomEmoji,
   onCancel,
   ...props
@@ -63,12 +63,12 @@ const AddCustomEmoji = ({
         <button
           {...props}
           onClick={async () => {
-            if (typeof interceptAddCustomEmojiClick === "boolean") {
-              return interceptAddCustomEmojiClick;
+            if (typeof interceptAddEmojiClick === "boolean") {
+              return interceptAddEmojiClick;
             }
 
-            if (typeof interceptAddCustomEmojiClick === "function") {
-              return await interceptAddCustomEmojiClick(onCancel);
+            if (typeof interceptAddEmojiClick === "function") {
+              return await interceptAddEmojiClick(onCancel);
             }
 
             return false; // fallback

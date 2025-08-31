@@ -36,8 +36,8 @@ type DropzoneContextProps = Omit<
   "getRootProps" | "getInputProps"
 > & {
   open: () => void;
-  setFiles: React.Dispatch<React.SetStateAction<FileWithPreview | null>>;
-  files: FileWithPreview | null;
+  setFile: React.Dispatch<React.SetStateAction<FileWithPreview | null>>;
+  file: FileWithPreview | null;
   emojiName: string;
   setEmojiName: React.Dispatch<React.SetStateAction<string>>;
   emojiNameError: string | null;
@@ -53,7 +53,7 @@ const DropzoneContext = createContext<DropzoneContextProps | undefined>(
 
 type DropzoneProps = Omit<
   DropzoneUploadProps,
-  "interceptAddCustomEmojiClick" | "disabledAddCustomEmoji"
+  "interceptAddEmojiClick" | "disabledAddCustomEmoji"
 > & {
   className?: string;
 };
@@ -72,7 +72,7 @@ const Dropzone = ({
   maxSize,
   ...restProps
 }: PropsWithChildren<DropzoneProps>) => {
-  const [files, setFiles] = useState<FileWithPreview | null>(null);
+  const [file, setFile] = useState<FileWithPreview | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [emojiName, setEmojiName] = useState<string>("");
   const [emojiNameError, setEmojiNameError] = useState<string | null>(null);
@@ -100,12 +100,12 @@ const Dropzone = ({
   }, [emojiName]);
 
   useEffect(() => {
-    if (files && emojiName.length === 0) {
-      const nameWithoutExt = files.name.replace(/\.[^/.]+$/, "");
+    if (file && emojiName.length === 0) {
+      const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
       const cleanedName = cleanEmojiName(nameWithoutExt);
       setEmojiName(cleanedName.slice(0, 49));
     }
-  }, [files]);
+  }, [file]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
@@ -120,7 +120,7 @@ const Dropzone = ({
           preview: URL.createObjectURL(file),
         });
 
-        setFiles(validFile);
+        setFile(validFile);
       }
 
       if (acceptedFiles.length > MAX_FILES) {
@@ -142,13 +142,13 @@ const Dropzone = ({
         });
       }
     },
-    [files, setFiles]
+    [file, setFile]
   );
 
   const onUpload: DropzoneContextProps["onUpload"] = useCallback(
     async ({ dismiss }) => {
       setLoading(true);
-      if (emojiNameError || !files) return setLoading(false);
+      if (emojiNameError || !file) return setLoading(false);
 
       if (uploadCallback) {
         await uploadCallback({
@@ -156,7 +156,7 @@ const Dropzone = ({
           handleError: onError,
           emojiName,
           dismiss,
-          files,
+          file,
         });
       } else {
         console.error(
@@ -166,7 +166,7 @@ const Dropzone = ({
 
       setLoading(false);
     },
-    [files, emojiNameError, emojiName]
+    [file, emojiNameError, emojiName]
   );
 
   const { getInputProps, getRootProps, ...dropzoneProps } = useDropzone({
@@ -180,8 +180,8 @@ const Dropzone = ({
   const value: DropzoneContextProps = {
     ...restProps,
     ...dropzoneProps,
-    files,
-    setFiles,
+    file,
+    setFile,
     emojiName,
     setEmojiName,
     emojiNameError,
@@ -207,7 +207,7 @@ const Dropzone = ({
 };
 
 const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
-  const { setFiles, files, loading, onUpload, setEmojiName } =
+  const { setFile, file, loading, onUpload, setEmojiName } =
     useDropzoneContext();
 
   return (
@@ -216,7 +216,7 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
         className="twemoji-button content__cancel-or-save__cancel"
         type="button"
         onClick={() => {
-          setFiles(null);
+          setFile(null);
           dismiss();
           setEmojiName("");
         }}
@@ -226,9 +226,9 @@ const CancelOrSaveBtns = ({ dismiss }: { dismiss: () => void }) => {
       <button
         type="button"
         onClick={() => {
-          if (files) onUpload({ dismiss });
+          if (file) onUpload({ dismiss });
         }}
-        disabled={!files || loading}
+        disabled={!file || loading}
         className="twemoji-submit-button content__cancel-or-save__save"
       >
         {loading ? (
@@ -269,9 +269,9 @@ const LabelInput = () => {
 };
 
 const DropzonePreview = () => {
-  const { inputRef, files } = useDropzoneContext();
+  const { inputRef, file } = useDropzoneContext();
 
-  if (!files) {
+  if (!file) {
     return null;
   }
 
@@ -280,8 +280,8 @@ const DropzonePreview = () => {
       <div className="content__dropzone-preview">
         <p>Preview</p>
         <div className="content__dropzone-preview__images-wrapper">
-          <img src={files.preview} alt={files.name} className="dark-preview" />
-          <img src={files.preview} alt={files.name} className="light-preview" />
+          <img src={file.preview} alt={file.name} className="dark-preview" />
+          <img src={file.preview} alt={file.name} className="light-preview" />
         </div>
         <div className="content__dropzone-preview__replace-wrapper">
           <button
@@ -298,9 +298,9 @@ const DropzonePreview = () => {
 };
 
 const DropzoneEmptyState = ({ className }: { className?: string }) => {
-  const { inputRef, isDragActive, isDragReject, files } = useDropzoneContext();
+  const { inputRef, isDragActive, isDragReject, file } = useDropzoneContext();
 
-  if (files) {
+  if (file) {
     return null;
   }
 

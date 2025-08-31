@@ -38,7 +38,7 @@ type EmojiPopoverTriggerWrapperProps = {
     React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
   >;
   isOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   customEmojis?: CustomEmoji[];
   /**
    * @default false
@@ -85,7 +85,7 @@ export function EmojiPopoverTriggerWrapper({
   selectEmojiHandler,
   defaultOpen = false,
   isOpen: controlledOpen,
-  onOpenChange,
+  setIsOpen,
   customEmojis,
   headerOptions,
   customEmojiOptions,
@@ -112,7 +112,7 @@ export function EmojiPopoverTriggerWrapper({
     onSuccess = DEFAULT_ON_SUCCESS,
     accept = DEFAULT_ACCEPT,
     maxSize = DEFAULT_MAX_SIZE,
-    interceptAddCustomEmojiClick = false,
+    interceptAddEmojiClick = false,
     disabledAddCustomEmoji = false,
   } = customEmojiOptions ?? {};
 
@@ -130,9 +130,9 @@ export function EmojiPopoverTriggerWrapper({
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : uncontrolledOpen;
 
-  const setIsOpen = (open: boolean) => {
+  const onOpenChange = (open: boolean) => {
     if (!isControlled) setUncontrolledOpen(open);
-    onOpenChange?.(open);
+    setIsOpen?.(open);
   };
 
   const { query, setQuery, filteredCustomEmojis, filteredEmojis, recent } =
@@ -171,7 +171,7 @@ export function EmojiPopoverTriggerWrapper({
   return (
     <Popover
       open={isOpen}
-      onOpenChange={setIsOpen}
+      onOpenChange={onOpenChange}
       align="center"
       trigger={trigger}
     >
@@ -190,13 +190,13 @@ export function EmojiPopoverTriggerWrapper({
         onSelectEmoji={({ emoji }) => {
           selectEmojiHandler(emoji);
           if (closeAfterSelectRandom) {
-            setIsOpen(false);
+            onOpenChange(false);
             requestAnimationFrame(() => {
               triggerRef.current?.focus();
             });
           }
         }}
-        onCancel={() => setIsOpen(false)}
+        onCancel={() => onOpenChange(false)}
         onDelete={() => {
           onDelete?.();
           if (closeAfterDelete) {
@@ -210,7 +210,7 @@ export function EmojiPopoverTriggerWrapper({
         onSuccess={onSuccess}
         onError={onError}
         skinToneSelect={skinToneSelect}
-        interceptAddCustomEmojiClick={interceptAddCustomEmojiClick}
+        interceptAddEmojiClick={interceptAddEmojiClick}
         disabledAddCustomEmoji={disabledAddCustomEmoji}
         triggerRef={triggerRef}
         recent={recent}

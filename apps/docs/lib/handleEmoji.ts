@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
   emojiName,
-  files,
+  file,
   handleSuccess,
   handleError,
   dismiss,
@@ -31,7 +31,7 @@ export const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
 
   const { error: uploadError, data: uploadData } = await supabase.storage
     .from(EMOJIS_BUCKET_NAME)
-    .upload(fullPath, files, {
+    .upload(fullPath, file, {
       cacheControl: cacheControl.toString(),
       upsert: false,
     });

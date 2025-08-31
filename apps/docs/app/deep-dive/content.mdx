@@ -1,0 +1,218 @@
+# Deep Dive
+
+This page covers all configuration options for the `TwemojiExtension`.  
+You can pass these options when creating the extension:
+
+```ts
+import { TwemojiExtension } from "@raihancodes/tiptap-extension-twemoji-react";
+
+const editor = useEditor({
+  extensions: [
+    TwemojiExtension.configure({
+      spriteUrl: "/assets/emoji-sprite.webp",
+      headerOptions: {
+        randomButton: true,
+        skinToneSelect: false,
+      },
+      customEmojiOptions: {
+        maxSize: 5 * 1000 * 1000, // 5MB
+      },
+      navOptions: {
+        minCellsToHideNav: 50,
+      },
+      gridOptions: {
+        visibleRows: 6,
+        cellSize: 38,
+      },
+    }),
+  ],
+});
+```
+
+---
+
+## `spriteUrl`
+
+- **Type**: `string`
+- **Default**: `"/assets/emoji-sprite6102d4c8eb22eb1a.webp"`
+- **Desc**: Path or URL to the emoji sprite sheet.  
+  For specifying your own image path or using a CDN
+
+---
+
+## `headerOptions`
+
+Controls the header UI components in the emoji picker.
+
+```ts
+headerOptions?: {
+  randomButton?: boolean;
+  skinToneSelect?: boolean;
+};
+```
+
+### `randomButton`
+
+- **Type**: `boolean`
+- **Default**: `true`
+- **Desc**: Show or hide the **Random Emoji** button.
+
+### `skinToneSelect`
+
+- **Type**: `boolean`
+- **Default**: `true`
+- **Desc**: Show or hide the **Skin Tone Selector**.
+
+---
+
+## `customEmojiOptions`
+
+Options for handling **custom emoji uploads**.
+
+```ts
+customEmojiOptions?: {
+  upload?: (props) => Promise<void>;
+  onError?: (errorMessage: string) => void;
+  onSuccess?: (successMessage: string, callback?: () => void) => void;
+  accept?: { [key: string]: readonly string[] };
+  maxSize?: number;
+  interceptAddEmojiClick?:
+    boolean
+    | ((dismiss?: () => void) => boolean | Promise<boolean>)
+  disabledAddCustomEmoji?: boolean;
+};
+```
+
+### `upload`
+
+- **Type**: `EmojiUploadProps["upload"]`
+- **Desc**: Function to handle the upload process.
+
+_Signature:_
+
+```ts
+(props: {
+  emojiName: string;
+  file: File;
+  handleSuccess: (successMessage: string, callback?: () => void) => void;
+  handleError: (errorMessage: string) => void;
+  dismiss?: () => void;
+}) => Promise<void>;
+```
+
+### `onSuccess`
+
+- **Type**: `EmojiUploadProps["onSuccess"]`
+- **Desc**: Callback for when an upload completes successfully.
+
+_Signature:_
+
+```ts
+(successMessage: string, callback?: () => void) => void;
+```
+
+> ⚠️ You mus Invoke [`upload`](/deep-dive#upload)'s `handleSuccess` on a successful upload to run `onSuccess`
+
+### `onError`
+
+- **Type**: `EmojiUploadProps["onError"]`
+- **Desc**: Callback for handling errors during upload.
+
+_Signature:_
+
+```ts
+(errorMessage: string) => void;
+```
+
+> ⚠️ You mus Invoke [`upload`](/deep-dive#upload)'s `handleError` on a successful upload to run `onError`
+
+### `accept`
+
+- **Type**: see [react-dropzone docs](https://react-dropzone.org/#!/Accepting%20specific%20file%20types).
+- **Default**: `{ "image/*": [] }` _(Accepts all image file types)_
+- **Desc**: Accepted file types
+
+### `maxSize`
+
+- **Type**: `number`
+- **Default**: `1000 * 1000 * 10` _(10MB)_
+- **Desc**: Maximum file size in bytes.
+
+### `interceptAddEmojiClick`
+
+- **Type**: `boolean | ((dismiss?: () => void) => boolean | Promise<boolean>);`
+- **Default**: `false`
+- **Desc**: Return `true` to prevent the default **Add Custom Emoji** click behavior.
+
+### `disabledAddCustomEmoji`
+
+- **Type**: `boolean`
+- **Default**: `false`
+- **Desc**: Disables the **Add Custom Emoji** button in both the nav and grid.
+
+---
+
+## `navOptions`
+
+Control navigation visibility in the emoji grid.
+
+```ts
+navOptions?: {
+  minCellsToHideNav?: number;
+};
+```
+
+### `minCellsToHideNav`
+
+- **Type**: `number`
+- **Default**: `60`
+- **Desc**: Minimum number of emojis in emoji picker grid required before showing navigation.
+
+---
+
+## `gridOptions`
+
+Customize the emoji grid.
+
+```ts
+gridOptions?: {
+  visibleRows?: number;
+  cellSize?: number;
+  localStorageRecentEmojisKey?: string;
+};
+```
+
+### `visibleRows`
+
+- **Type**: `number`
+- **Default**: `9`
+- **Desc**: Number of rows visible in the grid at once.
+
+### `cellSize`
+
+- **Type**: `number`
+- **Default**: `32`
+- **Desc**: Size (px) of each emoji cell in emoji picker grid.
+
+### `localStorageRecentEmojisKey`
+
+- **Type**: `string`
+- **Default**: `"recent-tiptap-emojis"`
+- **Desc**: Storage key for saving **recently used emojis**.
+
+> Make sure `localStorageRecentEmojisKey` you set in the extension matches the one used in [EmojiPopoverTriggerWrapper](/components/emoji-popover-trigger-wrapper#localstoragerecentemojiskey) if you configure it
+
+---
+
+<section>
+
+<H2
+  iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f680.svg"
+  iconAlt="🚀"
+>
+  What’s Next?
+</H2>
+
+- 👉 Check out the [Commands](/commands) section to learn how to use commands.
+
+</section>

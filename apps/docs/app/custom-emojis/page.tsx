@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import Content from "./content.mdx";
 import { createMetadata } from "../../lib/metadata";
 import Header from "../../components/Header";
+import TocSidebar from "../../components/toc-sidebar";
 
 export const metadata = createMetadata({
   title: "Custom Emojis | tiptap-extension-twemoji docs",
@@ -22,11 +23,11 @@ export default async function Page() {
       <AppSidebar pathname={pathname} />
       <SidebarInset>
         <Header as="a" />
-
         <div className="p-4">
           <Content />
         </div>
       </SidebarInset>
+      <TocSidebar />
     </SidebarProvider>
   );
 }

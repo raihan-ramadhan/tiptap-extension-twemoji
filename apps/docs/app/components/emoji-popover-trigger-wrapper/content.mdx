@@ -1,0 +1,202 @@
+# EmojiPopoverTriggerWrapper
+
+`EmojiPopoverTriggerWrapper` is a wrapper component that attaches an emoji popover to any trigger element.  
+It provides control over open state, custom emojis, header UI, and grid configuration.
+
+---
+
+## Usage
+
+```tsx
+import {
+  Emoji,
+  isEmoji,
+  CustomEmoji,
+} from "@raihancodes/tiptap-extension-twemoji-react";
+import { EmojiPopoverTriggerWrapper } from "@raihancodes/tiptap-extension-twemoji-react/popover";
+
+type IconAttrs = {
+  alt: string;
+  src: string;
+  draggable: boolean;
+  style: React.CSSProperties;
+};
+
+const [iconAttrs, setIconAttrs] = useState<IconAttrs | null>(null);
+
+const selectEmojiHandler = (emoji: CustomEmoji | Emoji) => {
+  const src = isEmoji(emoji) ? emoji.svgUrl : emoji.url;
+
+  const attrs = {
+    alt: emoji.label,
+    src,
+    draggable: false,
+    style: {
+      display: "inline-block",
+      margin: "0 0.1em",
+      verticalAlign: "-0.1em",
+      objectFit: "contain",
+    } as React.CSSProperties,
+  };
+
+  setIconAttrs(attrs);
+};
+
+const onDelete = () => {
+  setIconAttrs(null);
+};
+
+<EmojiPopoverTriggerWrapper
+  selectEmojiHandler={selectEmojiHandler}
+  headerOptions={{ onDelete, isEmpty: !iconAttrs }}
+>
+  <button>
+    {iconAttrs ? (
+      <Image
+        width={78}
+        height={78}
+        alt={iconAttrs.alt}
+        src={iconAttrs.src}
+        style={iconAttrs.style}
+        draggable={iconAttrs.draggable}
+      />
+    ) : (
+      <>
+        <Smile className="size-5" />
+        Add Emoji
+      </>
+    )}
+  </button>
+</EmojiPopoverTriggerWrapper>;
+```
+
+---
+
+## Props
+
+### `selectEmojiHandler`
+
+- **Type**: `(emoji: CustomEmoji | Emoji) => void`
+- **Required**: ✅
+
+Called when an emoji is selected.
+
+---
+
+### `children`
+
+- **Type**: `React.ReactElement<React.HTMLAttributes<HTMLElement>>`
+- **Required**: ✅
+
+The trigger element that opens the emoji popover.  
+For example: `<button />`, `<div />`, or `<span />`.
+
+---
+
+### `isOpen`
+
+- **Type**: `boolean`
+- **Default**: _controlled externally if provided_
+
+Specifies whether the popover is open. Use together with `setIsOpen` for controlled state.
+
+---
+
+### `setIsOpen`
+
+- **Type**: `React.Dispatch<React.SetStateAction<boolean>>`
+
+State setter returned from `useState`. Use to control the popover's open state.
+
+---
+
+### `customEmojis`
+
+- **Type**: `CustomEmoji[]`
+
+An array of custom emojis to display in the grid.
+
+---
+
+### `defaultOpen`
+
+- **Type**: `boolean`
+- **Default**: `false`
+
+If `true`, the popover starts open by default.
+
+---
+
+### `headerOptions`
+
+Controls the header UI in the popover. Extends [`ExtensionHeaderOptions`](/deep-dive#headeroptions).
+
+```ts
+headerOptions?: {
+  isEmpty?: boolean;
+  setRandomEmojiOnEmpty?: boolean;
+  onDelete?: () => void;
+  closeAfterSelectRandom?: boolean;
+  closeAfterDelete?: boolean;
+  removeButton?: boolean;
+  randomButton?: boolean;
+  skinToneSelect?: boolean;
+};
+```
+
+- **`isEmpty`**:
+  State flag to indicate if the trigger has no emoji selected.
+- **`setRandomEmojiOnEmpty`**:  
+  If `true`, clicking this component while `isEmpty` is `true` will call `selectEmojiHandler` with a random emoji.  
+  Default: `true`
+- **`onDelete`**:
+  Callback fired when the **RemoveButton** is clicked.
+- **`closeAfterSelectRandom`**:
+  Whether to close the popover after click the **Random Button** .
+  Default: `true`.
+- **`closeAfterDelete`**:
+  Whether to close the popover after click the **Remove Button**.
+  Default: `true`.
+- **`removeButton`**:
+  Show or hide the **Remove Button**.
+  Default: `true`.
+- **`randomButton`**:
+  Show or hide the **Random Button**.
+  Default: `true`.
+- **`skinToneSelect`**:
+  Show or hide the **Skin Tone Select**.
+  Default: `true`.
+
+---
+
+### `customEmojiOptions`
+
+See [Deep Dive — `customEmojiOptions`](/deep-dive#customemojioptions).
+
+---
+
+### `navOptions`
+
+See [Deep Dive — `navOptions`](/deep-dive#navoptions).
+
+---
+
+### `gridOptions`
+
+See [Deep Dive — `gridOptions`](/deep-dive#gridoptions).
+
+---
+
+<section>
+
+<H2
+  iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f680.svg"
+  iconAlt="🚀"
+>
+  What’s Next?
+</H2>
+
+- 👉 Curious about what’s next? Head over to [Coming Soon Components](/soon/components)
+  to get a sneak peek at upcoming features and planned components—you might find exactly what you’ve been waiting for!
+
+</section>

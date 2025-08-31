@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import Content from "./content.mdx";
 import { createMetadata } from "../../lib/metadata";
 import Header from "../../components/Header";
+import TocSidebar from "../../components/toc-sidebar";
 
 export const metadata = createMetadata({
   title: "Usage | tiptap-extension-twemoji docs",
@@ -26,6 +27,7 @@ export default async function Page() {
           <Content />
         </div>
       </SidebarInset>
+      <TocSidebar />
     </SidebarProvider>
   );
 }

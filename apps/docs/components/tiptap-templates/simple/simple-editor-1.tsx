@@ -136,7 +136,7 @@ export function SimpleEditor1({
             onSuccess: (successMessage, callback) =>
               handleEmojiOnSuccess(successMessage, callback, router),
             onError: (errorMessage) => handleEmojiOnError(errorMessage),
-            interceptAddCustomEmojiClick: (dismiss) =>
+            interceptAddEmojiClick: (dismiss) =>
               handleInterceptAddCustomEmoji(() => {
                 dismiss?.();
                 setIsOpen(true);

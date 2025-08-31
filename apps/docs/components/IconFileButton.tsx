@@ -21,60 +21,36 @@ import { Smile } from "lucide-react";
 import { useIsMobile } from "../hooks/use-mobile";
 import { Button } from "./ui/button";
 
+type IconAttrs = {
+  alt: string;
+  src: string;
+  draggable: boolean;
+  style: React.CSSProperties;
+};
+
 const IconFileButton = ({
   setIsOpen: setIsOpenDialog,
 }: {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [iconAttrs, setIconAttrs] = useState<
-    | {
-        [x: string]: string | boolean | React.CSSProperties;
-        src: string;
-        alt: string;
-        draggable: boolean;
-        style: string | React.CSSProperties;
-      }
-    | {
-        alt: string;
-        src: string;
-        draggable: boolean;
-        style: Record<string, string | number>;
-      }
-    | null
-  >(null);
+  const [iconAttrs, setIconAttrs] = useState<IconAttrs | null>(null);
 
   const selectEmojiHandler = (emoji: CustomEmoji | Emoji) => {
-    let attrs;
+    const src = isEmoji(emoji) ? emoji.svgUrl : emoji.url;
 
-    if (isEmoji(emoji)) {
-      attrs = {
-        alt: emoji.label,
-        src: emoji.svgUrl,
-        draggable: false,
-        style: {
-          display: "inline-block",
-          margin: "0 0.1em",
-          verticalAlign: "-0.1em",
-          objectFit: "contain",
-        },
-      };
-    } else {
-      attrs = {
-        alt: emoji.label,
-        src: emoji.url,
-        draggable: false,
-        style: {
-          display: "inline-block",
-          margin: "0 0.1em",
-          verticalAlign: "-0.1em",
-          objectFit: "contain",
-        },
-      };
-    }
+    const attrs = {
+      alt: emoji.label,
+      src,
+      draggable: false,
+      style: {
+        display: "inline-block",
+        margin: "0 0.1em",
+        verticalAlign: "-0.1em",
+        objectFit: "contain",
+      } as React.CSSProperties,
+    };
 
-    if (attrs) {
-      setIconAttrs(attrs);
-    }
+    setIconAttrs(attrs);
   };
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -103,7 +79,7 @@ const IconFileButton = ({
         onSuccess: (successMessage, callback) =>
           handleEmojiOnSuccess(successMessage, callback, router),
         onError: (errorMessage) => handleEmojiOnError(errorMessage),
-        interceptAddCustomEmojiClick: (dismiss) =>
+        interceptAddEmojiClick: (dismiss) =>
           handleInterceptAddCustomEmoji(() => {
             dismiss?.();
             setIsOpenDialog(true);
@@ -111,7 +87,7 @@ const IconFileButton = ({
       }}
       selectEmojiHandler={selectEmojiHandler}
       isOpen={isOpen}
-      onOpenChange={setIsOpen}
+      setIsOpen={setIsOpen}
       customEmojis={customEmojis}
     >
       <Button
@@ -125,10 +101,7 @@ const IconFileButton = ({
             width={78}
             height={78}
             draggable={iconAttrs.draggable}
-            style={
-              typeof iconAttrs.style === "string" ? undefined : iconAttrs.style
-            }
-            className="aspect-square"
+            style={iconAttrs.style}
           />
         ) : (
           <>

@@ -18,13 +18,17 @@ This page will walk you through the basic usage of custom emoji.
 
 ---
 
+<section>
+
 <H2
   iconUrl="https://ofqhpepsytodemxfrhrc.supabase.co/storage/v1/object/public/tiptap-extension-twemoji-assets/okabe.jpg"
   iconAlt="okabe"
   iconClassName="rounded"
 >
-  Using Predefined Custom Emojis
+  Predefined Custom Emojis
 </H2>
+
+Using Predefined Custom Emojis
 
 ```tsx
 // components/Editor.tsx
@@ -46,13 +50,11 @@ export default function Editor() {
   const customEmojis: CustomEmoji[] = [
     {
       id: "8177849e-c2c9-424a-a914-ff128ce439c5",
-      created_at: "2025-08-09T00:26:09.143473+00:00",
       label: "github-icon",
       url: "...",
     },
     {
       id: "cecf7043-80da-4e3f-b167-6a85de0e464a",
-      created_at: "2025-08-09T01:23:15.144872+00:00",
       label: "npm-icon",
       url: "...",
     },
@@ -68,24 +70,29 @@ export default function Editor() {
 }
 ```
 
+</section>
+
 ---
+
+<section>
 
 <H2
   iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f5c4.svg"
   iconAlt="🗄️"
   iconClassName="rounded"
 >
-  Using Custom Emojis from Database
+  Database Custom Emojis
 </H2>
 
-Example: Fetching custom emojis from your database
+### Fetching Example
 
 ```tsx
 // page.tsx
 import { CustomEmoji } from "@raihancodes/tiptap-extension-twemoji-react";
 
 export default async function Page() {
-  const { data, error } = await supabase.from("emojis").select("*");
+  // Fetch from your database / API / data source
+  const { data, error } = await fetchFromDatabase("custom-emojis");
 
   if (error) {
     console.error("Error fetching emojis:", error);
@@ -96,6 +103,8 @@ export default async function Page() {
   return <Editor customEmojis={customEmojis} />;
 }
 ```
+
+### Upload & Apply Emojis
 
 Handling Emoji Uploads and Applying Fetched Emojis
 
@@ -120,23 +129,31 @@ export default function Editor({
 }) {
   const handleEmojiUpload: EmojiUploadProps["upload"] = async ({
     emojiName,
-    files,
+    file,
     handleSuccess,
     handleError,
     dismiss,
   }) => {
-    // your code
-  };
-
-  const handleEmojiOnError: EmojiUploadProps["onError"] = (errorMessage) => {
-    // your code
+    // Upload to your server / S3 / Supabase
+    const res = await uploadToServer(file);
+    if (res.ok) {
+      handleSuccess(res.message, dismiss);
+    } else {
+      handleError(res.message);
+    }
   };
 
   const handleEmojiOnSuccess: EmojiUploadProps["onSuccess"] = (
     successMessage,
     callback
   ) => {
-    // your code
+    console.log(successMessage);
+    callback?.();
+    router.refresh(); // optional
+  };
+
+  const handleEmojiOnError: EmojiUploadProps["onError"] = (errorMessage) => {
+    console.error(errorMessage);
   };
 
   const editor = useEditor({
@@ -165,9 +182,13 @@ export default function Editor({
 }
 ```
 
-### Choose the approach that best fits your needs
+Choose the approach that best fits your needs
+
+</section>
 
 ---
+
+<section>
 
 <H2
   iconUrl="https://cdn.jsdelivr.net/gh/primer/octicons@16.1.1/icons/mark-github-16.svg"
@@ -179,7 +200,11 @@ export default function Editor({
 
 For more details, check the [example repo on GitHub](https://github.com/raihan-ramadhan/tiptap-extension-twemoji/tree/master/apps/example)
 
+</section>
+
 ---
+
+<section>
 
 <H2
   iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f680.svg"
@@ -189,3 +214,5 @@ For more details, check the [example repo on GitHub](https://github.com/raihan-r
 </H2>
 
 - 👉 Check out the [Deep Dive](/deep-dive) section to learn how to customize the extension—header, navigation, cell size, custom emojis, etc.
+
+</section>

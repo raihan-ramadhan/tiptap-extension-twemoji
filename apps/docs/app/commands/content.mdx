@@ -1,0 +1,150 @@
+# Commands
+
+The `TwemojiExtension` provides several custom commands that you can call through Tiptap's command system.  
+These commands allow you to update custom emojis, manage recent emojis, and insert emojis into the editor.
+
+---
+
+## `updateCustomEmojis`
+
+```ts
+editor.commands.updateCustomEmojis(emojis: CustomEmoji[])
+```
+
+Updates the list of **custom emojis** stored in the extension.
+
+### Parameters
+
+- `emojis`: `CustomEmoji[]` — Array of custom emoji objects.
+
+When called, the extension storage and emoji grid component will update (reactive) to reflect the new emoji list.
+
+### Example
+
+```ts
+editor.commands.updateCustomEmojis([
+  {
+    id: "8177849e-c2c9-424a-a914-ff128ce439c5",
+    label: "github-icon",
+    url: "...",
+  },
+  {
+    id: "cecf7043-80da-4e3f-b167-6a85de0e464a",
+    label: "npm-icon",
+    url: "...",
+  },
+]);
+```
+
+---
+
+## `updateRecentEmojis`
+
+```ts
+editor.commands.updateRecentEmojis(emojis: StoredEmoji[])
+```
+
+Updates the **recently used emojis** in storage.
+
+### Parameters
+
+- `emojis`: `StoredEmoji[]`
+
+Useful if you want to sync or preload recent emojis.
+
+### Example
+
+```ts
+editor.commands.updateRecentEmojis([
+  // custom emoji
+  {
+    id: "bb40d910-b016-46ca-9445-48ddc1f4b3e0",
+    label: "tiptap-icon",
+    url: "...",
+  },
+  // normal emoji
+  { hexcode: "1F605" },
+]);
+```
+
+---
+
+## `insertUnicodeEmoji`
+
+```ts
+editor.commands.insertUnicodeEmoji(text: string)
+```
+
+Parses a string containing Unicode emojis and inserts them into the editor.  
+Non-emoji characters are preserved as text.
+
+### Parameters
+
+- `text`: `string` — The raw string containing emojis.
+
+### Example
+
+```ts
+editor.commands.insertUnicodeEmoji("Hello 🌍🔥");
+```
+
+This will insert `Hello ` followed by the globe emoji 🌍 and the fire emoji 🔥 as emoji nodes.
+
+---
+
+## `insertEmoji`
+
+```ts
+editor.commands.insertEmoji(data: Emoji | CustomEmoji, range?: Range)
+```
+
+Inserts an emoji (either standard or custom) into the editor at the current selection or at the given range.
+
+### Parameters
+
+- `data`: `Emoji | CustomEmoji` — The emoji object or custom emoji.
+- `range`: `Range` (optional) — A `{ from, to }` range to insert into, if undefined editor will insert at the current selection.
+
+### Example
+
+```ts
+// Emoji
+editor.commands.insertEmoji({
+  label: "grinning face with big eyes",
+  emoji: "😃",
+  group: 0,
+  svgUrl:
+    "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f603.svg",
+  hexcode: "1F603",
+  x: 370,
+  y: 148,
+});
+```
+
+This inserts the 😃 emoji followed by a space on last focus location editor.
+
+```ts
+// CustomEmoji
+editor.commands.insertEmoji({
+  id: "bb40d910-b016-46ca-9445-48ddc1f4b3e0",
+  label: "tiptap-icon",
+  url: "...",
+});
+```
+
+This inserts the custom emoji followed by a space on last focus location editor.
+
+---
+
+<section>
+
+<H2
+  iconUrl="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f680.svg"
+  iconAlt="🚀"
+>
+  What’s Next?
+</H2>
+
+- 👉 Check out the [EmojiPopoverTriggerWrapper](/components/emoji-popover-trigger-wrapper) section to learn how to use and customize the EmojiPopoverTriggerWrapper—open state, custom emojis, header UI, grid settings, and more.
+
+</section>

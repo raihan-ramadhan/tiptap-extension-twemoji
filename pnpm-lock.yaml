@@ -143,6 +143,9 @@ importers:
       react-hotkeys-hook:
         specifier: ^5.1.0
         version: 5.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-intersection-observer:
+        specifier: ^9.16.0
+        version: 9.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       rehype-autolink-headings:
         specifier: ^7.1.0
         version: 7.1.0
@@ -161,6 +164,9 @@ importers:
       tailwind-merge:
         specifier: ^3.0.1
         version: 3.0.1
+      tailwind-scrollbar-hide:
+        specifier: ^4.0.0
+        version: 4.0.0(tailwindcss@4.0.8)
       zustand:
         specifier: ^5.0.7
         version: 5.0.7(@types/react@19.0.10)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
@@ -4706,6 +4712,15 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
 
+  react-intersection-observer@9.16.0:
+    resolution: {integrity: sha512-w9nJSEp+DrW9KmQmeWHQyfaP6b03v+TdXynaoA964Wxt7mdR3An11z4NNCQgL4gKSK7y1ver2Fq+JKH6CWEzUA==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -5238,6 +5253,11 @@ packages:
 
   tailwind-merge@3.0.1:
     resolution: {integrity: sha512-AvzE8FmSoXC7nC+oU5GlQJbip2UO7tmOhOfQyOmPhrStOGXHU08j8mZEHZ4BmCqY5dWTCo4ClWkNyRNx1wpT0g==}
+
+  tailwind-scrollbar-hide@4.0.0:
+    resolution: {integrity: sha512-gobtvVcThB2Dxhy0EeYSS1RKQJ5baDFkamkhwBvzvevwX6L4XQfpZ3me9s25Ss1ecFVT5jPYJ50n+7xTBJG9WQ==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 4.0.0 || >= 4.0.0-beta.8 || >= 4.0.0-alpha.20'
 
   tailwindcss@4.0.8:
     resolution: {integrity: sha512-Me7N5CKR+D2A1xdWA5t5+kjjT7bwnxZOE6/yDI/ixJdJokszsn2n++mdU5yJwrsTpqFX2B9ZNMBJDwcqk9C9lw==}
@@ -10567,6 +10587,12 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
+  react-intersection-observer@9.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+    optionalDependencies:
+      react-dom: 19.1.0(react@19.1.0)
+
   react-is@16.13.1: {}
 
   react-remove-scroll-bar@2.3.8(@types/react@19.0.10)(react@19.1.0):
@@ -11261,6 +11287,10 @@ snapshots:
   tabbable@6.2.0: {}
 
   tailwind-merge@3.0.1: {}
+
+  tailwind-scrollbar-hide@4.0.0(tailwindcss@4.0.8):
+    dependencies:
+      tailwindcss: 4.0.8
 
   tailwindcss@4.0.8: {}
 

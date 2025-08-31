@@ -15,6 +15,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { ContributingIcon } from "@/components/ContributingIcon";
 import { getStarCount } from "../../lib/github";
+import { createMetadata } from "../../lib/metadata";
+
+export const metadata = createMetadata({
+  title:
+    "Sponsor  — EmojiPopoverTriggerWrapper | tiptap-extension-twemoji docs",
+  description:
+    "Support Raihan, creator of tiptap-extension-twemoji. Sponsor on GitHub, buy a coffee, or hire for freelance Tiptap development.",
+  path: "/sponsor",
+});
 
 export default async function Page() {
   const headerList = await headers();
@@ -29,7 +38,7 @@ export default async function Page() {
         <Header as="a" />
 
         <div className="p-4 flex justify-center sm:items-center max-[768px]:pb-8 flex-1">
-          <Card className="max-w-2xl w-full shadow-lg border ">
+          <Card className="max-w-3xl w-full shadow-lg border ">
             <CardHeader>
               <CardTitle>Support Raihan</CardTitle>
               <CardDescription>

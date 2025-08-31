@@ -75,7 +75,7 @@ const data = {
       title: "Support the Developer",
       url: "",
       items: [
-        { title: "Sponsor & Hire Me", url: "support", icon: ContributingIcon },
+        { title: "Support & Hire Me", url: "sponsor", icon: ContributingIcon },
       ],
     },
   ],
@@ -103,13 +103,13 @@ const data = {
       url: "soon",
       items: [
         {
-          title: "Vue, Svelte",
-          url: "vue-svelte-version",
+          title: "Components",
+          url: "components",
           icon: null,
         },
         {
-          title: "Components",
-          url: "components",
+          title: "Vue, Svelte",
+          url: "vue-svelte-version",
           icon: null,
         },
         {

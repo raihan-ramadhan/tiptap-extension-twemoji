@@ -10,6 +10,15 @@ function extractText(children: any): string {
   return "";
 }
 
+const slugify = (text: string) => {
+  let id = text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+  return id;
+};
+
 const components: MDXComponents = {
   // Headings
   h1: ({ children, ...props }) => (
@@ -68,6 +77,16 @@ const components: MDXComponents = {
     </li>
   ),
 
+  // Blockquote
+  blockquote: ({ children, ...props }) => (
+    <blockquote
+      className="my-4 border-l-4 border-yellow-400 bg-yellow-50/80 px-2 py-0.5 text-yellow-800 dark:border-yellow-500 dark:bg-yellow-950/30 dark:text-yellow-200 rounded-r-lg"
+      {...props}
+    >
+      {children}
+    </blockquote>
+  ),
+
   // Links
   a: ({ children, ...props }) => (
     <Link className="underline" {...props}>
@@ -82,9 +101,9 @@ const components: MDXComponents = {
       {...props}
     />
   ),
+
   H2: ({ children, iconUrl, iconAlt, className, iconClassName, ...props }) => {
     const text = extractText(children);
-
     return (
       <h2
         className={cn(
@@ -92,6 +111,7 @@ const components: MDXComponents = {
           className
         )}
         {...props}
+        id={slugify(text)}
       >
         {iconUrl && (
           <span className="flex-shrink-0 leading-none mt-0.5">
@@ -108,6 +128,34 @@ const components: MDXComponents = {
         )}
         <span className="w-full inline-flex"> {text}</span>
       </h2>
+    );
+  },
+  H3: ({ children, iconUrl, iconAlt, className, iconClassName, ...props }) => {
+    const text = extractText(children);
+    return (
+      <h3
+        className={cn(
+          `text-xl font-medium mt-4 mb-2 flex items-start gap-2`,
+          className
+        )}
+        {...props}
+        id={slugify(text)}
+      >
+        {iconUrl && (
+          <span className="flex-shrink-0 leading-none mt-0.5">
+            <img
+              src={iconUrl}
+              alt={iconAlt}
+              className={cn(
+                "inline-block h-[1em] w-[1em] align-middle cursor-text",
+                iconClassName
+              )}
+              draggable="false"
+            />
+          </span>
+        )}
+        <span className="w-full inline-flex"> {text}</span>
+      </h3>
     );
   },
 };

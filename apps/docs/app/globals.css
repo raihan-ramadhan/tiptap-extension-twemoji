@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "tailwind-scrollbar-hide/v4";
 
 @import "../styles/_variables.scss";
 @import "../styles/_keyframe-animations.scss";
@@ -120,5 +121,8 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  html {
+    scroll-behavior: smooth;
   }
 }

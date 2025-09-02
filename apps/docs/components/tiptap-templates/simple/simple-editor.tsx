@@ -3,7 +3,6 @@
 import * as React from "react";
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit";
@@ -78,7 +77,6 @@ import "@/components/tiptap-templates/simple/simple-editor.scss";
 import content from "@/components/tiptap-templates/simple/data/content.json";
 
 import {
-  EmojiUploadProps,
   TwemojiExtension,
   type CustomEmoji,
 } from "@raihancodes/tiptap-extension-twemoji-react";
@@ -210,19 +208,6 @@ export function SimpleEditor({
     "main" | "highlighter" | "link"
   >("main");
   const toolbarRef = React.useRef<HTMLDivElement>(null);
-
-  const onError: EmojiUploadProps["onError"] = (errorMessage) => {
-    toast.error(errorMessage);
-  };
-
-  const onSuccess: EmojiUploadProps["onSuccess"] = (
-    successMessage,
-    callback
-  ) => {
-    toast.success(successMessage);
-    callback?.();
-    router.refresh();
-  };
 
   const editor = useEditor({
     immediatelyRender: false,

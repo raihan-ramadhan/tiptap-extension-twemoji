@@ -5,7 +5,7 @@ import { SidebarTrigger } from "./ui/sidebar";
 
 const Header = ({ as = "span" }: { as?: "span" | "a" }) => {
   return (
-    <header className="flex h-16 shrink-0 items-center justify-around gap-2 border-b px-4 min-[768px]:hidden">
+    <header className="flex h-16 shrink-0 items-center justify-around gap-2 border-b px-4 min-[768px]:hidden text-center">
       <SidebarTrigger className="-ml-1" />
       <Separator
         orientation="vertical"

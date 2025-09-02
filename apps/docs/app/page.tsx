@@ -36,7 +36,7 @@ export default async function Page() {
     customEmojis.map(async (emoji) => {
       const { data, error } = await supabase.storage
         .from("emojis")
-        .createSignedUrl(emoji.url, 900); // 15 minutes expiration
+        .createSignedUrl(emoji.url, 24 * 60 * 60); // 1 day expiration
 
       if (error) {
         console.error("Failed to get signed URL:", error);

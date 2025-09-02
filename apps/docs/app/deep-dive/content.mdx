@@ -1,7 +1,20 @@
+import EmojiGridCustomizer from "../../components/EmojiGridCustomizer";
+
 # Deep Dive
 
 This page covers all configuration options for the `TwemojiExtension`.  
 You can pass these options when creating the extension:
+
+---
+
+<EmojiGridCustomizer
+  customEmojis={props.customEmojis}
+  type="editor-suggestion"
+/>
+
+---
+
+## Example
 
 ```ts
 import { TwemojiExtension } from "@raihancodes/tiptap-extension-twemoji-react";
@@ -10,20 +23,10 @@ const editor = useEditor({
   extensions: [
     TwemojiExtension.configure({
       spriteUrl: "/assets/emoji-sprite.webp",
-      headerOptions: {
-        randomButton: true,
-        skinToneSelect: false,
-      },
-      customEmojiOptions: {
-        maxSize: 5 * 1000 * 1000, // 5MB
-      },
-      navOptions: {
-        minCellsToHideNav: 50,
-      },
-      gridOptions: {
-        visibleRows: 6,
-        cellSize: 38,
-      },
+      headerOptions: { skinToneSelect: false },
+      customEmojiOptions: { maxSize: 5 * 1000 * 1000 }, // 5MB
+      navOptions: { minCellsToHideNav: 50 },
+      gridOptions: { cellSize: 38 },
     }),
   ],
 });
@@ -62,6 +65,58 @@ headerOptions?: {
 - **Type**: `boolean`
 - **Default**: `true`
 - **Desc**: Show or hide the **Skin Tone Selector**.
+
+---
+
+## `gridOptions`
+
+Customize the emoji grid.
+
+```ts
+gridOptions?: {
+  visibleRows?: number;
+  cellSize?: number;
+  localStorageRecentEmojisKey?: string;
+};
+```
+
+### `visibleRows`
+
+- **Type**: `number`
+- **Default**: `9`
+- **Desc**: Number of rows visible in the grid at once.
+
+### `cellSize`
+
+- **Type**: `number`
+- **Default**: `32`
+- **Desc**: Size (px) of each emoji cell in emoji picker grid.
+
+### `localStorageRecentEmojisKey`
+
+- **Type**: `string`
+- **Default**: `"recent-tiptap-emojis"`
+- **Desc**: Storage key for saving **recently used emojis**.
+
+> Make sure `localStorageRecentEmojisKey` you set in the extension matches the one used in [EmojiPopoverTriggerWrapper](/components/emoji-popover-trigger-wrapper#localstoragerecentemojiskey) if you configure it
+
+---
+
+## `navOptions`
+
+Control navigation visibility in the emoji grid.
+
+```ts
+navOptions?: {
+  minCellsToHideNav?: number;
+};
+```
+
+### `minCellsToHideNav`
+
+- **Type**: `number`
+- **Default**: `60`
+- **Desc**: Minimum number of emojis in emoji picker grid required before showing navigation.
 
 ---
 
@@ -111,7 +166,7 @@ _Signature:_
 (successMessage: string, callback?: () => void) => void;
 ```
 
-> ⚠️ You mus Invoke [`upload`](/deep-dive#upload)'s `handleSuccess` on a successful upload to run `onSuccess`
+> ⚠️ You must Invoke [`upload`](/deep-dive#upload)'s `handleSuccess` on a successful upload to run `onSuccess`
 
 ### `onError`
 
@@ -124,7 +179,7 @@ _Signature:_
 (errorMessage: string) => void;
 ```
 
-> ⚠️ You mus Invoke [`upload`](/deep-dive#upload)'s `handleError` on a successful upload to run `onError`
+> ⚠️ You must Invoke [`upload`](/deep-dive#upload)'s `handleError` on a fail upload to run `onError`
 
 ### `accept`
 
@@ -149,58 +204,6 @@ _Signature:_
 - **Type**: `boolean`
 - **Default**: `false`
 - **Desc**: Disables the **Add Custom Emoji** button in both the nav and grid.
-
----
-
-## `navOptions`
-
-Control navigation visibility in the emoji grid.
-
-```ts
-navOptions?: {
-  minCellsToHideNav?: number;
-};
-```
-
-### `minCellsToHideNav`
-
-- **Type**: `number`
-- **Default**: `60`
-- **Desc**: Minimum number of emojis in emoji picker grid required before showing navigation.
-
----
-
-## `gridOptions`
-
-Customize the emoji grid.
-
-```ts
-gridOptions?: {
-  visibleRows?: number;
-  cellSize?: number;
-  localStorageRecentEmojisKey?: string;
-};
-```
-
-### `visibleRows`
-
-- **Type**: `number`
-- **Default**: `9`
-- **Desc**: Number of rows visible in the grid at once.
-
-### `cellSize`
-
-- **Type**: `number`
-- **Default**: `32`
-- **Desc**: Size (px) of each emoji cell in emoji picker grid.
-
-### `localStorageRecentEmojisKey`
-
-- **Type**: `string`
-- **Default**: `"recent-tiptap-emojis"`
-- **Desc**: Storage key for saving **recently used emojis**.
-
-> Make sure `localStorageRecentEmojisKey` you set in the extension matches the one used in [EmojiPopoverTriggerWrapper](/components/emoji-popover-trigger-wrapper#localstoragerecentemojiskey) if you configure it
 
 ---
 

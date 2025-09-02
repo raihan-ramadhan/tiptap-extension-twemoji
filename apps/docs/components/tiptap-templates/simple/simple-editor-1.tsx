@@ -87,6 +87,7 @@ export function SimpleEditor1({
           autocapitalize: "off",
           "aria-label": "Main content area, start typing to enter text.",
         },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         handleClickOn(view, pos, node, nodePos, event, direct) {
           const target = event.target as HTMLElement;
           if (target.tagName === "A") {

@@ -26,7 +26,7 @@ export function createMetadata({
       siteName: "tiptap-extension-twemoji",
       images: [
         {
-          url: `${BASE_URL}/og-image.png`,
+          url: `${BASE_URL}/og-image-1.png`,
           width: 1200,
           height: 630,
         },
@@ -38,7 +38,7 @@ export function createMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [`${BASE_URL}/og-image.png`],
+      images: [`${BASE_URL}/og-image-1.png`],
       creator: "@raihancodes",
     },
     icons: {

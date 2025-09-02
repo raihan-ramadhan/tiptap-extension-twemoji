@@ -122,7 +122,7 @@ const Cell: React.FC<GridChildComponentProps<ItemData>> = ({
         data: finalEmoji,
         styleOption: { type: "object", sizeInpixel: cellSize - cellPadding },
       });
-    }, [finalEmoji]);
+    }, [finalEmoji, cellSize]);
 
     let content = (
       <img

@@ -4,19 +4,20 @@ import { useMemo, useState } from "react";
 import { getEmojiSprite } from "@/lib/emoji-utils";
 
 // TYPES
-import { CustomEmoji, StoredEmoji, SuggestionItems } from "@/types";
+import { CustomEmoji, StoredEmoji } from "@/types";
 
 // ASSETS & DATA
 import emojisSubstringIndexes from "@/assets/emoji-substring-index.json";
 import emojiSpriteOrder from "@/data/emoji-sprite-order";
 import emojis, { Emoji } from "@/data/emoji-sprite-map";
+import { LOCAL_STORAGE_RECENT_EMOJIS_KEY } from "../constants";
 
 export function useEmojiGridState({
   customEmojis = [],
   localStorageRecentEmojisKey,
 }: {
   customEmojis?: CustomEmoji[];
-  localStorageRecentEmojisKey: string;
+  localStorageRecentEmojisKey?: string;
 }) {
   const [query, setQuery] = useState<string>("");
   const lowerQuery = query.toLowerCase().trim();
@@ -43,7 +44,9 @@ export function useEmojiGridState({
     if (query.length > 0 || typeof window === "undefined") return [];
 
     try {
-      const stored = localStorage.getItem(localStorageRecentEmojisKey);
+      const stored = localStorage.getItem(
+        localStorageRecentEmojisKey ?? LOCAL_STORAGE_RECENT_EMOJIS_KEY
+      );
       if (!stored) return [];
 
       const parsed: StoredEmoji[] = JSON.parse(stored);

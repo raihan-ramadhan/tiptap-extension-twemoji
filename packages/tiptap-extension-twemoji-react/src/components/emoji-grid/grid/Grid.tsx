@@ -62,6 +62,7 @@ export default function ({
   recent,
   filteredCustomEmojis,
   filteredEmojis,
+  disabledFocusAndEvent,
 }: ComponentEmojiMentionProps) {
   const selectedCellElementRef: SelectedCellElementRef = useRef(null);
 
@@ -88,14 +89,18 @@ export default function ({
 
   const { arr2d, groupsIndexes } = useMemo(() => {
     setSelectedCell({ row: 1, column: 0 });
-    requestAnimationFrame(() => {
-      if (gridRef.current) {
-        gridRef.current.scrollTo({
-          scrollLeft: 0,
-          scrollTop: 0,
-        });
-      }
-    });
+
+    if (typeof window !== "undefined") {
+      requestAnimationFrame(() => {
+        if (gridRef.current) {
+          gridRef.current.scrollTo({
+            scrollLeft: 0,
+            scrollTop: 0,
+          });
+        }
+      });
+    }
+
     return transformData({
       filteredCustomEmojis,
       COLUMNS,
@@ -167,7 +172,7 @@ export default function ({
   const focusTrap = useRef<ReturnType<typeof createFocusTrap> | null>(null);
 
   useEffect(() => {
-    if (!trapRef.current) return;
+    if (!trapRef.current || disabledFocusAndEvent) return;
 
     const trap = createFocusTrap(trapRef.current, {
       fallbackFocus: trapRef.current,
@@ -212,13 +217,16 @@ export default function ({
       activateTrap,
       deactivateTrap,
       trapRef,
+      disabledFocusAndEvent,
       onCancel: () => {
         onCancel?.();
         // If `triggerRef` exists, this Grid is being used inside the EmojiPopoverTriggerWrapper.
         // If not, it's being used inside the Editor.
-        requestAnimationFrame(() => {
-          triggerRef?.current?.focus();
-        });
+        if (typeof window !== "undefined") {
+          requestAnimationFrame(() => {
+            triggerRef?.current?.focus();
+          });
+        }
       },
     });
 
@@ -235,9 +243,11 @@ export default function ({
       if (currentEl) {
         currentEl.focus();
       }
-      requestAnimationFrame(() => {
-        activateTrap();
-      });
+      if (typeof window !== "undefined") {
+        requestAnimationFrame(() => {
+          activateTrap();
+        });
+      }
     }, 150),
     [selectedCellElementRef.current, outerRef.current]
   );

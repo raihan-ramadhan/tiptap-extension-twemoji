@@ -54,6 +54,7 @@ interface OnKeydownHandlersProps {
   activateTrap: () => void;
   trapRef: React.RefObject<HTMLDivElement | null>;
   onCancel: () => void;
+  disabledFocusAndEvent?: boolean;
 }
 
 export function useOnKeydownHandlers({
@@ -74,6 +75,7 @@ export function useOnKeydownHandlers({
   deactivateTrap,
   trapRef,
   onCancel,
+  disabledFocusAndEvent,
 }: OnKeydownHandlersProps) {
   const sharedScrollParams = {
     gridRef,
@@ -359,7 +361,8 @@ export function useOnKeydownHandlers({
   }, []);
 
   useEffect(() => {
-    if (!isActive) return;
+    if (!isActive || disabledFocusAndEvent) return;
+
     const onKeyDown = (event: KeyboardEvent) => {
       const keyMap: Record<string, () => void> = {
         ArrowUp: upHandler,
@@ -390,7 +393,7 @@ export function useOnKeydownHandlers({
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [arr2d, isActive]);
+  }, [arr2d, isActive, disabledFocusAndEvent]);
 
   return {
     enableEmojiCellsNavigation,

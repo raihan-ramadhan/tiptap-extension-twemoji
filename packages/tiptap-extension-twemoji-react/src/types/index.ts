@@ -141,6 +141,7 @@ export type ComponentEmojiMentionProps = DropzoneUploadProps &
     recent: StoredEmoji[];
     filteredEmojis: Emoji[];
     filteredCustomEmojis: CustomEmoji[];
+    disabledFocusAndEvent?: boolean;
   };
 
 export type GroupTitle = { groupTitle: string };

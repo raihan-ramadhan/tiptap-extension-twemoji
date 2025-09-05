@@ -1,6 +1,5 @@
 import { EMOJI_GROUPS, EMOJI_GROUPS_PROPS, getGroup } from "@/lib/emoji-groups";
-import { ARRAY2D_ITEM_PROPS, CustomEmoji, StoredEmoji } from "@/types";
-import { Emoji } from "@/data/emoji-sprite-map";
+import { ARRAY2D_ITEM_PROPS, CustomEmoji, StoredEmoji, Emoji } from "@/types";
 
 // basicaly this function is to tranfrom from [Emoji, Emoji, ...rest] to
 // 2d array like [[Emoji,Emoji, ...10 more],[Emoji, ...11 more],] (12 items in array)

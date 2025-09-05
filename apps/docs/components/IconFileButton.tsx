@@ -1,10 +1,10 @@
 "use client";
 
-import { EmojiPopoverTriggerWrapper } from "@raihancodes/tiptap-extension-twemoji-react/popover";
 import {
   CustomEmoji,
   Emoji,
   isEmoji,
+  EmojiPopoverTriggerWrapper,
 } from "@raihancodes/tiptap-extension-twemoji-react";
 
 import React, { useState } from "react";

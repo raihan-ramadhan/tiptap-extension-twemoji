@@ -3,12 +3,24 @@ import {
   SPRITE_SHEET_HEIGHT,
   SPRITE_SHEET_WIDTH,
 } from "@/data/sprite-sheet-details";
-import emojis, { Emoji } from "@/data/emoji-sprite-map";
 
-export type EMOJI_SHORTCODES_EMOTICONS_VALUE = {
-  hexcode: string;
-  skinTones?: string;
-};
+import { Emoji } from "@/types";
+
+import { ExtendedRegExpMatchArray } from "@tiptap/core";
+import { EMOJI_CLASS_NAME } from "@/constants";
+
+// Data
+import { emojis } from "@/lib/utils-data";
+import {
+  EMOJI_EMOTICONS_MAP,
+  EMOJI_SHORTCODES_EMOTICONS_VALUE,
+  EMOJI_SHORTCODES_MAP,
+} from "@/lib/utils-regexes";
+import {
+  EMOTICON_REGEX,
+  SHORTCODES_REGEX,
+  UNICODE_REGEX,
+} from "@/data/emoji-regexes";
 
 export type Hexcode = string;
 
@@ -36,26 +48,6 @@ export function fromUnicodeToHexcode(
 
   return hexcode.join("-");
 }
-
-import EMOJI_EMOTICONS_MAP_JSON from "@/assets/emoji-emoticons-map.json";
-
-const EMOJI_EMOTICONS_MAP = EMOJI_EMOTICONS_MAP_JSON as {
-  [emoticon: string]: EMOJI_SHORTCODES_EMOTICONS_VALUE;
-};
-
-import EMOJI_SHORTCODES_MAP_JSON from "@/assets/emoji-shortcodes-map.json";
-
-const EMOJI_SHORTCODES_MAP = EMOJI_SHORTCODES_MAP_JSON as {
-  [shortcode: string]: EMOJI_SHORTCODES_EMOTICONS_VALUE;
-};
-
-import { ExtendedRegExpMatchArray } from "@tiptap/core";
-import {
-  EMOTICON_REGEX,
-  SHORTCODES_REGEX,
-  UNICODE_REGEX,
-} from "@/assets/emoji-regexes";
-import { EMOJI_CLASS_NAME } from "@/constants";
 
 export const SKIN_TONE_MAP = {
   default: {

@@ -1,7 +1,7 @@
 import "./cell.scss";
 
 import { GridChildComponentProps } from "react-window";
-import { ItemData } from "@/types";
+import { ItemData, Emoji } from "@/types";
 import { HTMLAttributes, memo, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import {
@@ -12,7 +12,6 @@ import {
   isGroupTitle,
 } from "@/lib/emoji-grid-utils";
 import { getAttributes, SKIN_TONE_MAP } from "@/lib/emoji-utils";
-import { Emoji } from "@/data/emoji-sprite-map";
 
 import {
   Tooltip,

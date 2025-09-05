@@ -1,6 +1,6 @@
 import { DOMSerializer } from "@tiptap/pm/model";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
-import { UNICODE_REGEX } from "@/assets/emoji-regexes";
+import { UNICODE_REGEX } from "@/data/emoji-regexes";
 
 export const EmojiCopyPlugin = new Plugin({
   key: new PluginKey("EmojiCopyPlugin"),

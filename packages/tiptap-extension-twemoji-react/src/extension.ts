@@ -8,11 +8,10 @@ import {
 } from "@/lib/emoji-utils";
 
 // ASSETS
-import emojisSubstringIndexes from "@/assets/emoji-substring-index.json";
 import emojiSprite from "../../../assets/emoji-sprite.webp";
 
 // DATA
-import emojis from "@/data/emoji-sprite-map";
+import { emojis, emojisSubstringIndexes } from "@/lib/utils-data";
 
 // PLUGINS
 import { InputPlugin } from "@/plugins/input-plugin";
@@ -24,7 +23,7 @@ import { isCustomEmoji, isEmoji } from "@/lib/emoji-grid-utils";
 // TYPES ONLY
 import type { CommandProps, Editor, Range } from "@tiptap/core";
 import type { SuggestionProps as BaseSuggestionProps } from "@tiptap/suggestion";
-import type { Emoji } from "@/data/emoji-sprite-map";
+
 import type { MentionNodeAttrs } from "@tiptap/extension-mention";
 import type {
   ComponentEmojiMentionProps,
@@ -37,6 +36,8 @@ import type {
   ExtensionNavOptions,
   ExtensionGridOptions,
   SuggestionItems,
+  Emoji,
+  EmojiMap,
 } from "@/types";
 
 // TIPTAP
@@ -69,7 +70,7 @@ import {
   LOCAL_STORAGE_RECENT_EMOJIS_KEY,
 } from "@/constants";
 
-import { UNICODE_REGEX_PASTE } from "./assets/emoji-regexes";
+import { UNICODE_REGEX_PASTE } from "./data/emoji-regexes";
 import { applyEmojiSpriteStyle } from "./lib/emojiSpriteStyle";
 
 export interface MySuggestionProps<TItems = any, TSelected = any>

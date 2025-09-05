@@ -4,13 +4,15 @@ import { useMemo, useState } from "react";
 import { getEmojiSprite } from "@/lib/emoji-utils";
 
 // TYPES
-import { CustomEmoji, StoredEmoji } from "@/types";
+import { CustomEmoji, StoredEmoji, Emoji } from "@/types";
 
 // ASSETS & DATA
-import emojisSubstringIndexes from "@/assets/emoji-substring-index.json";
-import emojiSpriteOrder from "@/data/emoji-sprite-order";
-import emojis, { Emoji } from "@/data/emoji-sprite-map";
-import { LOCAL_STORAGE_RECENT_EMOJIS_KEY } from "../constants";
+import {
+  emojisSubstringIndexes,
+  emojis,
+  emojiSpriteOrder,
+} from "@/lib/utils-data";
+import { LOCAL_STORAGE_RECENT_EMOJIS_KEY } from "@/constants";
 
 export function useEmojiGridState({
   customEmojis = [],

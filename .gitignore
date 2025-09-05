@@ -36,3 +36,4 @@ npm-debug.log*
 *.pem
 
 apps/docs/app/simple
+apps/my-tiptap-project

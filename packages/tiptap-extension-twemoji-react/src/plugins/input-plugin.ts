@@ -6,7 +6,7 @@ import {
   EMOTICON_REGEX,
   SHORTCODES_REGEX,
   UNICODE_REGEX,
-} from "@/assets/emoji-regexes";
+} from "@/data/emoji-regexes";
 
 function customNodeInputRule({
   find,

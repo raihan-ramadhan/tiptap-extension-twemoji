@@ -8,7 +8,6 @@ import EmojiGrid from "@/components/emoji-grid/grid/Grid";
 import { Popover } from "./Popover";
 
 // TYPES
-import { Emoji } from "@/data/emoji-sprite-map";
 import {
   CustomEmoji,
   HeaderUisProps,
@@ -16,6 +15,7 @@ import {
   ExtensionCustomEmojiOptions,
   ExtensionNavOptions,
   ExtensionGridOptions,
+  Emoji,
 } from "@/types";
 
 // Hooks
@@ -146,10 +146,7 @@ export function EmojiPopoverTriggerWrapper({
       child.props.onClick?.(e);
 
       if (setRandomEmojiOnEmpty && isEmpty && filteredEmojis.length > 0) {
-        const randomEmoji = getRandomCellByItemCount(
-          filteredEmojis.length,
-          filteredEmojis
-        );
+        const randomEmoji = getRandomCellByItemCount(filteredEmojis);
         selectEmojiHandler(randomEmoji);
       }
     },

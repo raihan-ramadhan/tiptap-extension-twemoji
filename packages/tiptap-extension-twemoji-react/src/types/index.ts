@@ -1,4 +1,3 @@
-import { EmojiMap, Emoji } from "@/data/emoji-sprite-map";
 import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
 import { Dispatch, Ref, RefObject, SetStateAction } from "react";
 import { SuggestionProps } from "@tiptap/suggestion";
@@ -99,6 +98,19 @@ export type ExtensionGridOptions = {
 };
 
 export type SelectedCellElementRef = RefObject<HTMLButtonElement | null>;
+
+export type Emoji = {
+  x: number;
+  y: number;
+  emoji: string;
+  label: string;
+  svgUrl: string;
+  hexcode: string;
+  group?: number;
+  skins?: EmojiMap;
+};
+
+export type EmojiMap = { [hexcode: string]: Emoji };
 
 export type CustomEmoji = { label: string; url: string; id: string };
 

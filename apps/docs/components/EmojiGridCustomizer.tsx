@@ -155,7 +155,7 @@ const EmojiGridCustomizer = ({
   }, []);
 
   return (
-    <div className="min-h-96 flex w-full justify-center gap-3 my-5 rounded-xl flex-wrap">
+    <div className="min-h-96 flex w-full justify-center gap-5 my-5 rounded-xl flex-wrap">
       {/* LEFT */}
       <div className={"flex gap-2 flex-col"}>
         {type === "editor-suggestion" ? (

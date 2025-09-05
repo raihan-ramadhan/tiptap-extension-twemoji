@@ -2,11 +2,11 @@ import "./header.scss";
 
 import { SKIN_TONE_CODES_PROPS } from "@/lib/emoji-utils";
 import { Dispatch, memo, SetStateAction, useCallback, useState } from "react";
-import { Emoji } from "@/data/emoji-sprite-map";
 import {
   ComponentEmojiMentionProps,
   HeaderUisProps,
   SelectEmojiFunc,
+  Emoji,
 } from "@/types";
 
 // COMPONENTS

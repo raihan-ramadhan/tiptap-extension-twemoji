@@ -1,9 +1,9 @@
-import { Emoji } from "@/data/emoji-sprite-map";
 import {
   ActionBtn,
   ARRAY2D_ITEM_PROPS,
   CELL_TYPES,
   CustomEmoji,
+  Emoji,
   GroupTitle,
   ItemData,
   SelectedCell,
@@ -473,11 +473,8 @@ export const getVisibleRowRange = ({
   return { startRow, endRow };
 };
 
-export function getRandomCellByItemCount(
-  itemCount: number,
-  items: Emoji[]
-): Emoji {
-  const index = Math.floor(Math.random() * itemCount); // Random flat index
+export function getRandomCellByItemCount(items: Emoji[]): Emoji {
+  const index = Math.floor(Math.random() * items.length); // Random flat index
   const cell = items[index];
 
   return cell;

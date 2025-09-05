@@ -6,8 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/tiptap-ui-primitive/tooltip";
-import { Emoji } from "@/data/emoji-sprite-map";
-import { SelectEmojiFunc } from "@/types";
+import { SelectEmojiFunc, Emoji } from "@/types";
 import { SKIN_TONE_CODES_PROPS, SKIN_TONE_MAP } from "@/lib/emoji-utils";
 import { MentionNodeAttrs } from "@tiptap/extension-mention";
 import { SuggestionProps } from "@tiptap/suggestion";
@@ -27,10 +26,7 @@ const RandomButton = ({
 }) => {
   const handleRandomClick = useCallback(() => {
     if (callback) {
-      const data = getRandomCellByItemCount(
-        filteredEmojis.length,
-        filteredEmojis
-      );
+      const data = getRandomCellByItemCount(filteredEmojis);
 
       const tone: string = SKIN_TONE_MAP[skinTone].tone;
 

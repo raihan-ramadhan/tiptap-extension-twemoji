@@ -2,7 +2,6 @@ import "./hooks-ui.scss";
 
 import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { FixedSizeGrid as Grid } from "react-window";
-import { Emoji } from "@/data/emoji-sprite-map";
 import {
   getNumberOfRowsToScrollDown,
   getNumberOfRowsToScrollUp,
@@ -22,6 +21,7 @@ import {
   ItemData,
   SelectEmojiFunc,
   SelectedCellElementRef,
+  Emoji,
 } from "@/types";
 import { SKIN_TONE_CODES_PROPS, SKIN_TONE_MAP } from "@/lib/emoji-utils";
 import { SuggestionProps } from "@tiptap/suggestion";
